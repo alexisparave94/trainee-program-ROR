@@ -32,3 +32,8 @@ Product.all.sample
 ```console
 OrderLine.find(X).order
 ```
+
+- Select all orders that contains an X product
+```console
+Product.find(X).orders
+```
