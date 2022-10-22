@@ -55,3 +55,8 @@ Customer.includes(orders: { order_lines: :product }).where('orders.status': 1).w
 ```console
 Order.where(created_at: '19-10-2022'..'23-10-2022')
 ```
+
+- Count the total of customers who buy a product, with the amount of product ordered desc by total customer
+```console
+Customer.joins(orders: :order_lines).where('orders.status': 1).group('product_id').distinct.order('COUNT(customers.id) DESC').sum('quantity')
+```
