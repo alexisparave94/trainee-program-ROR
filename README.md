@@ -42,3 +42,11 @@ Product.find(X).orders
 ```console
 OrderLine.joins(:product, :order).where('orders.status': 1).where('products.id': X).sum('order_lines.total')
 ```
+
+- Select all the costumers who bought a product with price greater than $60, sorted by product name (include customer, product and order information)
+```console
+Customer.includes(orders: { order_lines: :product }).where('orders.status': 1).where(orders: { order_lines: { price: 60... } }).order('products.name': :ASC)
+```
+```console
+Customer.includes(orders: { order_lines: :product }).where('orders.status': 1).where('order_lines.price': 60... ).order('products.name')
+```
