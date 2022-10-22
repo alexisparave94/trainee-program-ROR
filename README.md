@@ -27,3 +27,8 @@ rails g model OrderLine order:references product:references quantity:integer pri
 ```console
 Product.all.sample
 ```
+
+- Select the order of a specific order line
+```console
+OrderLine.find(X).order
+```
