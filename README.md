@@ -1,25 +1,22 @@
-# README
+# Inventory App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Schema
 
-Things you may want to cover:
+- Create customer Table
+```console
+rails g model Customer first_name last_name address phone
+```
 
-* Ruby version
+- Create product Table
+```console
+rails g model Product sku:uniq name:uniq description price:decimal stock:integer
+```
+- Create order Table
+```console
+rails g model Order customer:references total:decimal status:integer
+```
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# trainee-program-ROR
+- Create order_lines Table
+```console
+rails g model OrderLine order:references product:references quantity:integer price:decimal total:decimal
+```
