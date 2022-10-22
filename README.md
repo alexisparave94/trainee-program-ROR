@@ -50,3 +50,8 @@ Customer.includes(orders: { order_lines: :product }).where('orders.status': 1).w
 ```console
 Customer.includes(orders: { order_lines: :product }).where('orders.status': 1).where('order_lines.price': 60... ).order('products.name')
 ```
+
+- Select all orders between dates X and Y
+```console
+Order.where(created_at: '19-10-2022'..'23-10-2022')
+```
