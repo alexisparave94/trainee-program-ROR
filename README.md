@@ -37,3 +37,8 @@ OrderLine.find(X).order
 ```console
 Product.find(X).orders
 ```
+
+- Select the total of sales of X product
+```console
+OrderLine.joins(:product, :order).where('orders.status': 1).where('products.id': X).sum('order_lines.total')
+```
