@@ -20,3 +20,10 @@ rails g model Order customer:references total:decimal status:integer
 ```console
 rails g model OrderLine order:references product:references quantity:integer price:decimal total:decimal
 ```
+
+## Queries using Active Record
+
+- Get a random Product
+```console
+Product.all.sample
+```
