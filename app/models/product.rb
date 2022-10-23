@@ -5,4 +5,5 @@ class Product < ApplicationRecord
 
   # Scopes
   default_scope { order(:name) }
+  scope :order_by_price, -> { order(:price) }
 end
