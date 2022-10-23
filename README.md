@@ -66,3 +66,7 @@ Customer.joins(orders: :order_lines).where('orders.status': 1).group('product_id
 Product.joins(order_lines: :order).where('orders.status': 1).where('orders.customer_id': 1).order('orders.updated_at': :DESC)
 ```
 
+- Select the total amount of products a X costumer bought between 2 dates
+```console
+OrderLine.joins(order: :customer).where('orders.status': 1).where('customers.id': X).where('orders.updated_at': '18-10-2022'..'23-10-2022').sum('order_lines.quantity')
+```
