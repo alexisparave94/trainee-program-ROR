@@ -83,3 +83,8 @@ Customer.joins(:orders).where('orders.status': 1).group('id').order('SUM(orders.
 ```console
 Product.joins(order_lines: :order).where('orders.status': 1).group('id').order('SUM(order_lines.quantity) DESC').limit(1)
 ```
+
+- Update products stock to 10 with stock smaller than 3 
+```console
+Product.where(stock: ...3).update_all(stock: 10)
+```
