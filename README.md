@@ -60,3 +60,9 @@ Order.where(created_at: '19-10-2022'..'23-10-2022')
 ```console
 Customer.joins(orders: :order_lines).where('orders.status': 1).group('product_id').distinct.order('COUNT(customers.id) DESC').sum('quantity')
 ```
+
+- Select all the products a X customer has bought ordered by date
+```console
+Product.joins(order_lines: :order).where('orders.status': 1).where('orders.customer_id': 1).order('orders.updated_at': :DESC)
+```
+
