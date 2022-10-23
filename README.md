@@ -70,3 +70,12 @@ Product.joins(order_lines: :order).where('orders.status': 1).where('orders.custo
 ```console
 OrderLine.joins(order: :customer).where('orders.status': 1).where('customers.id': X).where('orders.updated_at': '18-10-2022'..'23-10-2022').sum('order_lines.quantity')
 ```
+
+- Select the id of 3 customers that has expend more
+```console
+Customer.select('id').joins(:orders).where('orders.status': 1).group('id').order('SUM(orders.total) DESC').limit(3)
+```
+```console
+Customer.joins(:orders).where('orders.status': 1).group('id').order('SUM(orders.total) DESC').limit(3).map{ |customer| customer.id }
+```
+
