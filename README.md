@@ -79,3 +79,7 @@ Customer.select('id').joins(:orders).where('orders.status': 1).group('id').order
 Customer.joins(:orders).where('orders.status': 1).group('id').order('SUM(orders.total) DESC').limit(3).map{ |customer| customer.id }
 ```
 
+- Select what is the most purchased product
+```console
+Product.joins(order_lines: :order).where('orders.status': 1).group('id').order('SUM(order_lines.quantity) DESC').limit(1)
+```
