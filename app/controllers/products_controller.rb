@@ -3,6 +3,7 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
+    @cart = Cart.find(session[:cart_id])
   end
 
   def show; end
