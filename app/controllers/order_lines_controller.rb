@@ -7,7 +7,7 @@ class OrderLinesController < ApplicationController
   end
 
   def create
-    @order_line = @cart.order_lines.create(order_line_params)
+    @order_line = @cart.add_product(order_line_params)
     if @order_line.save
       redirect_to @order_line.cart, notice: 'Product was successfully added to cart'
     else
