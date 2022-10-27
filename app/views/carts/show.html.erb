@@ -1,4 +1,4 @@
-<h1>Current Card</h1>
+<h1>Current Cart</h1>
 <p> <%= notice %></p>
 <div>
   <ul>
@@ -14,8 +14,12 @@
           <p>
             $ <%= order_line.price %>
           </p>
+          <p>
+            Subtotal: $ <%= order_line.total %>
+          </p>
         </div>
       </li>
     <% end %>
   </ul>
+  <h4>Total: $ <%= @cart.calculate_total %></h4>
 </div>

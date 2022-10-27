@@ -11,4 +11,8 @@ class Cart < ApplicationRecord
     end
     current_line
   end
+
+  def calculate_total
+    order_lines.reduce(0) { |acc, order_line| acc + order_line.total }
+  end
 end
