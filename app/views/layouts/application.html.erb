@@ -11,6 +11,14 @@
   </head>
 
   <body>
+    <header>
+      <%= link_to products_path do %>
+        <h2>
+          Store App
+        </h2>
+      <% end %>
+    </header>
+    <hr>
     <%= yield %>
   </body>
 </html>
