@@ -1,0 +1,21 @@
+<h1>Products</h1>
+<div>
+  <ul>
+    <% @products.each do |product| %>
+      <li>
+        <p>
+          <%= product.sku %>
+        </p>
+        <h2>
+          <%= product.name %>
+        </h2>
+        <p>
+          <%= product.description %>
+        </p>
+        <p>
+          $ <%= product.price %>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+</div>
