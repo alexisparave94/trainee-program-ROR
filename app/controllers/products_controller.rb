@@ -35,6 +35,12 @@ class ProductsController < ApplicationController
     redirect_to products_path, notice: 'Company was successfully destroyed'
   end
 
+  def search_product
+    search = params[:search].downcase
+    @products = Product.where("LOWER(name) LIKE ?", "%#{search}%")
+    render :index
+  end
+
   private
 
   def product_params

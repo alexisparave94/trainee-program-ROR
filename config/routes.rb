@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   root 'products#index'
 
   resources :products
+  get 'search/' => 'products#search_product'
 end
