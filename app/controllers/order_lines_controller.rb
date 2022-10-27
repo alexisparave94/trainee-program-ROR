@@ -28,6 +28,12 @@ class OrderLinesController < ApplicationController
     end
   end
 
+  def destroy
+    @order_line = OrderLine.find(params[:id])
+    @order_line.destroy
+    redirect_to @order_line.cart, notice: 'Line was successfully deleted'
+  end
+
   private
 
   def order_line_params

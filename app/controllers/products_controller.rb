@@ -33,12 +33,12 @@ class ProductsController < ApplicationController
 
   def destroy
     @product.destroy
-    redirect_to products_path, notice: 'Company was successfully destroyed'
+    redirect_to products_path, notice: 'Product was successfully deleted'
   end
 
   def search_product
     search = params[:search].downcase
-    @products = Product.where("LOWER(name) LIKE ?", "%#{search}%")
+    @products = Product.where('LOWER(name) LIKE ?', "%#{search}%")
     render :index
   end
 
