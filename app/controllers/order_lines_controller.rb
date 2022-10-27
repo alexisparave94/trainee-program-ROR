@@ -9,9 +9,22 @@ class OrderLinesController < ApplicationController
   def create
     @order_line = @cart.add_product(order_line_params)
     if @order_line.save
-      redirect_to @order_line.cart, notice: 'Product was successfully added to cart'
+      redirect_to @order_line.cart, notice: 'Line was successfully added to cart'
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @order_line = OrderLine.find(params[:id])
+  end
+
+  def update
+    @order_line = OrderLine.find(params[:id])
+    if @order_line.update(order_line_params)
+      redirect_to @order_line.cart, notice: 'Shopping cart line was successfully updated'
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

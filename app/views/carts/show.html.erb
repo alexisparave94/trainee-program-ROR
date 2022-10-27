@@ -17,6 +17,7 @@
           <p>
             Subtotal: $ <%= order_line.total %>
           </p>
+          <%= link_to 'Edit', edit_order_line_path(order_line) %>
         </div>
       </li>
     <% end %>
