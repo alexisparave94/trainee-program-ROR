@@ -24,5 +24,6 @@
     <% end %>
   </ul>
   <h4>Total: $ <%= @cart.calculate_total %></h4>
-  <%= button_to 'Empty Cart', cart_path(@cart), method: :delete %>
+  <%= button_to 'Empty cart', @cart, method: :delete %>
+  <%= button_to 'Buy products', orders_path %>
 </div>

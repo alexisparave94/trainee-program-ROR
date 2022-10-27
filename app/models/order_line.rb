@@ -9,7 +9,7 @@ class OrderLine < ApplicationRecord
 
   # Validations
   validates :quantity, numericality: { only_integer: true, message: 'Must be an integer' }
-  validates :quantity, numericality: { greater_than_or_equal_to: 1, message: 'Must be a positive number greather than 0' }
+  validates :quantity, numericality: { greater_than_or_equal_to: 1, message: 'Must be a positive number greather than 0'}
 
   private
 

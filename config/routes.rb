@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   resources :order_lines, only: %i[new create edit update destroy]
 
   resources :carts, only: %i[show destroy]
+
+  resources :orders, only: %i[create]
 end
