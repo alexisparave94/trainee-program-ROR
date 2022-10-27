@@ -10,9 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_21_234922) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_27_071045) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "carts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
@@ -24,13 +29,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_21_234922) do
   end
 
   create_table "order_lines", force: :cascade do |t|
-    t.bigint "order_id", null: false
+    t.bigint "order_id"
     t.bigint "product_id", null: false
-    t.integer "quantity"
+    t.integer "quantity", default: 1
     t.decimal "price"
     t.decimal "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "cart_id"
     t.index ["order_id", "product_id"], name: "index_order_lines_on_order_id_and_product_id", unique: true
     t.index ["order_id"], name: "index_order_lines_on_order_id"
     t.index ["product_id"], name: "index_order_lines_on_product_id"
@@ -57,6 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_21_234922) do
     t.index ["sku"], name: "index_products_on_sku", unique: true
   end
 
+  add_foreign_key "order_lines", "carts"
   add_foreign_key "order_lines", "orders"
   add_foreign_key "order_lines", "products"
   add_foreign_key "orders", "customers"

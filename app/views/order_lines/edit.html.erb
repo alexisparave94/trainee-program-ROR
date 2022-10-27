@@ -1,0 +1,10 @@
+<h1>Edit Line</h1>
+<%= form_with model: @order_line do |form| %>
+  <div>
+    <%= form.label :quantity, style: 'display: block' %>
+    <%= form.text_field :quantity %>
+  </div>
+  <div>
+    <%= form.submit 'Update Line' %>
+  </div>
+<% end %>
