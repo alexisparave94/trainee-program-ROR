@@ -1,0 +1,32 @@
+<h1>Products</h1>
+<p> <%= notice %></p>
+<%= form_with url: '/search', method: :get do |form| %>
+  <%= form.text_field :search, placeholder: 'Name of product', require: true %>
+  <%= form.submit 'Search Product' %>
+<% end %>
+<%= link_to 'New Product', new_product_path%>
+<div>
+  <ul>
+    <% @products.each do |product| %>
+      <li>
+        <div>
+          <p>
+            <%= product.sku %>
+          </p>
+          <h2>
+            <%= product.name %>
+          </h2>
+          <p>
+            <%= product.description %>
+          </p>
+          <p>
+            $ <%= product.price %>
+          </p>
+          <%= link_to 'Show', product %>
+          <%= link_to 'Edit', edit_product_path(product) %>
+          <%= button_to 'Delete', product, method: :delete %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
