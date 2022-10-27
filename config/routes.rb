@@ -7,4 +7,8 @@ Rails.application.routes.draw do
 
   resources :products
   get 'search/' => 'products#search_product'
+
+  resources :order_lines, only: %i[new create]
+
+  resources :carts, only: %i[show]
 end
