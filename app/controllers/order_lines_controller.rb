@@ -1,5 +1,6 @@
 class OrderLinesController < ApplicationController
   before_action :set_card, only: %i[create]
+  before_action :set_order_line, only: %i[edit update destroy]
 
   def new
     @order_line = OrderLine.new
@@ -15,12 +16,9 @@ class OrderLinesController < ApplicationController
     end
   end
 
-  def edit
-    @order_line = OrderLine.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @order_line = OrderLine.find(params[:id])
     if @order_line.update(order_line_params)
       redirect_to @order_line.cart, notice: 'Shopping cart line was successfully updated'
     else
@@ -29,7 +27,6 @@ class OrderLinesController < ApplicationController
   end
 
   def destroy
-    @order_line = OrderLine.find(params[:id])
     @order_line.destroy
     redirect_to @order_line.cart, notice: 'Line was successfully deleted'
   end
@@ -45,5 +42,9 @@ class OrderLinesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     @cart = Cart.create
     session[:cart_id] = @cart.id
+  end
+
+  def set_order_line
+    @order_line = OrderLine.find(params[:id])
   end
 end
