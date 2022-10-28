@@ -44,12 +44,12 @@
 
 puts 'Start Seeding'
 
-puts 'Seeding Customers'
-user1 = User.create(first_name: 'Alexis', last_name: 'Parave')
-user2 = User.create(first_name: 'Mariano', last_name: 'Vargas')
-user3 = User.create(first_name: 'Fatima', last_name: 'Parave')
-user4 = User.create(first_name: 'Lazaro', last_name: 'Diaz')
-user5 = User.create(first_name: 'Daniel', last_name: 'Salazar')
+# puts 'Seeding Customers'
+# user1 = User.create(first_name: 'Alexis', last_name: 'Parave')
+# user2 = User.create(first_name: 'Mariano', last_name: 'Vargas')
+# user3 = User.create(first_name: 'Fatima', last_name: 'Parave')
+# user4 = User.create(first_name: 'Lazaro', last_name: 'Diaz')
+# user5 = User.create(first_name: 'Daniel', last_name: 'Salazar')
 
 puts 'Seeding Products'
 pro1 = Product.create(sku: 'SKU-001', name: 'Product B', price: 10, stock: 5)
