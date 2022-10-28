@@ -1,20 +1,9 @@
 class OrdersController < ApplicationController
-  def show_cart
-    @lines_exceed_stock = nil
-    @virtual_order = session[:virtual_order]
-  end
+  before_action :authenticate_user!, only: %i[create]
 
-  def create
+  def show_cart
+    @lines_exceed_stock = session[:checkout]
     @virtual_order = session[:virtual_order]
-    @order = Order.new(status: 'completed', customer_id: 1)
-    @order.add_lines_from_cart(@virtual_order)
-    @order.total = @order.calculate_total
-    if @order.save
-      session[:virtual_order] = []
-      redirect_to products_path, notice: 'Thanks for buy'
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   def destroy
@@ -30,7 +19,7 @@ class OrdersController < ApplicationController
       stock < current_quantity ? { product: detail['product'], stock: } : nil
     end
 
-    @lines_exceed_stock.compact!
+    session[:checkout] = @lines_exceed_stock.compact!
     render :show_cart
   end
 end
