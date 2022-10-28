@@ -23,7 +23,7 @@
               Subtotal: $ <%= detail['order_line']['quantity']*detail['order_line']['price'].to_f %>
             </p>
             <%= link_to 'Edit', edit_order_line_path(detail['order_line']['product_id']) %>
-            <%# button_to 'Delete', order_line_path(order_line), method: :delete %>
+            <%= button_to 'Delete', order_line_path(detail['order_line']['product_id']), method: :delete %>
           </div>
         </li>
       <% end %>

@@ -1,5 +1,4 @@
 class OrderLinesController < ApplicationController
-
   def new
     @order_line = OrderLine.new
     @product = Product.find(params[:product_id])
@@ -40,8 +39,10 @@ class OrderLinesController < ApplicationController
   end
 
   def destroy
-    @order_line.destroy
-    redirect_to @order_line.cart, notice: 'Line was successfully deleted'
+    @virtual_order = session[:virtual_order]
+    @virtual_order.reject! { |detail| detail['order_line']['product_id'] == params[:id].to_i }
+    session[:virtual_order] = @virtual_order
+    redirect_to show_cart_path, notice: 'Line was successfully deleted'
   end
 
   private
