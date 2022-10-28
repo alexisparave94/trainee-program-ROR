@@ -1,8 +1,7 @@
 <h1>Add Product to Cart</h1>
 <p><%= @product.name %></p>
 <p><%= @product.price %></p>
-<%= form_with model: @order_line do |form| %>
-  <%= form.hidden_field :product_id, value: @product.id %>
+<%= form_with model: [@product, @order_line] do |form| %>
   <%= form.hidden_field :price, value: @product.price %>
   <div>
     <%= form.label :quantity, style: 'display: block' %>

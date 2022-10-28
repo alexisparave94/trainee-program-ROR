@@ -3,7 +3,8 @@ class OrdersController < ApplicationController
 
   def show_cart
     @lines_exceed_stock = session[:checkout]
-    @virtual_order = session[:virtual_order]
+    # @virtual_order = session[:virtual_order]
+    @virtual_order = Order.find(session[:order_id])
   end
 
   def destroy
