@@ -10,4 +10,5 @@ Rails.application.routes.draw do
 
   resources :orders, only: %i[show create destroy]
   get 'show_cart' => 'orders#show_cart'
+  get 'checkout' => 'orders#checkout'
 end

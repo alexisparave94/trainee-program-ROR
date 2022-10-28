@@ -30,6 +30,19 @@
     </ul>
     <h4>Total: $ <%= OrdersHelper.total_virtual_order(@virtual_order) %></h4>
     <%= button_to 'Empty cart', order_url(id: 1), method: :delete %>
-    <%# button_to 'Checkout', orders_path %>
+    <%= link_to 'Checkout', checkout_path %>
+    <% unless @lines_exceed_stock.nil? %>
+      <% if @lines_exceed_stock.empty? %>
+        <%= button_to 'Buy' %>
+      <% else %>
+        <ul>
+          <% @lines_exceed_stock.each do |line| %>
+            <li>
+              <%= "There is only a stock of #{line[:stock]} for #{line[:product]['name']}" %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
   <% end %>
 </div>
