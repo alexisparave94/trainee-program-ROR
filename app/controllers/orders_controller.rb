@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!, only: %i[create]
+  
   def show_cart
     @lines_exceed_stock = nil
     @virtual_order = session[:virtual_order]
@@ -6,7 +8,7 @@ class OrdersController < ApplicationController
 
   def create
     @virtual_order = session[:virtual_order]
-    @order = Order.new(status: 'completed', user_id: 1)
+    @order = Order.new(status: 'completed', user: current_user)
     @order.add_lines_from_cart(@virtual_order)
     @order.total = @order.calculate_total
     if @order.save
