@@ -1,6 +1,4 @@
 class OrderLinesController < ApplicationController
-  # before_action :set_card, only: %i[create]
-  before_action :set_order_line, only: %i[edit update destroy]
 
   def new
     @order_line = OrderLine.new
@@ -22,14 +20,23 @@ class OrderLinesController < ApplicationController
     # end
   end
 
-  def edit; end
+  def edit
+    @virtual_order = session[:virtual_order]
+    @current_virtual_line = find_virtual_line(@virtual_order, params[:id]).first['order_line']
+    @id = params[:id]
+  end
 
   def update
-    if @order_line.update(order_line_params)
-      redirect_to @order_line.cart, notice: 'Shopping cart line was successfully updated'
-    else
-      render :edit, status: :unprocessable_entity
-    end
+    @virtual_order = session[:virtual_order]
+    @current_virtual_line = find_virtual_line(@virtual_order, params[:id]).first['order_line']
+    @current_virtual_line['quantity'] = params[:quantity].to_i
+    session[:virtual_order] = @virtual_order
+    redirect_to show_cart_path
+    # if @order_line.update(order_line_params)
+    #   redirect_to @order_line.cart, notice: 'Shopping cart line was successfully updated'
+    # else
+    #   render :edit, status: :unprocessable_entity
+    # end
   end
 
   def destroy
@@ -52,10 +59,6 @@ class OrderLinesController < ApplicationController
       @virtual_order << detail
     end
     session[:virtual_order] = @virtual_order
-  end
-
-  def set_order_line
-    @order_line = OrderLine.find(params[:id])
   end
 
   def find_virtual_line(virtual_order, id)
