@@ -1,5 +1,6 @@
 class Admin::ProductsController < ApplicationController
   before_action :set_product, only: %i[edit update destroy]
+  before_action :authenticate_user!, only: %i[new create edit update destroy]
 
   def new
     @product = Product.new
