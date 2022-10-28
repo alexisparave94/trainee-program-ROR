@@ -10,18 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_21_234922) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_27_205357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "customers", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "address"
-    t.string "phone"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "order_lines", force: :cascade do |t|
     t.bigint "order_id"
@@ -37,12 +28,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_21_234922) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.bigint "customer_id"
     t.decimal "total", default: "0.0"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.bigint "user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -57,7 +47,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_21_234922) do
     t.index ["sku"], name: "index_products_on_sku", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address"
+    t.string "phone"
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "order_lines", "orders"
   add_foreign_key "order_lines", "products"
-  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users"
 end
