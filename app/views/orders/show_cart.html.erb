@@ -21,7 +21,7 @@
             <p>
               Subtotal: $ <%= order_line.total %>
             </p>
-            <%# link_to 'Edit', edit_order_line_path(detail['order_line']['product_id']) %>
+            <%= link_to 'Edit', edit_order_line_path(order_line) %>
             <%# button_to 'Delete', order_line_path(detail['order_line']['product_id']), method: :delete %>
           </div>
         </li>
