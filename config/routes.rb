@@ -8,5 +8,6 @@ Rails.application.routes.draw do
 
   resources :carts, only: %i[show destroy]
 
-  resources :orders, only: %i[create]
+  resources :orders, only: %i[show create]
+  get 'show_cart' => 'orders#show_cart'
 end

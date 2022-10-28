@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   # Associations
-  belongs_to :customer
+  belongs_to :customer, optional: true
   has_many :order_lines, dependent: :destroy
   has_many :products, through: :order_lines
 
