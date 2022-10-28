@@ -1,13 +1,15 @@
 <h1>Products</h1>
-<p> <%= notice %></p>
 <%= form_with url: '/search', method: :get do |form| %>
   <%= form.text_field :search, placeholder: 'Name of product', require: true %>
   <%= form.submit 'Search Product' %>
 <% end %>
-<% if @virtual_order %>
-  <%= link_to 'Show shopping cart', show_cart_path, style: 'display: block' %>
+<% if current_user.nil? || current_user&.customer? %>
+  <% if @virtual_order %>
+    <%= link_to 'Show shopping cart', show_cart_path, style: 'display: block' %>
+  <% end %>
+<% else %>
+  <%= link_to 'New Product', new_admin_product_path %>
 <% end %>
-<%= link_to 'New Product', new_product_path %>
 <div>
   <ul>
     <% @products.each do |product| %>
@@ -26,9 +28,12 @@
             $ <%= product.price %>
           </p>
           <%= link_to 'Show', product %>
-          <%= link_to 'Edit', edit_product_path(product) %>
-          <%= button_to 'Delete', product, method: :delete %>
-          <%= link_to 'Add to cart', new_order_line_path(product_id: product.id) %>
+          <% if current_user&.admin? %>
+            <%= link_to 'Edit', edit_admin_product_path(product) %>
+            <%= button_to 'Delete', admin_product_path(product), method: :delete %>
+          <% else %>
+            <%= link_to 'Add to cart', new_order_line_path(product_id: product.id) %>
+          <% end %>
         </div>
       </li>
     <% end %>
