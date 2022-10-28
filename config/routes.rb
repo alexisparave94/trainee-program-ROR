@@ -9,11 +9,15 @@ Rails.application.routes.draw do
 
   resources :carts, only: %i[show destroy]
 
-  resources :orders, only: %i[show create destroy]
+  resources :orders, only: %i[show destroy]
   get 'show_cart' => 'orders#show_cart'
   get 'checkout' => 'orders#checkout'
 
   namespace :admin do
     resources :products, only: %i[new create edit update destroy]
+  end
+
+  namespace :customer do
+    resources :orders, only: %i[create destroy]
   end
 end
