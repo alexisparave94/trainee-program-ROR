@@ -1,5 +1,4 @@
 <h1>Current Cart</h1>
-<p> <%= notice %></p>
 <div>
   <% if @virtual_order.empty? %>
     <p>
@@ -36,7 +35,9 @@
         </p> 
           There is enough stock, you can buy the products
         <p>
-        <%= button_to 'Buy', orders_path %>
+        <div data-turbo='false'>
+          <%= button_to 'Buy', orders_path %>
+        </div>
       <% else %>
         <ul>
           <% @lines_exceed_stock.each do |line| %>
