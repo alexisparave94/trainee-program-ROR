@@ -4,6 +4,9 @@ class Order < ApplicationRecord
   has_many :order_lines, dependent: :destroy
   has_many :products, through: :order_lines
 
+  #Callbacks
+  after_create :update_products_stock
+
   # Enum
   enum :status, %i[pending completed refused]
 
@@ -23,5 +26,13 @@ class Order < ApplicationRecord
 
   def calculate_total
     order_lines.reduce(0) { |acc, order_line| acc + order_line.total }
+  end
+
+  def update_products_stock
+    order_lines.each do |order_line|
+      product = Product.find(order_line.product_id)
+      product.stock -= order_line.quantity
+      product.save
+    end
   end
 end
