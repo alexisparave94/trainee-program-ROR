@@ -4,8 +4,8 @@
   <%= form.text_field :search, placeholder: 'Name of product', require: true %>
   <%= form.submit 'Search Product' %>
 <% end %>
-<% if @cart %>
-  <%= link_to 'Show shopping cart', cart_path(@cart), style: 'display: block' %>
+<% if @virtual_order %>
+  <%= link_to 'Show shopping cart', show_cart_path, style: 'display: block' %>
 <% end %>
 <%= link_to 'New Product', new_product_path %>
 <div>

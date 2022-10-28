@@ -1,0 +1,51 @@
+<h1>Current Cart</h1>
+<p> <%= notice %></p>
+<div>
+  <% if @virtual_order.empty? %>
+    <p>
+      Your cart its empty
+    </p>
+  <% else %>
+    <ul>
+      <% @virtual_order.each do |detail| %>
+        <li>
+          <div>
+            <h3>
+              <%= detail['product']['name'] %>
+            </h3>
+            <p>
+              <%= detail['order_line']['quantity'] %>
+            </p>
+            <p>
+              $ <%= detail['order_line']['price'] %>
+            </p>
+            <p>
+              Subtotal: $ <%= detail['order_line']['quantity']*detail['order_line']['price'].to_f %>
+            </p>
+            <%= link_to 'Edit', edit_order_line_path(detail['order_line']['product_id']) %>
+            <%= button_to 'Delete', order_line_path(detail['order_line']['product_id']), method: :delete %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <h4>Total: $ <%= OrdersHelper.total_virtual_order(@virtual_order) %></h4>
+    <%= button_to 'Empty cart', order_url(id: 1), method: :delete %>
+    <%= link_to 'Checkout', checkout_path %>
+    <% unless @lines_exceed_stock.nil? %>
+      <% if @lines_exceed_stock.empty? %>
+        </p> 
+          There is enough stock, you can buy the products
+        <p>
+        <%= button_to 'Buy', orders_path %>
+      <% else %>
+        <ul>
+          <% @lines_exceed_stock.each do |line| %>
+            <li>
+              <%= "There is only a stock of #{line[:stock]} for #{line[:product]['name']}" %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
