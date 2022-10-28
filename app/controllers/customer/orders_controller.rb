@@ -8,6 +8,7 @@ class Customer::OrdersController < ApplicationController
     @order.total = @order.calculate_total
     if @order.save
       session[:virtual_order] = []
+      session[:checkout] = nil
       redirect_to products_path, notice: 'Thanks for buy'
     else
       render :new, status: :unprocessable_entity
