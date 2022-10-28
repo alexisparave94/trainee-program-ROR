@@ -10,10 +10,18 @@ class Order < ApplicationRecord
    # Scopes
    scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
 
-  def add_lines_from_cart(cart)
-    cart.order_lines.each do |order_line|
-      order_line.cart_id = nil
+  def add_lines_from_cart(virtual_order)
+    virtual_order.each do |detail|
+      order_line = OrderLine.create(
+        product_id: detail['product']['id'],
+        quantity: detail['order_line']['quantity'],
+        price: detail['order_line']['price']
+      )
       order_lines.push(order_line)
     end
+  end
+
+  def calculate_total
+    order_lines.reduce(0) { |acc, order_line| acc + order_line.total }
   end
 end

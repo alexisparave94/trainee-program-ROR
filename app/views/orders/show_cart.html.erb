@@ -33,7 +33,10 @@
     <%= link_to 'Checkout', checkout_path %>
     <% unless @lines_exceed_stock.nil? %>
       <% if @lines_exceed_stock.empty? %>
-        <%= button_to 'Buy' %>
+        </p> 
+          There is enough stock, you can buy the products
+        <p>
+        <%= button_to 'Buy', orders_path %>
       <% else %>
         <ul>
           <% @lines_exceed_stock.each do |line| %>
