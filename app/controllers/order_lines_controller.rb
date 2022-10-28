@@ -1,5 +1,6 @@
 class OrderLinesController < ApplicationController
   before_action :set_virtual_order, only: %i[create edit]
+  before_action :set_order_line, only: %i[edit update destroy]
 
   # GET /products/:id_product/order_lines/new
   def new
@@ -18,33 +19,21 @@ class OrderLinesController < ApplicationController
     end
   end
 
-  def edit
-    @order_line = OrderLine.find(params[:id])
-  end
+  # GET /order_lines/:id/edit
+  def edit; end
 
+  # PATCH /order_lines/:id
   def update
-    @order_line = OrderLine.find(params[:id])
     if @order_line.update(order_line_params)
       redirect_to show_cart_path, notice: 'Line was successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
-    # @virtual_order = session[:virtual_order]
-    # @current_virtual_line = find_virtual_line(@virtual_order, params[:id]).first['order_line']
-    # @current_virtual_line['quantity'] = params[:quantity].to_i
-    # session[:virtual_order] = @virtual_order
-    # redirect_to show_cart_path, notice: 'Line was successfully updated'
-    # if @order_line.update(order_line_params)
-    #   redirect_to @order_line.cart, notice: 'Shopping cart line was successfully updated'
-    # else
-    #   render :edit, status: :unprocessable_entity
-    # end
   end
 
+  # DELETE /order_lines/:id
   def destroy
-    @virtual_order = session[:virtual_order]
-    @virtual_order.reject! { |detail| detail['order_line']['product_id'] == params[:id].to_i }
-    session[:virtual_order] = @virtual_order
+    @order_line.destroy
     redirect_to show_cart_path, notice: 'Line was successfully deleted'
   end
 
@@ -52,6 +41,10 @@ class OrderLinesController < ApplicationController
 
   def order_line_params
     params.require(:order_line).permit(:quantity, :price)
+  end
+
+  def set_order_line
+    @order_line = OrderLine.find(params[:id])
   end
 
   def add_product
@@ -63,10 +56,6 @@ class OrderLinesController < ApplicationController
     else
       @order_line.quantity += order_line_params[:quantity].to_i
     end
-  end
-
-  def find_virtual_line(virtual_order, id)
-    virtual_order.select { |detail| detail['order_line']['product_id'] == id.to_i }
   end
 
   def set_virtual_order

@@ -4,7 +4,7 @@
   <%= form.submit 'Search Product' %>
 <% end %>
 <% if current_user.nil? || current_user&.customer? %>
-  <% if @virtual_order %>
+  <% if session[:order_id] %>
     <%= link_to 'Show shopping cart', show_cart_path, style: 'display: block' %>
   <% end %>
 <% else %>
