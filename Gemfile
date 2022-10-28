@@ -73,3 +73,6 @@ end
 
 # Use Faker for seeds
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main'
+
+# Use Devise for authentication
+gem 'devise'

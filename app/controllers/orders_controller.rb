@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
 
   def create
     @virtual_order = session[:virtual_order]
-    @order = Order.new(status: 'completed', customer_id: 1)
+    @order = Order.new(status: 'completed', user_id: 1)
     @order.add_lines_from_cart(@virtual_order)
     @order.total = @order.calculate_total
     if @order.save
