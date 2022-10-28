@@ -10,25 +10,12 @@ class OrderLinesController < ApplicationController
   # POST /products/:id_product/order_lines
   def create
     @product = Product.find(params[:product_id])
-    @order_line = OrderLine.new(order_line_params)
-    @order_line.product = @product
-    @order_line.order = @virtual_order
+    add_product
     if @order_line.save
       redirect_to show_cart_path, notice: 'Line was successfully added to shopping cart'
     else
       render :new, status: :unprocessable_entity
     end
-    # @product = Product.find(order_line_params[:product_id])
-    # @virtual_order = []
-    # detail = { order_line: @order_line, product: @product }
-    # add_virtual_line(detail)
-    # redirect_to show_cart_path, notice: 'Line was successfully added'
-    # @order_line = @cart.add_product(order_line_params)
-    # if @order_line.save
-    #   redirect_to @order_line.cart, notice: 'Line was successfully added to cart'
-    # else
-    #   render :new, status: :unprocessable_entity
-    # end
   end
 
   def edit
@@ -63,26 +50,15 @@ class OrderLinesController < ApplicationController
     params.require(:order_line).permit(:quantity, :price)
   end
 
-  def add_virtual_line(detail)
-    @virtual_order = session[:virtual_order] if session[:virtual_order]
-    @current_virtual_line = find_virtual_line(@virtual_order, order_line_params[:product_id]).first
-    if @current_virtual_line
-      @current_virtual_line['order_line']['quantity'] += order_line_params[:quantity].to_i
+  def add_product
+    @order_line = @virtual_order.order_lines.find_by(product_id: @product.id)
+    if @order_line.nil?
+      @order_line = OrderLine.new(order_line_params)
+      @order_line.product = @product
+      @order_line.order = @virtual_order
     else
-      @virtual_order << detail
+      @order_line.quantity += order_line_params[:quantity].to_i
     end
-    session[:virtual_order] = @virtual_order
-  end
-
-  def add_virtual_line2(order_lines)
-    @virtual_order = session[:virtual_order] if session[:virtual_order]
-    @current_virtual_line = find_virtual_line(@virtual_order, order_line_params[:product_id]).first
-    if @current_virtual_line
-      @current_virtual_line['order_line']['quantity'] += order_line_params[:quantity].to_i
-    else
-      @virtual_order << detail
-    end
-    session[:virtual_order] = @virtual_order
   end
 
   def find_virtual_line(virtual_order, id)
