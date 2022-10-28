@@ -13,6 +13,7 @@ class OrderLinesController < ApplicationController
     @virtual_order = []
     detail = { order_line: @order_line, product: @product }
     add_virtual_line(detail)
+    redirect_to show_cart_path
     # @order_line = @cart.add_product(order_line_params)
     # if @order_line.save
     #   redirect_to @order_line.cart, notice: 'Line was successfully added to cart'
@@ -44,11 +45,20 @@ class OrderLinesController < ApplicationController
 
   def add_virtual_line(detail)
     @virtual_order = session[:virtual_order] if session[:virtual_order]
-    @virtual_order << detail
+    @current_virtual_line = find_virtual_line(@virtual_order, order_line_params[:product_id]).first
+    if @current_virtual_line
+      @current_virtual_line['order_line']['quantity'] += order_line_params[:quantity].to_i
+    else
+      @virtual_order << detail
+    end
     session[:virtual_order] = @virtual_order
   end
 
   def set_order_line
     @order_line = OrderLine.find(params[:id])
+  end
+
+  def find_virtual_line(virtual_order, id)
+    virtual_order.select { |detail| detail['order_line']['product_id'] == id.to_i }
   end
 end
