@@ -15,4 +15,9 @@ class OrdersController < ApplicationController
     #   render :new, status: :unprocessable_entity
     # end
   end
+
+  def destroy
+    session[:virtual_order] = []
+    redirect_to show_cart_path, notice: 'Cart has been emptied'
+  end
 end

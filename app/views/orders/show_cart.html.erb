@@ -29,7 +29,7 @@
       <% end %>
     </ul>
     <h4>Total: $ <%= OrdersHelper.total_virtual_order(@virtual_order) %></h4>
-    <%# button_to 'Empty cart', @cart, method: :delete %>
-    <%# button_to 'Buy products', orders_path %>
+    <%= button_to 'Empty cart', order_url(id: 1), method: :delete %>
+    <%# button_to 'Checkout', orders_path %>
   <% end %>
 </div>
