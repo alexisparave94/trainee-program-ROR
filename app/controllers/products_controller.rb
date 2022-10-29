@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: %i[show]
 
   def index
-    @products = Product.all
+    @products = Product.all.available_products
     @virtual_order = Order.find(session[:order_id]) if session[:order_id]
   end
 
