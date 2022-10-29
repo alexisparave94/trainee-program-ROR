@@ -4,10 +4,12 @@ class Admin::ProductsController < ApplicationController
 
   def new
     @product = Product.new
+    authorize @product
   end
 
   def create
     @product = Product.new(product_params)
+    authorize @product
     if @product.save
       redirect_to products_path, notice: 'Product was successfully created'
     else
@@ -15,9 +17,12 @@ class Admin::ProductsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    authorize @product
+  end
 
   def update
+    authorize @product
     if @product.update(product_params)
       redirect_to products_path, notice: 'Product was successfully updated'
     else
@@ -26,6 +31,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def destroy
+    authorize @product
     @product.destroy
     redirect_to products_path, notice: 'Product was successfully deleted'
   end
