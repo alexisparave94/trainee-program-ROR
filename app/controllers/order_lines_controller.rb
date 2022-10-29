@@ -6,12 +6,14 @@ class OrderLinesController < ApplicationController
   def new
     @order_line = OrderLine.new
     @product = Product.find(params[:product_id])
+    authorize @order_line
   end
 
   # POST /products/:id_product/order_lines
   def create
     @product = Product.find(params[:product_id])
     add_product
+    authorize @order_line
     if @order_line.save
       session[:checkout] = nil
       redirect_to @order_line.order, notice: 'Line was successfully added to shopping cart'
@@ -21,10 +23,13 @@ class OrderLinesController < ApplicationController
   end
 
   # GET /order_lines/:id/edit
-  def edit; end
+  def edit
+    authorize @order_line
+  end
 
   # PATCH /order_lines/:id
   def update
+    authorize @order_line
     if @order_line.update(order_line_params)
       session[:checkout] = nil
       redirect_to @order_line.order, notice: 'Line was successfully updated'
@@ -36,6 +41,7 @@ class OrderLinesController < ApplicationController
   # DELETE /order_lines/:id
   def destroy
     @order_line.destroy
+    authorize @order_line
     redirect_to @order_line.order, notice: 'Line was successfully deleted'
   end
 
