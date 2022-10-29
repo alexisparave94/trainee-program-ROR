@@ -7,9 +7,11 @@ class OrdersController < ApplicationController
     @virtual_order = Order.find(session[:order_id])
   end
 
-  def destroy
-    session[:virtual_order] = []
-    redirect_to show_cart_path, notice: 'Cart has been emptied'
+  def destroy; end
+
+  def empty_cart
+    OrderLine.destroy_by(order_id: params[:order_id])
+    redirect_to show_cart_path, notice: 'Shopping cart has been emptied successfully'
   end
 
   def checkout

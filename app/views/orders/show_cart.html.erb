@@ -28,8 +28,7 @@
       <% end %>
     </ul>
     <h4>Total: $ <%= @virtual_order.calculate_total %></h4>
-    <h4>Total: $ <%= @virtual_order.id %></h4>
-    <%# button_to 'Empty cart', order_url(id: 1), method: :delete %>
+    <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id) %>
     <%# link_to 'Checkout', checkout_path %>
     <% unless @lines_exceed_stock.nil? %>
       <% if @lines_exceed_stock.empty? %>

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'search/' => 'products#search_product'
 
   resources :order_lines, only: %i[new create edit update destroy]
+  get 'empty_cart' => 'orders#empty_cart'
 
   resources :carts, only: %i[show destroy]
 
