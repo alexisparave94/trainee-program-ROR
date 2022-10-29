@@ -1,5 +1,5 @@
 class OrderLinesController < ApplicationController
-  before_action :set_virtual_order, only: %i[create edit]
+  before_action :set_virtual_order, only: %i[create]
   before_action :set_order_line, only: %i[edit update destroy]
 
   # GET /products/:id_product/order_lines/new
@@ -14,7 +14,7 @@ class OrderLinesController < ApplicationController
     add_product
     if @order_line.save
       session[:checkout] = nil
-      redirect_to show_cart_path, notice: 'Line was successfully added to shopping cart'
+      redirect_to @order_line.order, notice: 'Line was successfully added to shopping cart'
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class OrderLinesController < ApplicationController
   def update
     if @order_line.update(order_line_params)
       session[:checkout] = nil
-      redirect_to show_cart_path, notice: 'Line was successfully updated'
+      redirect_to @order_line.order, notice: 'Line was successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class OrderLinesController < ApplicationController
   # DELETE /order_lines/:id
   def destroy
     @order_line.destroy
-    redirect_to show_cart_path, notice: 'Line was successfully deleted'
+    redirect_to @order_line.order, notice: 'Line was successfully deleted'
   end
 
   private

@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
-    @virtual_order = session[:virtual_order]
+    @virtual_order = Order.find(session[:order_id])
   end
 
   def show; end

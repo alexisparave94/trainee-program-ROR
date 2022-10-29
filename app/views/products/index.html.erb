@@ -5,7 +5,7 @@
 <% end %>
 <% if current_user.nil? || current_user&.customer? %>
   <% if session[:order_id] %>
-    <%= link_to 'Show shopping cart', show_cart_path, style: 'display: block' %>
+    <%= link_to 'Show shopping cart', @virtual_order, style: 'display: block' %>
   <% end %>
 <% else %>
   <%= link_to 'New Product', new_admin_product_path %>
