@@ -7,7 +7,8 @@
   <% if session[:order_id] %>
     <%= link_to 'Show shopping cart', @virtual_order, style: 'display: block' %>
   <% end %>
-<% else %>
+<% end %>
+<% if policy(Product).new? %>
   <%= link_to 'New Product', new_admin_product_path %>
 <% end %>
 <div>
@@ -27,11 +28,14 @@
           <p>
             $ <%= product.price %>
           </p>
-          <%= link_to 'Show', product %>
-          <% if current_user&.admin? %>
+          <%= link_to 'Show', product, style: 'display: block' %>
+          <% if policy(product).edit? %>
             <%= link_to 'Edit', edit_admin_product_path(product) %>
+          <% end %>
+          <% if policy(product).destroy? %>
             <%= button_to 'Delete', admin_product_path(product), method: :delete %>
-          <% else %>
+          <% end %>
+          <% if policy(OrderLine).new? %>
             <%= link_to 'Add to cart', new_product_order_line_path(product) %>
           <% end %>
         </div>
