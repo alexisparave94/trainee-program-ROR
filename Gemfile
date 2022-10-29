@@ -76,3 +76,6 @@ gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main
 
 # Use Devise for authentication
 gem 'devise'
+
+# Use Pundit for authorization
+gem "pundit", "~> 2.2"

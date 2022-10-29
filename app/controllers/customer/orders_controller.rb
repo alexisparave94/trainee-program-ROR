@@ -3,6 +3,7 @@ class Customer::OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
+    authorize @order
     if @order.update(
       status: 'completed',
       user: current_user,
