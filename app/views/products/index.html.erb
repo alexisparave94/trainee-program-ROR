@@ -32,7 +32,7 @@
             $ <%= product.price %>
           </p>
           <%= link_to 'Show', product, style: 'display: block' %>
-          <% if current_user %>
+          <% if policy(Like).create? %>
             <% if product.likes.where(user_id: current_user.id).take %>
               <%= button_to 'Dislike', [:customer, product.likes.where(user_id: current_user.id).take], method: :delete %>
             <% else %>
