@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   # Associations
   has_many :orders, dependent: :nullify
+  has_many :change_logs, dependent: :nullify
 
   # Enum
   enum :role, %i[admin customer]
