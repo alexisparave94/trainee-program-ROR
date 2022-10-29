@@ -44,9 +44,9 @@
 
 puts 'Start Seeding'
 
-# puts 'Seeding Customers'
-# user1 = User.create(first_name: 'Alexis', last_name: 'Parave')
-# user2 = User.create(first_name: 'Mariano', last_name: 'Vargas')
+puts 'Seeding Users'
+user1 = User.create(email: 'admin@mail.com', password: '123456', first_name: 'Admin', last_name: 'One', role: 'admin')
+user2 = User.create(email: 'alexis@mail.com', password: '123456', first_name: 'Alexis', last_name: 'Parave')
 # user3 = User.create(first_name: 'Fatima', last_name: 'Parave')
 # user4 = User.create(first_name: 'Lazaro', last_name: 'Diaz')
 # user5 = User.create(first_name: 'Daniel', last_name: 'Salazar')
@@ -57,6 +57,7 @@ pro2 = Product.create(sku: 'SKU-002', name: 'Product A', price: 20, stock: 5)
 pro3 = Product.create(sku: 'SKU-003', name: 'Product C', price: 50, stock: 5)
 pro4 = Product.create(sku: 'SKU-004', name: 'AB', price: 100, stock: 5)
 pro5 = Product.create(sku: 'SKU-005', name: 'AA', price: 200, stock: 5)
+pro6 = Product.create(sku: 'SKU-005', name: 'AAA', price: 200, stock: 0)
 
 # puts 'Seeding Orders'
 # or1 = Order.create(customer: cus1, status: 1)

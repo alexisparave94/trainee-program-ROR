@@ -1,8 +1,8 @@
 <h1>Edit Line</h1>
-<%= form_with url: order_line_path(@id), method: :patch do |form| %>
+<%= form_with model: @order_line do |form| %>
   <div>
     <%= form.label :quantity, style: 'display: block' %>
-    <%= form.text_field :quantity, value: @current_virtual_line['quantity'] %>
+    <%= form.text_field :quantity %>
   </div>
   <div>
     <%= form.submit 'Update Line' %>

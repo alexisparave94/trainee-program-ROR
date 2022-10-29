@@ -1,0 +1,53 @@
+<h1>Current Cart</h1>
+<div>
+  <% if @virtual_order.order_lines.empty? %>
+    <p>
+      Your cart its empty
+    </p>
+  <% else %>
+    <ul>
+      <% @virtual_order.order_lines.each do |order_line| %>
+        <li>
+          <div>
+            <h3>
+              <%= order_line.product.name %>
+            </h3>
+            <p>
+              <%= order_line.quantity %>
+            </p>
+            <p>
+              $ <%= order_line.price %>
+            </p>
+            <p>
+              Subtotal: $ <%= order_line.total %>
+            </p>
+            <%= link_to 'Edit', edit_order_line_path(order_line) %>
+            <%= button_to 'Delete', order_line, method: :delete %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <h4>Total: $ <%= @virtual_order.calculate_total %></h4>
+    <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id), style: 'display: block' %>
+    <%= button_to 'Delete cart', @virtual_order, method: :delete, style: 'display: block' %>
+    <%= link_to 'Checkout', checkout_path %>
+    <% unless session[:checkout].nil? %>
+      <% if session[:checkout].empty? %>
+        </p> 
+          There is enough stock, you can buy the products
+        <p>
+        <div data-turbo='false'>
+          <%= button_to 'Buy', customer_order_path(@virtual_order), method: :patch %>
+        </div>
+      <% else %>
+        <ul>
+          <% session[:checkout].each do |line| %>
+            <li>
+              <%= "There is only a stock of #{line[:stock]} for #{line[:name]}" %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

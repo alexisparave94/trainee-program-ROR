@@ -5,6 +5,7 @@ class Product < ApplicationRecord
 
   # Scopes
   default_scope { order(:name) }
+  scope :available_products, -> { where('stock > 0') }
   scope :order_by_price, -> { order(:price) }
   scope :get_most_purchased_product, -> { joins(order_lines: :order).where('orders.status': 1).group(:id).order('SUM(order_lines.quantity) DESC').limit(1) }
 

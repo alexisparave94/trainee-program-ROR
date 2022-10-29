@@ -4,11 +4,11 @@ class Order < ApplicationRecord
   has_many :order_lines, dependent: :destroy
   has_many :products, through: :order_lines
 
-  #Callbacks
-  after_create :update_products_stock
+  # Callbacks
+  after_save :update_products_stock
 
   # Enum
-  enum :status, %i[pending completed refused]
+  enum :status, %i[virtual pending completed refused]
 
    # Scopes
    scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
@@ -33,6 +33,14 @@ class Order < ApplicationRecord
       product = Product.find(order_line.product_id)
       product.stock -= order_line.quantity
       product.save
+    end
+  end
+
+  def lines_exceed_stock
+    order_lines.map do |order_line|
+      stock = Product.find(order_line.product_id).stock
+      current_quantity = order_line.quantity
+      stock < current_quantity ? order_line.product : nil
     end
   end
 end

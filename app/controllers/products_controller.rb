@@ -1,10 +1,9 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[show]
-  # before_action :redirect_user, only: %i[index]
 
   def index
-    @products = Product.all
-    @virtual_order = session[:virtual_order]
+    @products = Product.all.available_products
+    @virtual_order = Order.find(session[:order_id]) if session[:order_id]
   end
 
   def show; end
@@ -16,10 +15,6 @@ class ProductsController < ApplicationController
   end
 
   private
-
-  def product_params
-    params.require(:product).permit(:sku, :name, :description,:price, :stock)
-  end
 
   def set_product
     @product = Product.find(params[:id])
