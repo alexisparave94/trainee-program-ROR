@@ -11,6 +11,7 @@ class Admin::ProductsController < ApplicationController
     @product = Product.new(product_params)
     authorize @product
     if @product.save
+      save_change_log(request.request_method)
       redirect_to products_path, notice: 'Product was successfully created'
     else
       render :new, status: :unprocessable_entity
@@ -24,6 +25,7 @@ class Admin::ProductsController < ApplicationController
   def update
     authorize @product
     if @product.update(product_params)
+      save_change_log(request.request_method)
       redirect_to products_path, notice: 'Product was successfully updated'
     else
       render :edit, status: :unprocessable_entity
@@ -33,6 +35,7 @@ class Admin::ProductsController < ApplicationController
   def destroy
     authorize @product
     @product.destroy
+    save_change_log(request.request_method)
     redirect_to products_path, notice: 'Product was successfully deleted'
   end
 
@@ -44,5 +47,11 @@ class Admin::ProductsController < ApplicationController
 
   def set_product
     @product = Product.find(params[:id])
+  end
+
+  def save_change_log(request_method)
+    @log = ChangeLog.new(user: current_user, product: @product.name)
+    @log.format_description(request_method)
+    @log.save
   end
 end

@@ -3,6 +3,7 @@
   <%= form.text_field :search, placeholder: 'Name of product', require: true %>
   <%= form.submit 'Search Product' %>
 <% end %>
+<%= link_to 'Change Log', admin_change_logs_path %>
 <% if current_user.nil? || current_user&.customer? %>
   <% if session[:order_id] %>
     <%= link_to 'Show shopping cart', @virtual_order, style: 'display: block' %>

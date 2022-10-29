@@ -1,0 +1,23 @@
+<h1>Change Log</h1>
+<table>
+  <thead>
+    <tr>
+      <td>N°</td>
+      <td>User</td>
+      <td>Product</td>
+      <td>Description</td>
+      <td>Date</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @logs.each do |log| %>
+      <tr>
+        <td><%= log.id %></td>
+        <td><%= log.user.first_name %></td>
+        <td><%= log.product %></td>
+        <td><%= log.description %></td>
+        <td><%= log.created_at.to_fs(:db) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
