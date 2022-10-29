@@ -46,10 +46,9 @@ puts 'Start Seeding'
 
 puts 'Seeding Users'
 user1 = User.create(email: 'admin@mail.com', password: '123456', first_name: 'Admin', last_name: 'One', role: 'admin')
-user2 = User.create(email: 'alexis@mail.com', password: '123456', first_name: 'Alexis', last_name: 'Parave')
-# user3 = User.create(first_name: 'Fatima', last_name: 'Parave')
-# user4 = User.create(first_name: 'Lazaro', last_name: 'Diaz')
-# user5 = User.create(first_name: 'Daniel', last_name: 'Salazar')
+user2 = User.create(email: 'admin2@mail.com', password: '123456', first_name: 'Admin2', last_name: 'Two', role: 'admin')
+user3 = User.create(email: 'alexis@mail.com', password: '123456', first_name: 'Alexis', last_name: 'Parave')
+user4 = User.create(email: 'alex@mail.com', password: '123456', first_name: 'Alex', last_name: 'Vargas')
 
 puts 'Seeding Products'
 pro1 = Product.create(sku: 'SKU-001', name: 'Product B', price: 10, stock: 5)

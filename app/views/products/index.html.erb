@@ -32,6 +32,13 @@
             $ <%= product.price %>
           </p>
           <%= link_to 'Show', product, style: 'display: block' %>
+          <% if policy(Like).create? %>
+            <% if product.likes.where(user_id: current_user.id).take %>
+              <%= button_to 'Dislike', [:customer, product.likes.where(user_id: current_user.id).take], method: :delete %>
+            <% else %>
+              <%= button_to 'Like', customer_likes_path(product_id: product.id) %>
+            <% end %>
+          <% end %>
           <% if policy(product).edit? %>
             <%= link_to 'Edit', edit_admin_product_path(product) %>
           <% end %>

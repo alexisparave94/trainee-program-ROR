@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   # Associations
   has_many :order_lines, dependent: :destroy
   has_many :orders, through: :order_lines
+  has_many :likes, dependent: :destroy
 
   # Scopes
   default_scope { order(:name) }
