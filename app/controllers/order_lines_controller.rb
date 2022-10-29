@@ -13,6 +13,7 @@ class OrderLinesController < ApplicationController
     @product = Product.find(params[:product_id])
     add_product
     if @order_line.save
+      session[:checkout] = nil
       redirect_to show_cart_path, notice: 'Line was successfully added to shopping cart'
     else
       render :new, status: :unprocessable_entity
@@ -25,6 +26,7 @@ class OrderLinesController < ApplicationController
   # PATCH /order_lines/:id
   def update
     if @order_line.update(order_line_params)
+      session[:checkout] = nil
       redirect_to show_cart_path, notice: 'Line was successfully updated'
     else
       render :edit, status: :unprocessable_entity

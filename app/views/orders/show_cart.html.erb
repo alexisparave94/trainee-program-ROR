@@ -29,9 +29,9 @@
     </ul>
     <h4>Total: $ <%= @virtual_order.calculate_total %></h4>
     <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id) %>
-    <%# link_to 'Checkout', checkout_path %>
-    <% unless @lines_exceed_stock.nil? %>
-      <% if @lines_exceed_stock.empty? %>
+    <%= link_to 'Checkout', checkout_path %>
+    <% unless session[:checkout].nil? %>
+      <% if session[:checkout].empty? %>
         </p> 
           There is enough stock, you can buy the products
         <p>
@@ -40,9 +40,9 @@
         </div>
       <% else %>
         <ul>
-          <% @lines_exceed_stock.each do |line| %>
+          <% session[:checkout].each do |line| %>
             <li>
-              <%= "There is only a stock of #{line[:stock]} for #{line[:product]['name']}" %>
+              <%= "There is only a stock of #{line[:stock]} for #{line[:name]}" %>
             </li>
           <% end %>
         </ul>

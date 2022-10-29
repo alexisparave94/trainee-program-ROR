@@ -35,4 +35,12 @@ class Order < ApplicationRecord
       product.save
     end
   end
+
+  def lines_exceed_stock
+    order_lines.map do |order_line|
+      stock = Product.find(order_line.product_id).stock
+      current_quantity = order_line.quantity
+      stock < current_quantity ? order_line.product : nil
+    end
+  end
 end
