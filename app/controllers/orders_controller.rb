@@ -1,6 +1,4 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, only: %i[create]
-
   def show
     @virtual_order = Order.find(params[:id])
   end
