@@ -28,7 +28,8 @@
       <% end %>
     </ul>
     <h4>Total: $ <%= @virtual_order.calculate_total %></h4>
-    <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id) %>
+    <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id), style: 'display: block' %>
+    <%= button_to 'Delete cart', @virtual_order, method: :delete, style: 'display: block' %>
     <%= link_to 'Checkout', checkout_path %>
     <% unless session[:checkout].nil? %>
       <% if session[:checkout].empty? %>
