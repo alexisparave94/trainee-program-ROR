@@ -2,7 +2,6 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!, only: %i[create]
 
   def show_cart
-    # @lines_exceed_stock = session[:checkout]
     @virtual_order = Order.find(session[:order_id])
   end
 

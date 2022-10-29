@@ -22,6 +22,6 @@ Rails.application.routes.draw do
   end
 
   namespace :customer do
-    resources :orders, only: %i[create destroy]
+    resources :orders, only: %i[update]
   end
 end

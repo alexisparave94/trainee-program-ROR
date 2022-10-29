@@ -1,6 +1,5 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[show]
-  # before_action :redirect_user, only: %i[index]
 
   def index
     @products = Product.all

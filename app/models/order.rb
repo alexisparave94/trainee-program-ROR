@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   has_many :products, through: :order_lines
 
   # Callbacks
-  after_create :update_products_stock
+  after_save :update_products_stock
 
   # Enum
   enum :status, %i[virtual pending completed refused]
