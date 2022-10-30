@@ -1,4 +1,4 @@
-# require 'faker'
+require 'faker'
 
 # puts 'Start Seeding'
 
@@ -50,13 +50,24 @@ user2 = User.create(email: 'admin2@mail.com', password: '123456', first_name: 'A
 user3 = User.create(email: 'alexis@mail.com', password: '123456', first_name: 'Alexis', last_name: 'Parave')
 user4 = User.create(email: 'alex@mail.com', password: '123456', first_name: 'Alex', last_name: 'Vargas')
 
-puts 'Seeding Products'
-pro1 = Product.create(sku: 'SKU-001', name: 'Product B', price: 10, stock: 5)
-pro2 = Product.create(sku: 'SKU-002', name: 'Product A', price: 20, stock: 5)
-pro3 = Product.create(sku: 'SKU-003', name: 'Product C', price: 50, stock: 5)
-pro4 = Product.create(sku: 'SKU-004', name: 'AB', price: 100, stock: 5)
-pro5 = Product.create(sku: 'SKU-005', name: 'AA', price: 200, stock: 5)
-pro6 = Product.create(sku: 'SKU-005', name: 'AAA', price: 200, stock: 0)
+puts 'Seedding Products'
+20.times do
+  product = Product.new
+  product.sku = "SKU-#{Faker::Number.unique.number(digits: 8)}"
+  product.name = Faker::Commerce.unique.product_name
+  product.description = Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 10)
+  product.price = Faker::Number.within(range: 10..100)
+  product.stock = Faker::Number.within(range: 1..25)
+  product.save
+end
+
+# puts 'Seeding Products'
+# pro1 = Product.create(sku: 'SKU-001', name: 'Product B', price: 10, stock: 5)
+# pro2 = Product.create(sku: 'SKU-002', name: 'Product A', price: 20, stock: 5)
+# pro3 = Product.create(sku: 'SKU-003', name: 'Product C', price: 50, stock: 5)
+# pro4 = Product.create(sku: 'SKU-004', name: 'AB', price: 100, stock: 5)
+# pro5 = Product.create(sku: 'SKU-005', name: 'AA', price: 200, stock: 5)
+# pro6 = Product.create(sku: 'SKU-005', name: 'AAA', price: 200, stock: 0)
 
 # puts 'Seeding Orders'
 # or1 = Order.create(customer: cus1, status: 1)
