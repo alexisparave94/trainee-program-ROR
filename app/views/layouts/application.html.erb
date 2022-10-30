@@ -13,7 +13,7 @@
 
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 mb-5">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 mb-4">
         <div class="container">
           <%= link_to products_path, class:"navbar-brand" do %>
             STORE APP
@@ -45,7 +45,7 @@
         </div>
       </nav>
     </header>
-    <div class='container d-flex align-items-center'>
+    <div class='container d-flex align-items-center mb-3'>
       <% if notice %>
         <div class="alert alert-success py-2" role="alert">
           <%= notice %>
