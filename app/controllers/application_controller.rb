@@ -3,8 +3,10 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :load_cart
 
+  # Rescur for no authorized cations
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  # Method to persist information of shopping carts
   def load_cart
     return unless user_signed_in?
 
@@ -23,6 +25,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # Method to permit enter more fields to sign uop and sign in with devise gem
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[firt_name last_name])
     devise_parameter_sanitizer.permit(:sign_in, keys: %i[firt_name last_name])
@@ -30,6 +33,7 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Method to get message and redirect no authorized actions 
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)

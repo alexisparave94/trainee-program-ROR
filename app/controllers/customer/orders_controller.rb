@@ -1,6 +1,7 @@
 class Customer::OrdersController < ApplicationController
   before_action :authenticate_user!, only: %i[update]
 
+  # PATCH /customer/orders/:id
   def update
     @order = Order.find(params[:id])
     authorize @order
