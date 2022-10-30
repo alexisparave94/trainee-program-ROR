@@ -1,22 +1,22 @@
-<h1>Change Log</h1>
-<table>
+<div class='d-flex justify-content-center mb-3'>
+  <h1>Change Log</h1>
+</div>
+<table class='table table-striped'>
   <thead>
-    <tr>
-      <td>N°</td>
-      <td>User</td>
-      <td>Product</td>
-      <td>Description</td>
-      <td>Date</td>
-    </tr>
+    <th style='text-align: center'>#</th>
+    <th style='text-align: center'>User</th>
+    <th style='text-align: center'>Product</th>
+    <th style='text-align: center'>Description</th>
+    <th style='text-align: center'>Date</th>
   </thead>
   <tbody>
     <% @logs.each do |log| %>
       <tr>
-        <td><%= log.id %></td>
-        <td><%= log.user.first_name %></td>
-        <td><%= log.product %></td>
-        <td><%= log.description %></td>
-        <td><%= log.created_at.to_fs(:db) %></td>
+        <td style='text-align: center'><%= log.id %></td>
+        <td style='text-align: center'><%= log.user.first_name %></td>
+        <td style='text-align: center'><%= log.product %></td>
+        <td style='text-align: center'><%= log.description %></td>
+        <td style='text-align: center'><%= log.created_at.to_fs(:db) %></td>
       </tr>
     <% end %>
   </tbody>
