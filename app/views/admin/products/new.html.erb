@@ -1,31 +1,4 @@
 <div class='d-flex flex-column align-items-center'>
   <h2>New Product</h2>
-  <div class='col-sm-4 col-md-4 col-lg-4'>
-    <%= form_with model: [:admin, @product] do |form| %>
-      <div class="field mb-3">
-        <%= form.label :sku, class:'form-label' %>
-        <%= form.text_field :sku, class: 'form-control' %>
-      </div>
-      <div class="field mb-3">
-        <%= form.label :name, class:'form-label' %>
-        <%= form.text_field :name, class: 'form-control' %>
-      </div>
-      <div class="field mb-3">
-        <%= form.label :description, class:'form-label' %>
-        <%= form.text_area :description, class: 'form-control' %>
-      </div>
-      <div class="field mb-3">
-        <%= form.label :price, class:'form-label' %>
-        <%= form.text_field :price, class: 'form-control' %>
-      </div>
-      <div class="field mb-3">
-        <%= form.label :stock, class:'form-label' %>
-        <%= form.text_field :stock, class: 'form-control' %>
-      </div>
-
-      <div class="d-grid mb-3">
-        <%= form.submit 'Create Product', class: 'btn btn-primary' %>
-      </div>
-    <% end %>
-  </div>
+  <%= render 'form', product: @product %>
 </div>
