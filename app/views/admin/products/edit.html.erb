@@ -1,23 +1,4 @@
-<h1>Edit Product</h1>
-<%= form_with model: [:admin, @product] do |form| %>
-  <div>
-    <%= form.label :name, style: 'display: block' %>
-    <%= form.text_field :name %>
-  </div>
-  <div>
-    <%= form.label :description, style: 'display: block' %>
-    <%= form.text_area :description %>
-  </div>
-  <div>
-    <%= form.label :price, style: 'display: block' %>
-    <%= form.text_field :price %>
-  </div>
-  <div>
-    <%= form.label :stock, style: 'display: block' %>
-    <%= form.text_field :stock %>
-  </div>
-
-  <div>
-    <%= form.submit 'Update Product' %>
-  </div>
-<% end %>
+<div class='d-flex flex-column align-items-center'>
+  <h2>Edit Product</h2>
+  <%= render 'form', product: @product %>
+</div>

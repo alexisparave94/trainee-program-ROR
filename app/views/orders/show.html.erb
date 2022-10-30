@@ -1,52 +1,68 @@
-<h1>Current Cart</h1>
+<div class='d-flex justify-content-center mb-3'>
+  <h1>Current Cart</h1>
+</div>
 <div>
   <% if @virtual_order.order_lines.empty? %>
-    <p>
+    <div class="alert alert-info d-flex justify-content-center fw-semibold fs-5 py-4" role="alert">
       Your cart its empty
-    </p>
+    </div>
   <% else %>
-    <ul>
-      <% @virtual_order.order_lines.each do |order_line| %>
-        <li>
-          <div>
-            <h3>
-              <%= order_line.product.name %>
-            </h3>
-            <p>
-              <%= order_line.quantity %>
-            </p>
-            <p>
-              $ <%= order_line.price %>
-            </p>
-            <p>
-              Subtotal: $ <%= order_line.total %>
-            </p>
-            <%= link_to 'Edit', edit_order_line_path(order_line) %>
-            <%= button_to 'Delete', order_line, method: :delete %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-    <h4>Total: $ <%= @virtual_order.calculate_total %></h4>
-    <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id), style: 'display: block' %>
-    <%= button_to 'Delete cart', @virtual_order, method: :delete, style: 'display: block' %>
-    <%= link_to 'Checkout', checkout_path %>
+    <table class='table table-striped'>
+      <thead>
+        <th>#</th>
+        <th style='text-align: center'>Product</th>
+        <th style='text-align: center'>Quantity</th>
+        <th style='text-align: center'>Price</th>
+        <th style='text-align: center'>Subtotal</th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @virtual_order.order_lines.each.with_index do |order_line,i| %>
+          <tr>
+            <td style='vertical-align: middle'><%= i+1 %></td>
+            <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
+            <td style='text-align: center; vertical-align: middle'><%= order_line.quantity %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price) %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total) %></td>
+            <td style='text-align: center'>
+              <%= link_to edit_order_line_path(order_line), class:'btn btn-primary' do %>
+                <i class="bi bi-pencil"></i>
+              <% end %>
+            </td>
+            <td style='text-align: center'>
+              <%= link_to order_line, data: {turbo_method: :delete}, class:'btn btn-danger' do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <h5>Total: <%= format('$ %0.02f', @virtual_order.calculate_total) %></h5>
+    <div class='d-flex gap-2 mt-3'>
+      <%= link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id), class:'btn btn-primary' %>
+      <%= link_to 'Checkout', checkout_path, class:'btn btn-primary' %>
+      <%= button_to 'Delete cart', @virtual_order, method: :delete, class:'btn btn-danger' %>
+    </div>
     <% unless session[:checkout].nil? %>
       <% if session[:checkout].empty? %>
-        </p> 
+        <p class='text-success fw-semibold mt-3'> 
           There is enough stock, you can buy the products
-        <p>
+        </p>
         <div data-turbo='false'>
-          <%= button_to 'Buy', customer_order_path(@virtual_order), method: :patch %>
+          <%= button_to 'Buy', customer_order_path(@virtual_order), method: :patch, class:'btn btn-primary' %>
         </div>
       <% else %>
-        <ul>
-          <% session[:checkout].each do |line| %>
-            <li>
-              <%= "There is only a stock of #{line[:stock]} for #{line[:name]}" %>
-            </li>
-          <% end %>
-        </ul>
+        <p>
+          <ul>
+            <% session[:checkout].each do |line| %>
+              <li class='text-danger fw-semibold'>
+                <%= "There is only a stock of #{line[:stock]} for #{line[:name]}" %>
+              </li>
+            <% end %>
+          </ul>
+        </p>
       <% end %>
     <% end %>
   <% end %>
