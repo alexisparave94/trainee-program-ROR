@@ -2,11 +2,13 @@ class Admin::ProductsController < ApplicationController
   before_action :set_product, only: %i[edit update destroy]
   before_action :authenticate_user!, only: %i[new create edit update destroy]
 
+  # GET /admin/products/new
   def new
     @product = Product.new
     authorize @product
   end
 
+  # POST /admin/products
   def create
     @product = Product.new(product_params)
     authorize @product
@@ -18,10 +20,12 @@ class Admin::ProductsController < ApplicationController
     end
   end
 
+  # GET /admin/products/:id/edit
   def edit
     authorize @product
   end
 
+  # PATCH /admin/products/:id
   def update
     authorize @product
     if @product.update(product_params)
@@ -32,6 +36,7 @@ class Admin::ProductsController < ApplicationController
     end
   end
 
+  # DELETE /admin/products/:id
   def destroy
     authorize @product
     @product.destroy
@@ -49,6 +54,7 @@ class Admin::ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
+  # Method to save changes in the product in change log
   def save_change_log(request_method)
     @log = ChangeLog.new(user: current_user, product: @product.name)
     @log.format_description(request_method)

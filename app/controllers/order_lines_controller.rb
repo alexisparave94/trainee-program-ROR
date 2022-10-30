@@ -56,6 +56,7 @@ class OrderLinesController < ApplicationController
     @order_line = OrderLine.find(params[:id])
   end
 
+  # Method to add a new order line or if the line exists only sum quantities
   def add_product
     @order_line = @virtual_order.order_lines.find_by(product_id: @product.id)
     if @order_line.nil?
@@ -67,6 +68,7 @@ class OrderLinesController < ApplicationController
     end
   end
 
+  # Method to create an order if there is not an order id referenced in the session storega
   def set_virtual_order
     @virtual_order = Order.find(session[:order_id])
   rescue ActiveRecord::RecordNotFound

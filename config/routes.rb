@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :products, only: %i[new create edit update destroy]
-    resources :change_logs
+    resources :change_logs, only: %i[index]
   end
 
   namespace :customer do
