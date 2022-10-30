@@ -34,7 +34,7 @@
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted"><%= product.sku %></h6>
         <h5 class="card-title"><%= product.name %></h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text"><%= product.description %></p>
         <h6 class="card-subtitle mb-2 text-muted"><%= format('$ %0.02f', product.price) %></h6>
         <% if current_user&.admin? %>
           <h6 class="card-subtitle mb-2 text-muted">Stock: <%= product.stock %></h6>
