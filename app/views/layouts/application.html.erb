@@ -13,18 +13,7 @@
 
   <body>
     <%= render 'layouts/header' %>
-    <div class='container d-flex align-items-center mb-3'>
-      <% if notice %>
-        <div class="alert alert-success py-2" role="alert">
-          <%= notice %>
-        </div>
-      <% end %>
-      <% if alert %>
-        <div class="alert alert-success py-2" role="alert">
-          <%= alert %>
-        </div>
-      <% end %>
-    </div>
+    <%= render 'layouts/flash_messages' %>
     <div class='container mb-5'>
       <%= yield %>
     </div>
