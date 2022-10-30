@@ -3,9 +3,9 @@
 </div>
 <div>
   <% if @virtual_order.order_lines.empty? %>
-    <p>
+    <div class="alert alert-info d-flex justify-content-center fw-semibold fs-5 py-4" role="alert">
       Your cart its empty
-    </p>
+    </div>
   <% else %>
     <table class='table table-striped'>
       <thead>

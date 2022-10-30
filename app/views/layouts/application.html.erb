@@ -13,7 +13,7 @@
 
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 mb-5">
         <div class="container">
           <%= link_to products_path, class:"navbar-brand" do %>
             STORE APP
@@ -25,7 +25,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <% if user_signed_in? %>
                 <li class="nav-item">
-                  <%= link_to new_user_session_path, class:"nav-link active" do %>
+                  <%= link_to '#', class:"nav-link active" do %>
                     <%= current_user.first_name %>
                   <% end %>
                 </li>
@@ -45,9 +45,17 @@
         </div>
       </nav>
     </header>
-    <div class='container d-flex align-items-center pt-3'>
-      <p class="notice text-success"><%= notice %></p>
-      <p class="alert text-danger"><%= alert %></p>
+    <div class='container d-flex align-items-center'>
+      <% if notice %>
+        <div class="alert alert-success py-2" role="alert">
+          <%= notice %>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-success py-2" role="alert">
+          <%= alert %>
+        </div>
+      <% end %>
     </div>
     <div class='container'>
       <%= yield %>
