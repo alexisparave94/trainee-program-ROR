@@ -1,59 +1,53 @@
 <div class="position-relative py-5">
-  <div class="col-lg-6 position-absolute top-50 start-50 translate-middle">
+  <div class="col-sm-6 col-md-6 col-lg-8 position-absolute top-50 start-50 translate-middle">
     <%= form_with url: '/search', method: :get, class:"d-flex", role:"search" do |form| %>
       <%= form.text_field :search, placeholder: 'Name of product', require: true, class:"form-control me-2", type:"search", 'aria-label':"Search" %>
-      <%= form.submit 'Search', class:"btn btn-outline-success" %>
+      <%= form.submit 'Search', class:"btn btn-outline-primary" %>
     <% end %>
   </div>
 </div>
-<h1>Products</h1>
-<% if policy(ChangeLog).index? %>
-  <%= link_to 'Change Log', admin_change_logs_path %>
-<% end %>
-<% if current_user.nil? || current_user&.customer? %>
-  <% if session[:order_id] %>
-    <%= link_to 'Show shopping cart', @virtual_order, style: 'display: block' %>
+<div class='mb-3 ps-3'>
+  <h1>Products</h1>
+</div>
+<div class='container-md d-flex mb-3 gap-2'>
+  <% if policy(Product).new? %>
+    <%= link_to 'New Product', new_admin_product_path, class:'btn btn-primary' %>
   <% end %>
-<% end %>
-<% if policy(Product).new? %>
-  <%= link_to 'New Product', new_admin_product_path %>
-<% end %>
-<div>
-  <ul>
-    <% @products.each do |product| %>
-      <li>
-        <div>
-          <p>
-            <%= product.sku %>
-          </p>
-          <h2>
-            <%= product.name %>
-          </h2>
-          <p>
-            <%= product.description %>
-          </p>
-          <p>
-            $ <%= product.price %>
-          </p>
-          <%= link_to 'Show', product, style: 'display: block' %>
-          <% if policy(Like).create? %>
-            <% if product.likes.where(user_id: current_user.id).take %>
-              <%= button_to 'Dislike', [:customer, product.likes.where(user_id: current_user.id).take], method: :delete %>
-            <% else %>
-              <%= button_to 'Like', customer_likes_path(product_id: product.id) %>
-            <% end %>
-          <% end %>
-          <% if policy(product).edit? %>
-            <%= link_to 'Edit', edit_admin_product_path(product) %>
-          <% end %>
-          <% if policy(product).destroy? %>
-            <%= button_to 'Delete', admin_product_path(product), method: :delete %>
-          <% end %>
-          <% if policy(OrderLine).new? %>
-            <%= link_to 'Add to cart', new_product_order_line_path(product) %>
-          <% end %>
-        </div>
-      </li>
+  <% if policy(ChangeLog).index? %>
+    <%= link_to 'Change Log', admin_change_logs_path, class:'btn btn-secondary' %>
+  <% end %>
+  <% if current_user.nil? || current_user&.customer? %>
+    <% if session[:order_id] %>
+      <%= link_to 'Cart', @virtual_order, class:'btn btn-primary' %>
     <% end %>
-  </ul>
+  <% end %>
+</div>
+<div class='container-md d-flex flex-column gap-4'>
+  <% @products.each do |product| %>
+    <div class="card px-4 py-3" style="">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted"><%= product.sku %></h6>
+        <h5 class="card-title"><%= product.name %></h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <h6 class="card-subtitle mb-2 text-muted">$ <%= product.price %></h6>
+        <%= link_to 'Show', product, class:'btn btn-primary' %>
+        <% if policy(Like).create? %>
+          <% if product.likes.where(user_id: current_user.id).take %>
+            <%= button_to 'Dislike', [:customer, product.likes.where(user_id: current_user.id).take], method: :delete %>
+          <% else %>
+            <%= button_to 'Like', customer_likes_path(product_id: product.id) %>
+          <% end %>
+        <% end %>
+        <% if policy(product).edit? %>
+          <%= link_to 'Edit', edit_admin_product_path(product), class:'btn btn-primary' %>
+        <% end %>
+        <% if policy(product).destroy? %>
+          <%= link_to 'Delete', admin_product_path(product), data: { turbo_method: :delete }, class:'btn btn-danger' %>
+        <% end %>
+        <% if policy(OrderLine).new? %>
+          <%= link_to 'Add to cart', new_product_order_line_path(product), class:'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>
