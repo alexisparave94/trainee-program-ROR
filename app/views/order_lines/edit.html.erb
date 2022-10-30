@@ -1,10 +1,14 @@
-<h1>Edit Line</h1>
-<%= form_with model: @order_line do |form| %>
-  <div>
-    <%= form.label :quantity, style: 'display: block' %>
-    <%= form.text_field :quantity %>
+<div class='d-flex flex-column align-items-center'>
+  <h2>Edit Line</h2>
+  <div class='col-sm-4 col-md-4 col-lg-4'>
+    <%= form_with model: @order_line do |form| %>
+      <div class="field mb-3">
+        <%= form.label :quantity, class:'form-label' %>
+        <%= form.text_field :quantity, class: 'form-control' %>
+      </div>
+      <div class="d-grid mb-3">
+        <%= form.submit 'Update Line', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
   </div>
-  <div>
-    <%= form.submit 'Update Line' %>
-  </div>
-<% end %>
+</div>
