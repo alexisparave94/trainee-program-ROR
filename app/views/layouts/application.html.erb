@@ -44,8 +44,10 @@
         </div>
       </nav>
     </header>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <div class='container d-flex align-items-center pt-3'>
+      <p class="notice text-success"><%= notice %></p>
+      <p class="alert text-danger"><%= alert %></p>
+    </div>
     <div class='container'>
       <%= yield %>
     </div>
