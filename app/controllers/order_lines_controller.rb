@@ -42,6 +42,7 @@ class OrderLinesController < ApplicationController
   def destroy
     @order_line.destroy
     authorize @order_line
+    session[:checkout] = nil
     redirect_to @order_line.order, notice: 'Line was successfully deleted'
   end
 
