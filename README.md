@@ -1,4 +1,14 @@
-# Inventory App
+# Store App
+
+## Instructions
+
+- Clone this repo on your local machine.
+- Run `bundle install`
+- Setup your datababase:
+  - `rails db:create`
+  - `rails db:migrate`
+  - `rails db:seed`
+- Start the server `rails s`
 
 ## Schema
 
