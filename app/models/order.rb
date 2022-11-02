@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   has_many :products, through: :order_lines
 
   # Callbacks
-  after_save :update_products_stock
+  # after_save :update_products_stock
 
   # Enum
   enum :status, %i[virtual pending completed refused]
@@ -37,10 +37,10 @@ class Order < ApplicationRecord
   end
 
   def lines_exceed_stock
-    order_lines.map do |order_line|
-      stock = Product.find(order_line.product_id).stock
-      current_quantity = order_line.quantity
-      stock < current_quantity ? order_line.product : nil
+    order_lines.map do |line|
+      stock = Product.find(line.product_id).stock
+      current_quantity = line['quantity'].to_i
+      stock < current_quantity ? { line:, stock: } : nil
     end
   end
 end

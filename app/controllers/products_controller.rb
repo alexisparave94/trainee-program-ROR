@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
       @search = params[:search].downcase
       @products = @products.where('LOWER(name) LIKE ?', "%#{@search}%")
     end
-    @virtual_order = Order.find(session[:order_id]) if session[:order_id]
+    # @virtual_order = Order.find(session[:order_id]) if session[:order_id]
   end
 
   # GET /products/:id

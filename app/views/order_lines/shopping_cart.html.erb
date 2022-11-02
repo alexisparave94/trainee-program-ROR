@@ -1,0 +1,70 @@
+<div class='d-flex justify-content-center mb-3'>
+  <h1>Current Cart</h1>
+</div>
+<div>
+  <% if @virtual_order.empty? %>
+    <div class="alert alert-info d-flex justify-content-center fw-semibold fs-5 py-4" role="alert">
+      Your cart its empty
+    </div>
+  <% else %>
+    <table class='table table-striped'>
+      <thead>
+        <th>#</th>
+        <th style='text-align: center'>Product</th>
+        <th style='text-align: center'>Quantity</th>
+        <th style='text-align: center'>Price</th>
+        <th style='text-align: center'>Subtotal</th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @virtual_order.each.with_index do |order_line,i| %>
+          <tr>
+            <td style='vertical-align: middle'><%= i+1 %></td>
+            <td style='text-align: center; vertical-align: middle'><%= order_line['name'] %></td>
+            <td style='text-align: center; vertical-align: middle'><%= order_line['quantity'] %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line['price']) %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line['quantity'].to_i * order_line['price'].to_f) %></td>
+            <td style='text-align: center'>
+              <%= link_to edit_order_line_path(id: order_line['id']), class:'btn btn-primary' do %>
+                <i class="bi bi-pencil"></i>
+              <% end %>
+            </td>
+            <td style='text-align: center'>
+              <%= link_to order_line_path(id: order_line['id']), data: {turbo_method: :delete}, class:'btn btn-danger' do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <h5>Total: <%= format('$ %0.02f', @virtual_order.reduce(0) { |sum, line| sum + line['quantity'].to_i * line['price'].to_f }) %></h5>
+    <div class='d-flex gap-2 mt-3'>
+      <%# link_to 'Empty cart', empty_cart_path(order_id: @virtual_order.id), class:'btn btn-primary' %>
+      <%= link_to 'Empty cart', empty_cart_path, class:'btn btn-primary' %>
+      <%= link_to 'Checkout', checkout_path, class:'btn btn-primary' %>
+      <%# button_to 'Delete cart', @virtual_order, method: :delete, class:'btn btn-danger' %>
+    </div>
+    <% unless session[:checkout].nil? %>
+      <% if session[:checkout].empty? %>
+        <p class='text-success fw-semibold mt-3'> 
+          There is enough stock, you can buy the products
+        </p>
+        <div data-turbo='false'>
+          <%= button_to 'Buy', customer_orders_path, class:'btn btn-primary' %>
+        </div>
+      <% else %>
+        <p>
+          <ul>
+            <% session[:checkout].each do |line| %>
+              <li class='text-danger fw-semibold'>
+                <%= "There is only a stock of #{line['stock']} for #{line['line']['name']}" %>
+              </li>
+            <% end %>
+          </ul>
+        </p>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

@@ -2,9 +2,9 @@ Rails.application.routes.draw do
   devise_for :users
   root 'products#index'
 
-  resources :products, only: %i[index show] do
-    resources :order_lines, only: %i[new create]
-  end
+  resources :products, only: %i[index show]
+
+  get 'shopping_cart', to: 'order_lines#shopping_cart'
 
   resources :order_lines, only: %i[new create edit update destroy]
   get 'empty_cart' => 'orders#empty_cart'
@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   namespace :customer do
-    resources :orders, only: %i[update]
+    resources :orders, only: %i[create update]
     resources :likes, only: %i[create destroy]
   end
 end
