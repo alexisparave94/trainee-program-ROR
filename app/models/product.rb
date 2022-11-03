@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   has_many :orders, through: :order_lines
   has_many :likes, dependent: :destroy
   has_and_belongs_to_many :tags
+  has_many :comments, as: :commentable, dependent: :destroy
 
   # Scopes
   default_scope { order(:name) }

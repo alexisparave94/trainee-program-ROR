@@ -5,9 +5,7 @@ class Order < ApplicationRecord
   belongs_to :user, optional: true
   has_many :order_lines, dependent: :destroy
   has_many :products, through: :order_lines
-
-  # Callbacks
-  # after_save :update_products_stock
+  has_many :comments, as: :commentable, dependent: :destroy
 
   # Enum
   enum :status, %i[pending completed refused]
