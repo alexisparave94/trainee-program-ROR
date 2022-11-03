@@ -8,10 +8,10 @@ class Order < ApplicationRecord
   # after_save :update_products_stock
 
   # Enum
-  enum :status, %i[virtual pending completed refused]
+  enum :status, %i[pending completed refused]
 
-   # Scopes
-   scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
+  # Scopes
+  scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
 
   def add_lines_from_cart(virtual_order)
     virtual_order.each do |detail|
@@ -37,10 +37,10 @@ class Order < ApplicationRecord
   end
 
   def lines_exceed_stock
-    order_lines.map do |line|
-      stock = Product.find(line.product_id).stock
-      current_quantity = line['quantity'].to_i
-      stock < current_quantity ? { line:, stock: } : nil
+    order_lines.map do |order_line|
+      stock = Product.find(order_line.product_id).stock
+      current_quantity = order_line.quantity
+      stock < current_quantity ? order_line.product : nil
     end
   end
 end

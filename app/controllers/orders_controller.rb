@@ -15,17 +15,27 @@ class OrdersController < ApplicationController
   # GET /empty_cart
   # Method to delete all the lines of a shopping card
   def empty_cart
-    # OrderLine.destroy_by(order_id: params[:order_id])
-    session[:virtual_order] = []
-    redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
+    if session[:order_id]
+      OrderLine.destroy_by(order_id: params[:order_id])
+      redirect_to customer_shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
+    else
+      session[:virtual_order] = []
+      redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
+    end
   end
 
   # GET /checkout
   # Method to checkout if there is enough stock for all the products of a shopping cart
   def checkout
-    @virtual_order = session[:virtual_order]
-    session[:checkout] = lines_exceed_stock.compact
-    redirect_to shopping_cart_path
+    if current_user
+      @order = Order.find(session[:order_id])
+      session[:checkout] = @order.lines_exceed_stock.compact
+      redirect_to customer_shopping_cart_path
+    else
+      @virtual_order = session[:virtual_order]
+      session[:checkout] = lines_exceed_stock.compact
+      redirect_to shopping_cart_path
+    end
   end
 
   # def checkout

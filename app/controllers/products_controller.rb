@@ -4,6 +4,8 @@ class ProductsController < ApplicationController
   # GET /products
   def index
     @products = Product.all.available_products
+    pp session[:order_id]
+    pp session[:virtual_order]
     if params[:search]
       @search = params[:search].downcase
       @products = @products.where('LOWER(name) LIKE ?', "%#{@search}%")

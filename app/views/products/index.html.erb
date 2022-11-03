@@ -25,6 +25,10 @@
       <%= link_to shopping_cart_path, class:'btn btn-primary' do %>
         <i class="bi bi-cart3"></i>
       <% end %>
+    <% elsif session[:order_id] %>
+      <%= link_to customer_shopping_cart_path, class:'btn btn-primary' do %>
+        <i class="bi bi-cart3"></i>
+      <% end %>
     <% end %>
   <% end %>
 </div>
@@ -66,7 +70,11 @@
               <% end %>
             <% end %>
             <% if policy(OrderLine).new? %>
-              <%= link_to 'Add to cart', new_order_line_path(product_id: product.id), class:'btn btn-primary' %>
+              <% if current_user %>
+                <%= link_to 'Add to cart', new_customer_order_line_path(product_id: product.id), class:'btn btn-primary' %>
+              <% else %>
+                <%= link_to 'Add to cart', new_order_line_path(product_id: product.id), class:'btn btn-primary' %>
+              <% end %>
             <% end %>
           </div>
         </div>

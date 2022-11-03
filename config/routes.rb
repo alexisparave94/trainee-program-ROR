@@ -22,5 +22,7 @@ Rails.application.routes.draw do
   namespace :customer do
     resources :orders, only: %i[create update]
     resources :likes, only: %i[create destroy]
+    resources :order_lines
+    get 'shopping_cart', to: 'order_lines#shopping_cart'
   end
 end
