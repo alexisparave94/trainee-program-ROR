@@ -17,6 +17,8 @@ class Product < ApplicationRecord
     end
   end
 
+  scope :filter_by_tag, ->(tags) { joins(:tags).where(tags: { id: tags }) }
+
   # Validations
   validates :name, presence: { message: 'Must enter a name' }
   validates :name, uniqueness: { message: 'Name "%{value}" already exists' }

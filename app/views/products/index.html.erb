@@ -28,6 +28,13 @@
     <% end %>
   <% end %>
 </div>
+<div class='ms-3 d-flex align-items-center mb-3 gap-3'>
+  <h5 class='my-0'>Filter by Tags</h5>
+  <%= form_with url:products_path, method: :get, class:'d-flex align-items-center gap-2' do |form| %>
+    <%= form.collection_check_boxes :tag_id, Tag.all, :id, :name, checked: @selected_tags_ids %>
+    <%= form.submit 'Filter Products', class: 'btn btn-primary' %>
+  <% end %>
+</div>
 <div class='container-md d-flex flex-column gap-4'>
   <% @products.each do |product| %>
     <div class="card px-3 py-2">

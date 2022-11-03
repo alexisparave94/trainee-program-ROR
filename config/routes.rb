@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   get 'shopping_cart', to: 'shopping_cart#index'
   get 'empty_cart' => 'shopping_cart#empty_cart'
   get 'checkout' => 'shopping_cart#checkout'
+
+  get 'filter' => 'products#filter'
 end

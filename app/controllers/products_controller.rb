@@ -4,13 +4,13 @@ class ProductsController < ApplicationController
   # GET /products
   def index
     @products = Product.all.available_products
-    pp session[:order_id]
-    pp session[:virtual_order]
     if params[:search]
-      @search = params[:search].downcase
-      @products = @products.where('LOWER(name) LIKE ?', "%#{@search}%")
+      @search = params[:search]
+      @products = @products.where('LOWER(name) LIKE ?', "%#{@search.downcase}%")
+    elsif params[:tag_id] && params[:tag_id].size > 1
+      @selected_tags_ids = params[:tag_id]
+      @products = @products.filter_by_tag(@selected_tags_ids)
     end
-    # @virtual_order = Order.find(session[:order_id]) if session[:order_id]
   end
 
   # GET /products/:id
