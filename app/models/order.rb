@@ -5,13 +5,13 @@ class Order < ApplicationRecord
   has_many :products, through: :order_lines
 
   # Callbacks
-  after_save :update_products_stock
+  # after_save :update_products_stock
 
   # Enum
-  enum :status, %i[virtual pending completed refused]
+  enum :status, %i[pending completed refused]
 
-   # Scopes
-   scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
+  # Scopes
+  scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
 
   def add_lines_from_cart(virtual_order)
     virtual_order.each do |detail|

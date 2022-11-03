@@ -1,22 +1,22 @@
 class OrderLinesController < ApplicationController
-  before_action :set_virtual_order, only: %i[create]
-  before_action :set_order_line, only: %i[edit update destroy]
+  before_action :set_virtual_order, only: %i[create edit update destroy]
 
   # GET /products/:id_product/order_lines/new
   def new
     @order_line = OrderLine.new
     @product = Product.find(params[:product_id])
-    authorize @order_line
+    # authorize @order_line
   end
 
   # POST /products/:id_product/order_lines
   def create
-    @product = Product.find(params[:product_id])
-    add_product
-    authorize @order_line
-    if @order_line.save
+    @product = Product.find(order_line_params[:product_id])
+    @order_line = OrderLine.new(order_line_params)
+    if @order_line.valid?
+      add_product
+      # authorize @order_line
       session[:checkout] = nil
-      redirect_to @order_line.order, notice: 'Line was successfully added to shopping cart'
+      redirect_to shopping_cart_path, notice: 'Line was successfully added to shopping'
     else
       render :new, status: :unprocessable_entity
     end
@@ -24,15 +24,27 @@ class OrderLinesController < ApplicationController
 
   # GET /order_lines/:id/edit
   def edit
-    authorize @order_line
+    @line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
+    @order_line = OrderLine.new(
+      product_id: params[:id],
+      price: @line['price'],
+      quantity: @line['quantity']
+    )
+    @product = Product.find(params[:id])
+    # authorize @order_line
   end
 
   # PATCH /order_lines/:id
   def update
-    authorize @order_line
-    if @order_line.update(order_line_params)
+    # authorize @order_line
+    @product = Product.find(order_line_params[:product_id])
+    @order_line = OrderLine.new(order_line_params)
+    if @order_line.valid?
+      @line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
+      @line['quantity'] = order_line_params[:quantity].to_i
+      session[:virtual_order] = @virtual_order
       session[:checkout] = nil
-      redirect_to @order_line.order, notice: 'Line was successfully updated'
+      redirect_to shopping_cart_path, notice: 'Line was successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -40,39 +52,36 @@ class OrderLinesController < ApplicationController
 
   # DELETE /order_lines/:id
   def destroy
-    @order_line.destroy
-    authorize @order_line
+    @virtual_order.reject! { |line| line['id'] == params[:id].to_i }
+    session[:virtual_order] = @virtual_order.empty? ? nil : @virtual_order
     session[:checkout] = nil
-    redirect_to @order_line.order, notice: 'Line was successfully deleted'
+    redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
   end
 
   private
 
   def order_line_params
-    params.require(:order_line).permit(:quantity, :price)
+    params.require(:order_line).permit(:quantity, :price, :product_id)
   end
 
-  def set_order_line
-    @order_line = OrderLine.find(params[:id])
-  end
-
-  # Method to add a new order line or if the line exists only sum quantities
+  # Method to add a new line or if the line exists only sum quantities
   def add_product
-    @order_line = @virtual_order.order_lines.find_by(product_id: @product.id)
-    if @order_line.nil?
-      @order_line = OrderLine.new(order_line_params)
-      @order_line.product = @product
-      @order_line.order = @virtual_order
+    @virtual_line = @virtual_order.select { |line| line['id'] == order_line_params[:product_id].to_i }.first
+    if @virtual_line
+      puts 'Find line'
+      @virtual_line['quantity'] += order_line_params[:quantity].to_i
     else
-      @order_line.quantity += order_line_params[:quantity].to_i
+      puts 'Not find'
+      @virtual_order << { id: @product.id, name: @product.name, price: @product.price.to_f, quantity: order_line_params[:quantity].to_i }
     end
+    session[:virtual_order] = @virtual_order
   end
 
-  # Method to create an order if there is not an order id referenced in the session storega
+  # Method to create a virtual order to save it in the session storage
   def set_virtual_order
-    @virtual_order = Order.find(session[:order_id])
-  rescue ActiveRecord::RecordNotFound
-    @virtual_order = Order.create
-    session[:order_id] = @virtual_order.id
+    return @virtual_order = session[:virtual_order] if session[:virtual_order]
+
+    @virtual_order = []
+    session[:virtual_order] = @virtual_order
   end
 end
