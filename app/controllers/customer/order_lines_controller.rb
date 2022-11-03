@@ -1,5 +1,6 @@
 class Customer::OrderLinesController < ApplicationController
   skip_before_action :set_pending_order
+
   # POST /customer/orders
   def new
     @product = Product.find(params[:product_id])
@@ -12,7 +13,7 @@ class Customer::OrderLinesController < ApplicationController
     @order_line.order = @order
     if @order_line.save
       session[:checkout] = nil
-      redirect_to customer_shopping_cart_path, notice: 'Line was successfully added'
+      redirect_to shopping_cart_path, notice: 'Line was successfully added'
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +28,7 @@ class Customer::OrderLinesController < ApplicationController
     @order_line = OrderLine.find(params[:id])
     if @order_line.update(order_line_params)
       session[:checkout] = nil
-      redirect_to customer_shopping_cart_path, notice: 'Line was successfully updated'
+      redirect_to shopping_cart_path, notice: 'Line was successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -37,11 +38,7 @@ class Customer::OrderLinesController < ApplicationController
     @order_line = OrderLine.find(params[:id])
     @order_line.destroy
     session[:checkout] = nil
-    redirect_to customer_shopping_cart_path, notice: 'Line was successfully deleted'
-  end
-
-  def shopping_cart
-    @order = Order.find(session[:order_id])
+    redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
   end
 
   private
@@ -52,7 +49,6 @@ class Customer::OrderLinesController < ApplicationController
 
   # Method to add a new order line or if the line exists only sum quantities
   def add_product
-    # @order = Order.find(session[:order_id])
     @order_line = @order.order_lines.find_by(product_id: order_line_params[:product_id])
     if @order_line.nil?
       @order_line = OrderLine.new(order_line_params)
@@ -61,7 +57,7 @@ class Customer::OrderLinesController < ApplicationController
     end
   end
 
-  # Method to create an order if there is not an order id referenced in the session storega
+  # Method to create an order if there is not an order id referenced in the session storage
   def set_order
     return @order = Order.find(session[:order_id]) if session[:order_id]
 

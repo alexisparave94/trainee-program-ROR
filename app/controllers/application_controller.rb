@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
     if @pending_order
       session[:order_id] = @pending_order.id
       session[:virtual_order] = nil
+      session[:checkout] = nil
     elsif session[:virtual_order]
       @order_lines = save_order_lines
       @order = Order.new(user: current_user)

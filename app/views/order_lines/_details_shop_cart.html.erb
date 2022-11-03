@@ -1,0 +1,26 @@
+<tbody>
+  <% virtual_order.each.with_index do |order_line,i| %>
+    <tr>
+      <td style='vertical-align: middle'><%= i+1 %></td>
+      <td style='text-align: center; vertical-align: middle'><%= order_line['name'] %></td>
+      <td style='text-align: center; vertical-align: middle'><%= order_line['quantity'] %></td>
+      <td style='vertical-align: middle'><%= format('$ %0.02f', order_line['price']) %></td>
+      <td style='vertical-align: middle'><%= format('$ %0.02f', order_line['quantity'].to_i * order_line['price'].to_f) %></td>
+      <td style='text-align: center'>
+        <%= link_to edit_order_line_path(id: order_line['id']), class:'btn btn-primary' do %>
+          <i class="bi bi-pencil"></i>
+        <% end %>
+      </td>
+      <td style='text-align: center'>
+        <%= link_to order_line_path(id: order_line['id']), data: {turbo_method: :delete}, class:'btn btn-danger' do %>
+          <i class="bi bi-trash"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</tbody>
+<tfoot>
+  <tr>
+    <td colspan="7"><h5 class='mb-0'>Total: <%= format('$ %0.02f', @virtual_order.reduce(0) { |sum, line| sum + line['quantity'].to_i * line['price'].to_f }) %></h5></td>
+  </tr>
+</tfoot>

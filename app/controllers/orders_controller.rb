@@ -1,8 +1,6 @@
 class OrdersController < ApplicationController
   # GET /orders/:id
-  def show
-    # @virtual_order = Order.find(params[:id])
-  end
+  def show; end
 
   # DELETE /orders/:id
   def destroy
@@ -17,11 +15,10 @@ class OrdersController < ApplicationController
   def empty_cart
     if session[:order_id]
       OrderLine.destroy_by(order_id: params[:order_id])
-      redirect_to customer_shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
     else
-      session[:virtual_order] = []
-      redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
+      session[:virtual_order] = nil
     end
+    redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
   end
 
   # GET /checkout
@@ -30,19 +27,12 @@ class OrdersController < ApplicationController
     if current_user
       @order = Order.find(session[:order_id])
       session[:checkout] = @order.lines_exceed_stock.compact
-      redirect_to customer_shopping_cart_path
     else
       @virtual_order = session[:virtual_order]
       session[:checkout] = lines_exceed_stock.compact
-      redirect_to shopping_cart_path
     end
+    redirect_to shopping_cart_path
   end
-
-  # def checkout
-  #   @virtual_order = Order.find(session[:order_id])
-  #   session[:checkout] = @virtual_order.lines_exceed_stock.compact
-  #   render :show
-  # end
 
   private
 
