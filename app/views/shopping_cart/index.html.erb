@@ -18,7 +18,7 @@
         <th></th>
       </thead>
       <% if current_user %>
-        <%= render 'customer/order_lines/details_shop_cart', order: @order %>
+        <%= render 'customer/shopping_cart/details_shop_cart', order: @order %>
       <% else %>
         <%= render 'details_shop_cart', virtual_order: @virtual_order %>
       <% end %>

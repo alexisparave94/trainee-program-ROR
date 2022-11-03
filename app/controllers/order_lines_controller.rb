@@ -58,12 +58,6 @@ class OrderLinesController < ApplicationController
     redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
   end
 
-  def shopping_cart
-    return @order = Order.find(session[:order_id]) if current_user
-
-    @virtual_order = session[:virtual_order]
-  end
-
   private
 
   def order_line_params

@@ -1,5 +1,6 @@
 class Customer::OrderLinesController < ApplicationController
   skip_before_action :set_pending_order
+  before_action :set_order_line, only: %i[edit update destroy]
 
   # POST /customer/orders
   def new
@@ -10,6 +11,7 @@ class Customer::OrderLinesController < ApplicationController
   def create
     set_order
     add_product
+    @product = @order_line.product
     @order_line.order = @order
     if @order_line.save
       session[:checkout] = nil
@@ -20,12 +22,11 @@ class Customer::OrderLinesController < ApplicationController
   end
 
   def edit
-    @order_line = OrderLine.find(params[:id])
     @product = @order_line.product
   end
 
   def update
-    @order_line = OrderLine.find(params[:id])
+    @product = @order_line.product
     if @order_line.update(order_line_params)
       session[:checkout] = nil
       redirect_to shopping_cart_path, notice: 'Line was successfully updated'
@@ -35,7 +36,6 @@ class Customer::OrderLinesController < ApplicationController
   end
 
   def destroy
-    @order_line = OrderLine.find(params[:id])
     @order_line.destroy
     session[:checkout] = nil
     redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
@@ -45,6 +45,10 @@ class Customer::OrderLinesController < ApplicationController
 
   def order_line_params
     params.require(:order_line).permit(:quantity, :price, :product_id, :order_id)
+  end
+
+  def set_order_line
+    @order_line = OrderLine.find(params[:id])
   end
 
   # Method to add a new order line or if the line exists only sum quantities
