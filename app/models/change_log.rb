@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeLog < ApplicationRecord
   # Associations
   belongs_to :user
