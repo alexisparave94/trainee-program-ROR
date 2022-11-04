@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_03_232704) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_04_035043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,10 +37,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_232704) do
 
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_likes_on_product_id"
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -73,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_232704) do
     t.integer "stock", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0
     t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["sku"], name: "index_products_on_sku", unique: true
   end
@@ -108,7 +110,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_232704) do
 
   add_foreign_key "change_logs", "users"
   add_foreign_key "comments", "users"
-  add_foreign_key "likes", "products"
   add_foreign_key "likes", "users"
   add_foreign_key "order_lines", "orders"
   add_foreign_key "order_lines", "products"
