@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   resources :order_lines, only: %i[new create edit update destroy]
 
-  resources :orders, only: %i[show destroy]
+  resources :orders, only: %i[show destroy] do
+    resources :comments, only: %i[create]
+  end
 
   namespace :admin do
     resources :products, only: %i[new create edit update destroy]
@@ -16,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   namespace :customer do
-    resources :orders, only: %i[create update]
+    resources :orders, only: %i[index show create update]
     resources :likes, only: %i[create destroy]
     resources :order_lines
   end

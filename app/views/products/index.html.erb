@@ -27,6 +27,9 @@
       <% end %>
     <% end %>
   <% end %>
+  <% if current_user&.customer? %>
+    <%= link_to 'My orders', customer_orders_path, class:'btn btn-primary' %>
+  <% end %>
 </div>
 <div class='ms-3 d-flex align-items-center mb-3 gap-3'>
   <h5 class='my-0'>Filter by Tags</h5>

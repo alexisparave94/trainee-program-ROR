@@ -1,0 +1,40 @@
+<h1>My Orders</h1>
+<% if @orders.empty? %>
+  <p>Empty Orders</p>
+<% else %>
+  <% @orders.each.with_index do |order, index| %>
+    <h3>Order <%= index + 1 %></h3>
+    <table class='table table-striped'>
+      <thead>
+        <th>#</th>
+        <th style='text-align: center'>Product</th>
+        <th style='text-align: center'>Quantity</th>
+        <th style='text-align: center'>Price</th>
+        <th style='text-align: center'>Subtotal</th>
+      </thead>
+      <tbody>
+        <% order.order_lines.each.with_index do |order_line,i| %>
+          <tr>
+            <td style='vertical-align: middle'><%= i+1 %></td>
+            <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
+            <td style='text-align: center; vertical-align: middle'><%= order_line.quantity %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price) %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7">
+            <div class='d-flex gap-4 align-items-center'>
+              <%= link_to [:customer, order], class:'btn btn-primary' do %>
+              <i class="bi bi-card-text"></i>
+              <% end %>
+              <h5 class='mb-0'>Total: <%= format('$ %0.02f', order.total) %></h5>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  <% end %>
+<% end %>

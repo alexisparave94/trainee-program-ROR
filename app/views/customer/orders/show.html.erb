@@ -1,16 +1,32 @@
-<p>
-  <%= @comentable.sku %>
-</p>
-<h1><%= @comentable.name %></h1>
-<p>
-  <%= @comentable.description %>
-</p>
-<p>
-  $ <%= @comentable.price %>
-</p>
-<p>
-  Stock: <%= @comentable.stock %>
-</p>
+
+<h3>Order bought on <%= @comentable.updated_at.to_fs(:db) %></h3>
+<table class='table table-striped'>
+  <thead>
+    <th>#</th>
+    <th style='text-align: center'>Product</th>
+    <th style='text-align: center'>Quantity</th>
+    <th style='text-align: center'>Price</th>
+    <th style='text-align: center'>Subtotal</th>
+  </thead>
+  <tbody>
+    <% @comentable.order_lines.each.with_index do |order_line,i| %>
+      <tr>
+        <td style='vertical-align: middle'><%= i+1 %></td>
+        <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
+        <td style='text-align: center; vertical-align: middle'><%= order_line.quantity %></td>
+        <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price) %></td>
+        <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="7">
+        <h5 class='mb-0'>Total: <%= format('$ %0.02f', @comentable.total) %></h5>
+      </td>
+    </tr>
+  </tfoot>
+</table>
 <h4>Add a comments</h4>
 <div data-turbo='false'>
   <%= form_with model: [@comentable, @comment] do |form| %>
@@ -47,7 +63,6 @@
     <% @comentable.comments.each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
-      <p>By <%= comment.user.first_name %></p>
       <p>Rate of product: <%= comment.rate %></p>
       <p><%= time_ago_in_words(comment.created_at) %></p>
     <% end %>
