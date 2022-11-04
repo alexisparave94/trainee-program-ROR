@@ -1,0 +1,22 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/**/**'
+    - 'docs/**/**'
+    - 'specific-views-images/**/**'
+    - 'specific-views-pdf/**/**'
+    - 'vendor/**/**'
+    - 'bin/**/**'
+    - 'tmp/**/**'
+    - 'node_modules/**/**'
+    - 'config/**/**'
+    - 'Guardfile'
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/**'
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'test/**/**'
+Metrics/MethodLength:
+  Max: 15

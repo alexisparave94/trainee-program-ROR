@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customer::LikesController < ApplicationController
   # POST /customer/likes
   def create
@@ -16,3 +18,4 @@ class Customer::LikesController < ApplicationController
     redirect_to products_path, notice: 'Product disliked successfully'
   end
 end
+

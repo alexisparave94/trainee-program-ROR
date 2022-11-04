@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[show]
+  # before_action :set_product, only: %i[show]
 
   # GET /products
   def index
@@ -14,7 +16,10 @@ class ProductsController < ApplicationController
   end
 
   # GET /products/:id
-  def show; end
+  def show
+    @comentable = Product.find(params[:id])
+    @comment = Comment.new
+  end
 
   private
 

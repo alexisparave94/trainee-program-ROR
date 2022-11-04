@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -36,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Method to get message and redirect no authorized actions 
+  # Method to get message and redirect no authorized actions
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)

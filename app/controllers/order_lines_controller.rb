@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrderLinesController < ApplicationController
   before_action :set_virtual_order, only: %i[create edit update destroy]
 
@@ -72,7 +74,8 @@ class OrderLinesController < ApplicationController
       @virtual_line['quantity'] += order_line_params[:quantity].to_i
     else
       puts 'Not find'
-      @virtual_order << { id: @product.id, name: @product.name, price: @product.price.to_f, quantity: order_line_params[:quantity].to_i }
+      @virtual_order << { id: @product.id, name: @product.name, price: @product.price.to_f,
+                          quantity: order_line_params[:quantity].to_i }
     end
     session[:virtual_order] = @virtual_order
   end

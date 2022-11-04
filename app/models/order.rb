@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class Order < ApplicationRecord
   # Associations
   belongs_to :user, optional: true
   has_many :order_lines, dependent: :destroy
   has_many :products, through: :order_lines
-
-  # Callbacks
-  # after_save :update_products_stock
+  has_many :comments, as: :commentable, dependent: :destroy
 
   # Enum
   enum :status, %i[pending completed refused]
 
   # Scopes
-  scope :get_orders_beetween_dates_for_a_customer, ->(first_date, last_date, customer_id) { where("created_at BETWEEN ? AND ?", first_date, last_date).where("customer_id = ?", customer_id) }
+  scope :get_orders_beetween_dates_for_a_customer, lambda { |first_date, last_date, customer_id|
+                                                     where('created_at BETWEEN ? AND ?', first_date, last_date).where('customer_id = ?', customer_id)
+                                                   }
 
   def add_lines_from_cart(virtual_order)
     virtual_order.each do |detail|

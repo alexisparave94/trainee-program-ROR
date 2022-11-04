@@ -1,5 +1,16 @@
+# frozen_string_literal: true
+
 class Customer::OrdersController < ApplicationController
   before_action :authenticate_user!, only: %i[update]
+
+  def index
+    @orders = current_user.orders.where(status: 'completed').order(created_at: :DESC)
+  end
+
+  def show 
+    @comentable = Order.find(params[:id])
+    @comment = Comment.new
+  end
 
   def update
     @order = Order.find(params[:id])

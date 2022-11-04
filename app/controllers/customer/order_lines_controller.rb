@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customer::OrderLinesController < ApplicationController
   skip_before_action :set_pending_order
   before_action :set_order_line, only: %i[edit update destroy]
