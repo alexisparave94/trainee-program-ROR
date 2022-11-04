@@ -11,3 +11,45 @@
 <p>
   Stock: <%= @product.stock %>
 </p>
+<h4>Add a comments</h4>
+<div data-turbo='false'>
+  <%= form_with model: [@product, @comment] do |form| %>
+    <div class="field mb-3">
+      <%# form.label :description, class:'form-label' %>
+      <%= form.text_area :description, class: 'form-control' %>
+      <div class='mt-3'>
+        <% unless @comment.errors.messages_for(:description).empty? %>
+          <% @comment.errors.messages_for(:description).each do |message| %>
+            <p class='text-danger fw-semibold'>* <%= message %></p>
+          <% end %>
+        <% end %>
+      </div>
+      <%= form.label :rate, class:'form-label' %>
+      <%= form.text_field :rate, class: 'form-control' %>
+      <div class='mt-3'>
+        <% unless @comment.errors.messages_for(:rate).empty? %>
+          <% @comment.errors.messages_for(:rate).each do |message| %>
+            <p class='text-danger fw-semibold'>* <%= message %></p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="d-grid mb-3">
+      <%= form.submit 'Add Comment', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+<div>
+  <% if @product.comments.empty? %>
+    <h4>No Comments</h4>
+  <% else %>
+    <h4>Comments</h4>
+    <% @product.comments.each do |comment| %>
+      <hr>
+      <p><%= comment.description %></p>
+      <p>By <%= comment.user.first_name %></p>
+      <p>Rate of product: <%= comment.rate %></p>
+      <p><%= comment.created_at.to_fs(:db) %></p>
+    <% end %>
+  <% end %>
+</div>

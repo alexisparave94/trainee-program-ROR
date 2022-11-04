@@ -16,7 +16,9 @@ class ProductsController < ApplicationController
   end
 
   # GET /products/:id
-  def show; end
+  def show
+    @comment = Comment.new
+  end
 
   private
 
