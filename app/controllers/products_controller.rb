@@ -13,6 +13,7 @@ class ProductsController < ApplicationController
       @selected_tags_ids = params[:tag_id]
       @products = @products.filter_by_tag(@selected_tags_ids)
     end
+    order_products(params[:order]) if params[:order]
   end
 
   # GET /products/:id
@@ -26,5 +27,14 @@ class ProductsController < ApplicationController
   # Method to find a prodcut by id
   def set_product
     @product = Product.find(params[:id])
+  end
+
+  def order_products(order_by)
+    case order_by
+    when 'like'
+      @products = @products.order_by_likes
+    when 'ASC', 'DESC'
+      @products = @products.order_by_name(order_by)
+    end
   end
 end

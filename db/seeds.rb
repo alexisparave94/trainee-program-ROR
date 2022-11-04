@@ -61,6 +61,21 @@ puts 'Seedding Products'
   product.save
 end
 
+puts 'Seedding Tags'
+tag1 = Tag.create(name: 'Cotton')
+tag2 = Tag.create(name: 'Aluminum')
+tag3 = Tag.create(name: 'Paper')
+tag4 = Tag.create(name: 'Bronze')
+tag5 = Tag.create(name: 'Iron')
+tag6 = Tag.create(name: 'Wooden')
+
+Tag.all.each do |tag|
+  products = Product.where('LOWER(name) LIKE ?', "%#{tag.name.downcase}%")
+  products.each do |product|
+    product.tags << tag
+  end
+end
+
 # puts 'Seeding Products'
 # pro1 = Product.create(sku: 'SKU-001', name: 'Product B', price: 10, stock: 5)
 # pro2 = Product.create(sku: 'SKU-002', name: 'Product A', price: 20, stock: 5)
