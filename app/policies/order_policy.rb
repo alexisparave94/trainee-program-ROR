@@ -8,7 +8,15 @@ class OrderPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    user&.customer? && record.user_id == user.id
+  end
+
   def update?
-    user&.customer?
+    user&.customer? && record.user_id == user.id
+  end
+
+  def show?
+    user&.customer? && record.user_id == user.id
   end
 end

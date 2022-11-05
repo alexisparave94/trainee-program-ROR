@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
   # GET /products/:id
   def show
     @commentable = Product.find(params[:id])
-    @rate = current_user.get_last_rate(@commentable)
+    @rate = current_user&.get_last_rate(@commentable)
     @comment = Comment.new(rate: @rate)
   end
 

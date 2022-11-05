@@ -8,6 +8,7 @@ class Customer::OrderLinesController < ApplicationController
   def new
     @product = Product.find(params[:product_id])
     @order_line = OrderLine.new
+    authorize @order_line
   end
 
   def create
@@ -15,6 +16,7 @@ class Customer::OrderLinesController < ApplicationController
     add_product
     @product = @order_line.product
     @order_line.order = @order
+    authorize @order_line
     if @order_line.save
       session[:checkout] = nil
       redirect_to shopping_cart_path, notice: 'Line was successfully added'
@@ -25,10 +27,12 @@ class Customer::OrderLinesController < ApplicationController
 
   def edit
     @product = @order_line.product
+    authorize @order_line
   end
 
   def update
     @product = @order_line.product
+    authorize @order_line
     if @order_line.update(order_line_params)
       session[:checkout] = nil
       redirect_to shopping_cart_path, notice: 'Line was successfully updated'
@@ -38,6 +42,7 @@ class Customer::OrderLinesController < ApplicationController
   end
 
   def destroy
+    authorize @order_line
     @order_line.destroy
     session[:checkout] = nil
     redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
