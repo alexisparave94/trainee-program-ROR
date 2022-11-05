@@ -9,7 +9,7 @@ class OrderPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.customer? && record.user_id == user.id
+    user&.customer?
   end
 
   def update?
