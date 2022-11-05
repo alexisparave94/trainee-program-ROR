@@ -19,7 +19,7 @@ class OrderLinePolicy < ApplicationPolicy
   end
 
   def update?
-    !user || user.customer? && record.order.user_id == user.id
+    (!user || user.customer?) && (record.order.user_id == user.id)
   end
 
   def edit?
@@ -27,6 +27,6 @@ class OrderLinePolicy < ApplicationPolicy
   end
 
   def destroy?
-    !user || user.customer? && record.order.user_id == user.id
+    (!user || user.customer?) && (record.order.user_id == user.id)
   end
 end

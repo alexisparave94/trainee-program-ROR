@@ -2,8 +2,8 @@
 
 # Class to manage User Model
 class User < ApplicationRecord
-
   attr_accessor :user
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -22,11 +22,11 @@ class User < ApplicationRecord
     comments.where(commentable_id: product.id).order(created_at: :DESC).first&.rate
   end
 
-  def self.set_user(user)
+  def self.define_user(user)
     @current_user = user
   end
 
-  def self.get_user
+  def self.give_user
     @current_user
   end
 end
