@@ -8,8 +8,9 @@ class Customer::OrdersController < ApplicationController
   end
 
   def show 
-    @comentable = Order.find(params[:id])
-    @comment = Comment.new
+    @commentable = Order.find(params[:id])
+    @rate = current_user.get_last_rate(@commentable)
+    @comment = Comment.new(rate: @rate)
   end
 
   def update

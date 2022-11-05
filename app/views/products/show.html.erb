@@ -1,21 +1,23 @@
 <p>
-  <%= @comentable.sku %>
+  <%= @commentable.sku %>
 </p>
-<h1><%= @comentable.name %></h1>
+<h1><%= @commentable.name %></h1>
 <p>
-  <%= @comentable.description %>
-</p>
-<p>
-  $ <%= @comentable.price %>
+  <%= @commentable.description %>
 </p>
 <p>
-  Stock: <%= @comentable.stock %>
+  $ <%= @commentable.price %>
+</p>
+<p>
+  Stock: <%= @commentable.stock %>
+</p>
+<p>
+  Rate: <%= @rate || 'No rated' %>
 </p>
 <h4>Add a comments</h4>
 <div data-turbo='false'>
-  <%= form_with model: [@comentable, @comment] do |form| %>
+  <%= form_with model: [@commentable, @comment] do |form| %>
     <div class="field mb-3">
-      <%# form.label :description, class:'form-label' %>
       <%= form.text_area :description, class: 'form-control' %>
       <div class='mt-3'>
         <% unless @comment.errors.messages_for(:description).empty? %>
@@ -25,6 +27,7 @@
         <% end %>
       </div>
       <%= form.label :rate, class:'form-label' %>
+      <em>(If you want you could rate or update your rate)</em>
       <%= form.text_field :rate, class: 'form-control' %>
       <div class='mt-3'>
         <% unless @comment.errors.messages_for(:rate).empty? %>
@@ -40,15 +43,14 @@
   <% end %>
 </div>
 <div>
-  <% if @comentable.comments.empty? %>
+  <% if @commentable.comments.empty? %>
     <h4>No Comments</h4>
   <% else %>
     <h4>Comments</h4>
-    <% @comentable.comments.each do |comment| %>
+    <% @commentable.comments.each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
       <p>By <%= comment.user.first_name %></p>
-      <p>Rate of product: <%= comment.rate %></p>
       <p><%= time_ago_in_words(comment.created_at) %></p>
     <% end %>
   <% end %>
