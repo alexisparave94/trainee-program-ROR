@@ -28,14 +28,14 @@ class ProductsController < ApplicationController
   end
 
   def sort_products
-    unless params[:sort_id] && params[:sort_id].empty?
-      sort_by = params[:sort_id]
-      case sort_by
-      when 'like'
-        @products = @products.sort_by_likes
-      when 'ASC', 'DESC'
-        @products = @products.sort_by_name(sort_by)
-      end
+    return if params[:sort_id].nil? || params[:sort_id] == ''
+
+    sort_by = params[:sort_id]
+    case sort_by
+    when 'like'
+      @products = @products.sort_by_likes
+    when 'ASC', 'DESC'
+      @products = @products.sort_by_name(sort_by)
     end
   end
 
