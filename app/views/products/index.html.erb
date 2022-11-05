@@ -1,15 +1,22 @@
 <div class="d-flex justify-content-center">
   <div class="col-sm-6 col-md-6 col-lg-8">
-    <%= form_with url: products_path, method: :get, class:"d-flex", role:"search" do |form| %>
-      <%= form.text_field :search, value: @search, placeholder: 'Name of product', require: true, class:"form-control me-2", type:"search", 'aria-label':"Search" %>
-      <%= button_tag class: "btn btn-outline-primary" do %>
-        <i class="bi bi-search"></i>
-      <% end %>
+    <%= form_with url: products_path, method: :get, class:"d-flex flex-column", role:"search" do |form| %>
+      <div class='d-flex'>
+        <%= form.text_field :search, value: @search, placeholder: 'Name of product', require: true, class:"form-control me-2", type:"search", 'aria-label':"Search" %>
+        <%= button_tag class: "btn btn-outline-primary" do %>
+          <i class="bi bi-search"></i>
+        <% end %>
+      </div>
+      <div>
+        <%= form.label 'Filter by Tags:' %>
+        <%= form.collection_check_boxes :tag_id, Tag.all, :id, :name, checked: @selected_tags_ids %>
+      </div>
+      <div>
+        <%= form.label 'Sort by:' %>
+        <%= form.collection_radio_buttons :sort_id, Poro::Sort.sort_options, :id, :name, checked: @selected_sort_id %>
+      </div>
     <% end %>
   </div>
-</div>
-<div class='mb-2 mt-4 ps-3'>
-  <h1>Products</h1>
 </div>
 <div class='container-md d-flex mb-3 gap-2'>
   <% if policy(Product).new? %>
@@ -29,19 +36,6 @@
   <% end %>
   <% if current_user&.customer? %>
     <%= link_to 'My orders', customer_orders_path, class:'btn btn-primary' %>
-  <% end %>
-</div>
-<div class='ms-3 d-flex align-items-center mb-3 gap-3'>
-  <h5 class='my-0'>Order by</h5>
-  <%= link_to 'A-Z', products_path(order: 'ASC'), class: 'btn btn-primary' %>
-  <%= link_to 'Z-A', products_path(order: 'DESC'), class: 'btn btn-primary' %>
-  <%= link_to 'Likes', products_path(order: 'like'), class: 'btn btn-primary' %>
-</div>
-<div class='ms-3 d-flex align-items-center mb-3 gap-3'>
-  <h5 class='my-0'>Filter by Tags</h5>
-  <%= form_with url: products_path, method: :get, class:'d-flex align-items-center gap-2 flex-wrap' do |form| %>
-    <%= form.collection_check_boxes :tag_id, Tag.all, :id, :name, checked: @selected_tags_ids %>
-    <%= form.submit 'Filter Products', class: 'btn btn-primary' %>
   <% end %>
 </div>
 <div class='container-md d-flex flex-column gap-4'>
