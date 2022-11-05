@@ -3,7 +3,7 @@
 module Customer
   # Class to manage Products Controller of the namespace from customer
   class OrderLinesController < ApplicationController
-    skip_before_action :set_pending_order
+    skip_before_action :load_pending_order
     before_action :set_order_line, only: %i[edit update destroy]
 
     # POST /customer/orders

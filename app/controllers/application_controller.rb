@@ -4,37 +4,31 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_pending_order
+  before_action :load_pending_order
   # Rescur for no authorized cations
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Method to persist information of shopping carts
-  def set_pending_order
-    return unless user_signed_in? && session[:order_id].nil?
+  def load_pending_order
+    return unless load_pending_order?
 
-    @pending_order = current_user.orders.where(status: 'pending').order(created_at: :DESC).first
+    look_for_the_last_pending_order
     if @pending_order
-      session[:order_id] = @pending_order.id
-      session[:virtual_order] = nil
       session[:checkout] = nil
+      save_order_id_in_session(@pending_order.id)
     elsif session[:virtual_order]
-      @order_lines = save_order_lines
-      @order = Order.new(user: current_user)
-      @order.order_lines = @order_lines
-      @order.total = @order.calculate_total
-      # authorize @order
-      @order.save
-      session[:virtual_order] = nil
-      session[:order_id] = @order.id
+      save_order_lines
+      create_new_pending_order
+      save_order_id_in_session(@pending_order.id)
     end
+    session[:virtual_order] = nil
   end
 
   protected
 
   # Method to permit enter more fields to sign uop and sign in with devise gem
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[firt_name last_name])
-    devise_parameter_sanitizer.permit(:sign_in, keys: %i[firt_name last_name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name])
   end
 
   private
@@ -46,8 +40,27 @@ class ApplicationController < ActionController::Base
   end
 
   def save_order_lines
-    session[:virtual_order].map do |line|
+    @order_lines = session[:virtual_order].map do |line|
       OrderLine.create(product_id: line['id'], quantity: line['quantity'], price: line['price'])
     end
+  end
+
+  def look_for_the_last_pending_order
+    @pending_order = current_user.orders.where(status: 'pending').order(created_at: :DESC).first
+  end
+
+  def create_new_pending_order
+    @pending_order = Order.new(user: current_user)
+    @pending_order.order_lines = @order_lines
+    @pending_order.total = @pending_order.calculate_total
+    @pending_order.save
+  end
+
+  def save_order_id_in_session(id)
+    session[:order_id] = id
+  end
+
+  def load_pending_order?
+    user_signed_in? && session[:order_id].nil?
   end
 end

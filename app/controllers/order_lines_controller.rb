@@ -8,7 +8,6 @@ class OrderLinesController < ApplicationController
   def new
     @order_line = OrderLine.new
     @product = Product.find(params[:product_id])
-    # authorize @order_line
   end
 
   # POST /products/:id_product/order_lines
@@ -17,7 +16,6 @@ class OrderLinesController < ApplicationController
     @order_line = OrderLine.new(order_line_params)
     if @order_line.valid?
       add_product
-      # authorize @order_line
       session[:checkout] = nil
       redirect_to shopping_cart_path, notice: 'Line was successfully added to shopping'
     else
@@ -27,24 +25,22 @@ class OrderLinesController < ApplicationController
 
   # GET /order_lines/:id/edit
   def edit
-    @line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
+    set_virtual_line
     @order_line = OrderLine.new(
       product_id: params[:id],
-      price: @line['price'],
-      quantity: @line['quantity']
+      price: @virtual_line['price'],
+      quantity: @virtual_line['quantity']
     )
     @product = Product.find(params[:id])
-    # authorize @order_line
   end
 
   # PATCH /order_lines/:id
   def update
-    # authorize @order_line
     @product = Product.find(order_line_params[:product_id])
     @order_line = OrderLine.new(order_line_params)
     if @order_line.valid?
-      @line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
-      @line['quantity'] = order_line_params[:quantity].to_i
+      set_virtual_line
+      set_quantity_for_virtual_line
       session[:virtual_order] = @virtual_order
       session[:checkout] = nil
       redirect_to shopping_cart_path, notice: 'Line was successfully updated'
@@ -69,12 +65,9 @@ class OrderLinesController < ApplicationController
 
   # Method to add a new line or if the line exists only sum quantities
   def add_product
-    @virtual_line = @virtual_order.select { |line| line['id'] == order_line_params[:product_id].to_i }.first
     if @virtual_line
-      puts 'Find line'
       @virtual_line['quantity'] += order_line_params[:quantity].to_i
     else
-      puts 'Not find'
       @virtual_order << { id: @product.id, name: @product.name, price: @product.price.to_f,
                           quantity: order_line_params[:quantity].to_i }
     end
@@ -87,5 +80,17 @@ class OrderLinesController < ApplicationController
 
     @virtual_order = []
     session[:virtual_order] = @virtual_order
+  end
+
+  def look_for_virtual_line_in_virtuakl_order
+    @virtual_line = @virtual_order.select { |line| line['id'] == order_line_params[:product_id].to_i }.first
+  end
+
+  def set_virtual_line
+    @virtual_line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
+  end
+
+  def set_quantity_for_virtual_line
+    @virtual_line['quantity'] = order_line_params[:quantity].to_i
   end
 end

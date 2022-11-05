@@ -8,12 +8,9 @@ class ProductsController < ApplicationController
   def index
     save_input_states
     define_scope_for_products
-
-    @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
-
-    @products = @products.filter_by_tag(@selected_tags_ids) if params[:tag_id] && params[:tag_id].size > 1
-
-    sort_products(params[:sort_id]) unless params[:sort_id] && params[:sort_id].empty?
+    search_products
+    filter_products
+    sort_products
   end
 
   # GET /products/:id
@@ -30,12 +27,15 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  def sort_products(sort_by)
-    case sort_by
-    when 'like'
-      @products = @products.sort_by_likes
-    when 'ASC', 'DESC'
-      @products = @products.sort_by_name(sort_by)
+  def sort_products
+    unless params[:sort_id] && params[:sort_id].empty?
+      sort_by = params[:sort_id]
+      case sort_by
+      when 'like'
+        @products = @products.sort_by_likes
+      when 'ASC', 'DESC'
+        @products = @products.sort_by_name(sort_by)
+      end
     end
   end
 
@@ -58,5 +58,13 @@ class ProductsController < ApplicationController
 
   def validate_default_scope?
     params[:search].nil? || params[:search] == ''
+  end
+
+  def search_products
+    @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
+  end
+
+  def filter_products
+    @products = @products.filter_by_tag(@selected_tags_ids) if params[:tag_id] && params[:tag_id].size > 1
   end
 end
