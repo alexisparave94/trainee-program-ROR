@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Likes Controller of the namespace from customer
 class Customer::LikesController < ApplicationController
   # POST /customer/likes
   def create
@@ -18,4 +19,3 @@ class Customer::LikesController < ApplicationController
     redirect_to products_path, notice: 'Product disliked successfully'
   end
 end
-

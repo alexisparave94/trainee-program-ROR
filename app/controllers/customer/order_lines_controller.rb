@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Products Controller of the namespace from customer
 class Customer::OrderLinesController < ApplicationController
   skip_before_action :set_pending_order
   before_action :set_order_line, only: %i[edit update destroy]

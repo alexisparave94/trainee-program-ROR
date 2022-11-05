@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Order Lines Controller
 class OrderLinesController < ApplicationController
   before_action :set_virtual_order, only: %i[create edit update destroy]
 

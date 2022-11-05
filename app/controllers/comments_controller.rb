@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class to manage Coments Controller
 class CommentsController < ApplicationController
   before_action :authenticate_user!, only: %i[create]
 

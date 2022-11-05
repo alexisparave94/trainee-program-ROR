@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class to manage Sort PORO
 class Poro::Sort
   attr_reader :id, :name
 
@@ -8,9 +11,9 @@ class Poro::Sort
 
   def self.sort_options
     [
-      Poro::Sort.new('ASC', 'A-Z'), 
-      Poro::Sort.new('DESC', 'Z-A'), 
-      Poro::Sort.new('like', 'Likes') 
+      Poro::Sort.new('ASC', 'A-Z'),
+      Poro::Sort.new('DESC', 'Z-A'),
+      Poro::Sort.new('like', 'Likes')
     ]
   end
 end

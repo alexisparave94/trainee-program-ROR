@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Class of the namespace Admin
 module Admin
+  # Class to manage Products Controller
   class ProductsController < ApplicationController
     before_action :set_product, only: %i[edit update destroy]
     before_action :authenticate_user!, only: %i[new create edit update destroy]

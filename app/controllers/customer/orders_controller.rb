@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Orders Controller of the namespace from customer
 class Customer::OrdersController < ApplicationController
   before_action :authenticate_user!, only: %i[update]
 

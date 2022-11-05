@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Products Controller
 class ProductsController < ApplicationController
   # before_action :set_product, only: %i[show]
 
@@ -11,7 +12,7 @@ class ProductsController < ApplicationController
     @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
 
     @products = @products.filter_by_tag(@selected_tags_ids) if params[:tag_id] && params[:tag_id].size > 1
-    
+
     sort_products(params[:sort_id]) unless params[:sort_id]&.empty?
   end
 
@@ -50,7 +51,7 @@ class ProductsController < ApplicationController
   end
 
   def validate_unscoped?
-    (params[:search] == '' && ( params[:tag_id].size > 1 || !params[:sort_id].empty?)) || (params[:search] != '' && !params[:search].nil?)
+    (params[:search] == '' && (params[:tag_id].size > 1 || !params[:sort_id].empty?)) || (params[:search] != '' && !params[:search].nil?)
   end
 
   def validate_default_scope?

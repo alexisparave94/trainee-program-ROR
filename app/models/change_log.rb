@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Change Log Model
 class ChangeLog < ApplicationRecord
   # Associations
   belongs_to :user
