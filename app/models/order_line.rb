@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage OrderLine Model
 class OrderLine < ApplicationRecord
   # Associations
   belongs_to :order, optional: true

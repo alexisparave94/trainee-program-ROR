@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+# Class to manage Product Model
 class Product < ApplicationRecord
   before_update :save_change_log
-  
+
   # Associations
   has_many :order_lines, dependent: :destroy
   has_many :orders, through: :order_lines
@@ -16,14 +17,9 @@ class Product < ApplicationRecord
   scope :available_products, -> { where('stock > 0') }
   scope :order_by_price, -> { order(:price) }
   scope :get_most_purchased_product, lambda {
-                                       joins(order_lines: :order).where('orders.status': 1).group(:id).order('SUM(order_lines.quantity) DESC').limit(1)
+                                       joins(order_lines: :order).where('orders.status': 1).group(:id)
+                                                                 .order('SUM(order_lines.quantity) DESC').limit(1)
                                      }
-
-  def self.get_products_which_name_has_words_greater_than_2_letters
-    Product.all.select do |product|
-      product.name.split.any? { |word| word.length > 2 }
-    end
-  end
 
   scope :filter_by_tag, ->(tags) { joins(:tags).where(tags: { id: tags }) }
   scope :sort_by_likes, -> { order(likes_count: :DESC) }
@@ -40,9 +36,13 @@ class Product < ApplicationRecord
 
   # Callback
   def save_change_log
-    fields_and_values = self.changes.reject { |key, value| key == 'updated_at' }
+    fields_and_values = changes.except('updated_at')
     fields_and_values.each do |key, value|
-      ChangeLog.create(user: User.get_user, description: 'Update', product: self.name, field: key, previous_content: value[0], new_content: value[1])
+      ChangeLog.create(
+        user: User.give_user,
+        description: 'Update',
+        product: name, field: key, previous_content: value[0], new_content: value[1]
+      )
     end
   end
 end

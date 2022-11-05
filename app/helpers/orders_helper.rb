@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Module for Order Helpers
 module OrdersHelper
   def self.total_virtual_order(virtual_order)
     virtual_order.reduce(0) do |acc, detail|

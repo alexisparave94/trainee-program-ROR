@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Class to manage Order Line Policy
 class OrderLinePolicy < ApplicationPolicy
+  # Class to manage Order Line Policy Scope
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
@@ -17,7 +19,7 @@ class OrderLinePolicy < ApplicationPolicy
   end
 
   def update?
-    !user || user.customer?
+    (!user || user.customer?) && (record.order.user_id == user.id)
   end
 
   def edit?
@@ -25,6 +27,6 @@ class OrderLinePolicy < ApplicationPolicy
   end
 
   def destroy?
-    !user || user.customer?
+    (!user || user.customer?) && (record.order.user_id == user.id)
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Class of the namespace Admin
 module Admin
+  # Class to manage Products Controller
   class ProductsController < ApplicationController
     before_action :set_product, only: %i[edit update destroy]
     before_action :authenticate_user!, only: %i[new create edit update destroy]
@@ -30,8 +32,8 @@ module Admin
 
     # PATCH /admin/products/:id
     def update
-      # authorize @product
-      User.set_user(current_user)
+      authorize @product
+      User.define_user(current_user)
       if @product.update(product_params)
         redirect_to products_path, notice: 'Product was successfully updated'
       else

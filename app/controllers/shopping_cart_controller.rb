@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Shopping Cart Controller
 class ShoppingCartController < ApplicationController
   def index
     return @order = Order.find(session[:order_id]) if current_user

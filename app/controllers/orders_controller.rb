@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Orders Controller
 class OrdersController < ApplicationController
   # GET /orders/:id
   def show; end

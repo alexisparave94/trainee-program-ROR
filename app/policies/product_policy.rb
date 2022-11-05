@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Class to manage Product Policy
 class ProductPolicy < ApplicationPolicy
+  # Class to manage Product Policy Scope
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

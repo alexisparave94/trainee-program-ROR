@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to manage Products Controller
 class ProductsController < ApplicationController
   # before_action :set_product, only: %i[show]
 
@@ -7,18 +8,15 @@ class ProductsController < ApplicationController
   def index
     save_input_states
     define_scope_for_products
-
-    @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
-
-    @products = @products.filter_by_tag(@selected_tags_ids) if params[:tag_id] && params[:tag_id].size > 1
-    
-    sort_products(params[:sort_id]) unless params[:sort_id]&.empty?
+    search_products
+    filter_products
+    sort_products
   end
 
   # GET /products/:id
   def show
     @commentable = Product.find(params[:id])
-    @rate = current_user.get_last_rate(@commentable)
+    @rate = current_user&.get_last_rate(@commentable)
     @comment = Comment.new(rate: @rate)
   end
 
@@ -29,7 +27,10 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  def sort_products(sort_by)
+  def sort_products
+    return if params[:sort_id].nil? || params[:sort_id] == ''
+
+    sort_by = params[:sort_id]
     case sort_by
     when 'like'
       @products = @products.sort_by_likes
@@ -50,10 +51,20 @@ class ProductsController < ApplicationController
   end
 
   def validate_unscoped?
-    (params[:search] == '' && ( params[:tag_id].size > 1 || !params[:sort_id].empty?)) || (params[:search] != '' && !params[:search].nil?)
+    (
+      params[:search] == '' && (params[:tag_id].size > 1 || !params[:sort_id].empty?)) ||
+      (params[:search] != '' && !params[:search].nil?)
   end
 
   def validate_default_scope?
     params[:search].nil? || params[:search] == ''
+  end
+
+  def search_products
+    @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
+  end
+
+  def filter_products
+    @products = @products.filter_by_tag(@selected_tags_ids) if params[:tag_id] && params[:tag_id].size > 1
   end
 end
