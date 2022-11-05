@@ -45,7 +45,15 @@ class ProductsController < ApplicationController
   end
 
   def define_scope_for_products
-    @products = Product.all.available_products if params[:search].nil? || params[:search] == ''
-    @products = Product.unscoped.available_products if (params[:search] == '' && ( params[:tag_id].size > 1 || !params[:sort_id].empty?)) || !params[:search]&.empty?
+    @products = Product.all.available_products if validate_default_scope?
+    @products = Product.unscoped.available_products if validate_unscoped?
+  end
+
+  def validate_unscoped?
+    (params[:search] == '' && ( params[:tag_id].size > 1 || !params[:sort_id].empty?)) || (params[:search] != '' && !params[:search].nil?)
+  end
+
+  def validate_default_scope?
+    params[:search].nil? || params[:search] == ''
   end
 end
