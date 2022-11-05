@@ -24,8 +24,8 @@ class Product < ApplicationRecord
   end
 
   scope :filter_by_tag, ->(tags) { joins(:tags).where(tags: { id: tags }) }
-  scope :order_by_likes, -> { unscoped.order(likes_count: :DESC) }
-  scope :order_by_name, ->(form) { unscoped.order(name: form) }
+  scope :sort_by_likes, -> { order(likes_count: :DESC) }
+  scope :sort_by_name, ->(form) { order(name: form) }
 
   # Validations
   validates :name, presence: { message: 'Must enter a name' }

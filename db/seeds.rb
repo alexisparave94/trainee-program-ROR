@@ -68,6 +68,9 @@ tag3 = Tag.create(name: 'Paper')
 tag4 = Tag.create(name: 'Bronze')
 tag5 = Tag.create(name: 'Iron')
 tag6 = Tag.create(name: 'Wooden')
+tag7 = Tag.create(name: 'Steel')
+tag8 = Tag.create(name: 'Rubber')
+tag8 = Tag.create(name: 'Plastic')
 
 Tag.all.each do |tag|
   products = Product.where('LOWER(name) LIKE ?', "%#{tag.name.downcase}%")

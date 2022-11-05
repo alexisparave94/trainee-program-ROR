@@ -5,15 +5,17 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
-    @products = Product.all.available_products
-    if params[:search]
-      @search = params[:search]
-      @products = @products.where('LOWER(name) LIKE ?', "%#{@search.downcase}%")
-    elsif params[:tag_id] && params[:tag_id].size > 1
-      @selected_tags_ids = params[:tag_id]
-      @products = @products.filter_by_tag(@selected_tags_ids)
-    end
-    order_products(params[:order]) if params[:order]
+    @search = params[:search].strip unless params[:search].nil?
+    @selected_tags_ids = params[:tag_id]
+    @selected_sort_id = params[:sort_id]
+    
+    @products = params[:search].nil? || params[:search] == '' ?  Product.all.available_products : Product.unscoped.available_products
+
+    @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
+
+    @products = @products.filter_by_tag(@selected_tags_ids) if params[:tag_id] && params[:tag_id].size > 1
+    
+    sort_products(params[:sort_id]) unless params[:sort_id]&.empty?
   end
 
   # GET /products/:id
@@ -29,12 +31,12 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  def order_products(order_by)
-    case order_by
+  def sort_products(sort_by)
+    case sort_by
     when 'like'
-      @products = @products.order_by_likes
+      @products = @products.sort_by_likes
     when 'ASC', 'DESC'
-      @products = @products.order_by_name(order_by)
+      @products = @products.sort_by_name(sort_by)
     end
   end
 end
