@@ -1,18 +1,16 @@
-<div class="d-flex justify-content-center">
-  <div class="col-sm-6 col-md-6 col-lg-8">
-    <%= form_with url: products_path, method: :get, class:"d-flex flex-column", role:"search" do |form| %>
-      <div class='d-flex'>
+<div class="d-flex justify-content-center mb-4">
+  <div class="col-sm-12 col-md-12 col-lg-12 ps-3">
+    <%= form_with url: products_path, method: :get, class:"d-flex flex-column gap-3", role:"search" do |form| %>
+      <div class='col-sm-8 col-md-8 col-lg-8 d-flex mx-auto'>
         <%= form.text_field :search, value: @search, placeholder: 'Name of product', require: true, class:"form-control me-2", type:"search", 'aria-label':"Search" %>
-        <%= button_tag class: "btn btn-outline-primary" do %>
-          <i class="bi bi-search"></i>
-        <% end %>
+        <%= form.submit 'Apply Search', class: "btn btn-outline-primary" %>
       </div>
-      <div>
-        <%= form.label 'Filter by Tags:' %>
+      <div class='d-flex gap-1 checkbox-group' style='font-size: 1.1rem'>
+        <strong><%= form.label 'Filter by Tags:' %></strong>
         <%= form.collection_check_boxes :tag_id, Tag.all, :id, :name, checked: @selected_tags_ids %>
       </div>
-      <div>
-        <%= form.label 'Sort by:' %>
+      <div class='d-flex gap-2 radio-button-group' style='font-size: 1.1rem'>
+        <strong><%= form.label 'Sort by:' %></strong>
         <%= form.collection_radio_buttons :sort_id, Poro::Sort.sort_options, :id, :name, checked: @selected_sort_id %>
       </div>
     <% end %>

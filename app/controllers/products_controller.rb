@@ -5,11 +5,8 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
-    @search = params[:search].strip unless params[:search].nil?
-    @selected_tags_ids = params[:tag_id]
-    @selected_sort_id = params[:sort_id]
-    
-    @products = params[:search].nil? || params[:search] == '' ?  Product.all.available_products : Product.unscoped.available_products
+    save_input_states
+    define_scope_for_products
 
     @products = @products.where('LOWER(products.name) LIKE ?', "%#{@search.downcase}%") if params[:search]
 
@@ -39,5 +36,16 @@ class ProductsController < ApplicationController
     when 'ASC', 'DESC'
       @products = @products.sort_by_name(sort_by)
     end
+  end
+
+  def save_input_states
+    @search = params[:search].strip unless params[:search].nil?
+    @selected_tags_ids = params[:tag_id]
+    @selected_sort_id = params[:sort_id]
+  end
+
+  def define_scope_for_products
+    @products = Product.all.available_products if params[:search].nil? || params[:search] == ''
+    @products = Product.unscoped.available_products if (params[:search] == '' && ( params[:tag_id].size > 1 || !params[:sort_id].empty?)) || !params[:search]&.empty?
   end
 end
