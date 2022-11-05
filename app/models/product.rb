@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Product < ApplicationRecord
+  before_update :save_change_log
+  
   # Associations
   has_many :order_lines, dependent: :destroy
   has_many :orders, through: :order_lines
@@ -35,4 +37,12 @@ class Product < ApplicationRecord
   validates :stock, numericality: { only_integer: true, message: 'Must be an integer' }
   validates :stock, numericality: { greater_than_or_equal_to: 0, message: 'Must be a positive number' }
   validates :price, numericality: { greater_than: 0, message: 'Must be a positive number greater than 0' }
+
+  # Callback
+  def save_change_log
+    fields_and_values = self.changes.reject { |key, value| key == 'updated_at' }
+    fields_and_values.each do |key, value|
+      ChangeLog.create(user: User.get_user, description: 'Update', product: self.name, field: key, previous_content: value[0], new_content: value[1])
+    end
+  end
 end

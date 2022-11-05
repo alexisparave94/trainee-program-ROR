@@ -7,6 +7,9 @@
     <th style='text-align: center'>User</th>
     <th style='text-align: center'>Product</th>
     <th style='text-align: center'>Description</th>
+    <th style='text-align: center'>Field</th>
+    <th style='text-align: center'>Previous Content</th>
+    <th style='text-align: center'>New Content</th>
     <th style='text-align: center'>Date</th>
   </thead>
   <tbody>
@@ -16,6 +19,9 @@
         <td style='text-align: center'><%= log.user.first_name %></td>
         <td style='text-align: center'><%= log.product %></td>
         <td style='text-align: center'><%= log.description %></td>
+        <td style='text-align: center'><%= log.field %></td>
+        <td style='text-align: center'><%= log.previous_content %></td>
+        <td style='text-align: center'><%= log.new_content %></td>
         <td style='text-align: center'><%= log.created_at.to_fs(:db) %></td>
       </tr>
     <% end %>

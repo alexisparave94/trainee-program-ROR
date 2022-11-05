@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  attr_accessor :user
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -17,5 +18,13 @@ class User < ApplicationRecord
 
   def get_last_rate(product)
     comments.where(commentable_id: product.id).order(created_at: :DESC).first&.rate
+  end
+
+  def self.set_user(user)
+    @current_user = user
+  end
+
+  def self.get_user
+    @current_user
   end
 end
