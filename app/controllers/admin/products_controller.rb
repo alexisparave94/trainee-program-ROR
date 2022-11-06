@@ -2,18 +2,20 @@
 
 # Class of the namespace Admin
 module Admin
-  # Class to manage Products Controller
+  # Class to manage interactions between admin users and products
   class ProductsController < ApplicationController
     before_action :set_product, only: %i[edit update destroy]
     before_action :authenticate_user!, only: %i[new create edit update destroy]
 
-    # GET /admin/products/new
+    # Method to get the form to create a new product
+    # - GET /admin/products/new
     def new
       @product = Product.new
       authorize @product
     end
 
-    # POST /admin/products
+    # Method to create a new product
+    # - POST /admin/products
     def create
       @product = Product.new(product_params)
       authorize @product
@@ -25,12 +27,14 @@ module Admin
       end
     end
 
-    # GET /admin/products/:id/edit
+    # Method to get the form to edit a new product
+    # - GET /admin/products/:id/edit
     def edit
       authorize @product
     end
 
-    # PATCH /admin/products/:id
+    # Method to update a product
+    # - PATCH /admin/products/:id
     def update
       authorize @product
       User.define_user(current_user)
@@ -41,7 +45,8 @@ module Admin
       end
     end
 
-    # DELETE /admin/products/:id
+    # Method to delete a product
+    # - DELETE /admin/products/:id
     def destroy
       authorize @product
       @product.destroy
@@ -51,10 +56,12 @@ module Admin
 
     private
 
+    # Method to set strong paramas for product
     def product_params
       params.require(:product).permit(:sku, :name, :description, :price, :stock)
     end
 
+    # Method to set a specific product
     def set_product
       @product = Product.find(params[:id])
     end

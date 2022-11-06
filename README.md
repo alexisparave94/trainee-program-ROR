@@ -9,6 +9,11 @@
   - `rails db:migrate`
   - `rails db:seed`
 - Start the server `rails s`
+## Documentation
+
+- Install YARD gem `gem install yard`
+- Run `yard server`
+- Open: http://localhost:8808
 
 ## Schema
 

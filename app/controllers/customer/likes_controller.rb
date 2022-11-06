@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Customer
-  # Class to manage Likes Controller of the namespace from customer
+  # Class to manage Likes of a product
   class LikesController < ApplicationController
-    # POST /customer/likes
+    # Method to like a product
+    # - POST /customer/likes
     def create
       @product = Product.find(params[:product_id])
       @like = Like.new(user: current_user, likeable: @product)
@@ -12,7 +13,8 @@ module Customer
       redirect_to products_path, notice: 'Product liked successfully'
     end
 
-    # DELETE /customer/likes/:id
+    # Method to dislike a product
+    # - DELETE /customer/likes/:id
     def destroy
       @like = Like.find(params[:id])
       authorize @like

@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # Method to permit enter more fields to sign uop and sign in with devise gem
+  # Method to permit enter more fields to sign up with devise gem
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name])
   end
@@ -39,16 +39,19 @@ class ApplicationController < ActionController::Base
     redirect_to(request.referrer || root_path)
   end
 
+  # Method to pass virtual order lines from session to order lines in database
   def save_order_lines
     @order_lines = session[:virtual_order].map do |line|
       OrderLine.create(product_id: line['id'], quantity: line['quantity'], price: line['price'])
     end
   end
 
+  # Method to load the last pending order of an user
   def look_for_the_last_pending_order
     @pending_order = current_user.orders.where(status: 'pending').order(created_at: :DESC).first
   end
 
+  # Method to create a new pending order
   def create_new_pending_order
     @pending_order = Order.new(user: current_user)
     @pending_order.order_lines = @order_lines
@@ -56,10 +59,12 @@ class ApplicationController < ActionController::Base
     @pending_order.save
   end
 
+  # Method to save order id in session
   def save_order_id_in_session(id)
     session[:order_id] = id
   end
 
+  # Method to validate if it should load a pending order 
   def load_pending_order?
     user_signed_in? && session[:order_id].nil?
   end

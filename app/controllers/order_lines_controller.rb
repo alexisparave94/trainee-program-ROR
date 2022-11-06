@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
-# Class to manage Order Lines Controller
+# Class to manage interactions between no logged in users and order lines of a shopping cart
 class OrderLinesController < ApplicationController
   before_action :set_virtual_order, only: %i[create edit update destroy]
 
-  # GET /products/:id_product/order_lines/new
+  # Method to get the form to add a new product (order line) to the shopping cart
+  # - GET /order_lines/new
   def new
     @order_line = OrderLine.new
     @product = Product.find(params[:product_id])
   end
 
-  # POST /products/:id_product/order_lines
+  # Method to add a new product (order line) to the shopping cart
+  # - POST /order_lines
   def create
     @product = Product.find(order_line_params[:product_id])
     @order_line = OrderLine.new(order_line_params)
@@ -23,7 +25,8 @@ class OrderLinesController < ApplicationController
     end
   end
 
-  # GET /order_lines/:id/edit
+  # Method to get the form to update an order line of the shopping cart
+  # - GET /order_lines/:id/editt
   def edit
     set_virtual_line
     @order_line = OrderLine.new(
@@ -34,7 +37,8 @@ class OrderLinesController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  # PATCH /order_lines/:id
+  # Method to update an order line of the shopping cart
+  # - PATCH /order_lines/:id
   def update
     @product = Product.find(order_line_params[:product_id])
     @order_line = OrderLine.new(order_line_params)
@@ -49,7 +53,8 @@ class OrderLinesController < ApplicationController
     end
   end
 
-  # DELETE /order_lines/:id
+  # Method to delete an order line of the shopping cart
+  # - DELETE /order_lines/:id
   def destroy
     @virtual_order.reject! { |line| line['id'] == params[:id].to_i }
     session[:virtual_order] = @virtual_order.empty? ? nil : @virtual_order
@@ -59,12 +64,14 @@ class OrderLinesController < ApplicationController
 
   private
 
+  # Method to set strong paramas for order line
   def order_line_params
     params.require(:order_line).permit(:quantity, :price, :product_id)
   end
 
   # Method to add a new line or if the line exists only sum quantities
   def add_product
+    look_for_virtual_line_in_virtual_order
     if @virtual_line
       @virtual_line['quantity'] += order_line_params[:quantity].to_i
     else
@@ -82,14 +89,17 @@ class OrderLinesController < ApplicationController
     session[:virtual_order] = @virtual_order
   end
 
-  def look_for_virtual_line_in_virtuakl_order
+  # Method to look for a product in a virtual order
+  def look_for_virtual_line_in_virtual_order
     @virtual_line = @virtual_order.select { |line| line['id'] == order_line_params[:product_id].to_i }.first
   end
 
+  # Method to set a virtual line
   def set_virtual_line
     @virtual_line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
   end
 
+  # Method to set the quantity of a virtual line
   def set_quantity_for_virtual_line
     @virtual_line['quantity'] = order_line_params[:quantity].to_i
   end

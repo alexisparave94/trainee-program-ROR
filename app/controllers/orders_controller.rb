@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-# Class to manage Orders Controller
+# Class to manage interactions betweeen users an orders
 class OrdersController < ApplicationController
-  # GET /orders/:id
-  def show; end
-
+  # Method to delete an order
   # DELETE /orders/:id
+  # @deprecated
   def destroy
     @virtual_order = Order.find(params[:id])
     @virtual_order.destroy
