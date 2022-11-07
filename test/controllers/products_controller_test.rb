@@ -15,18 +15,14 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get new product' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     get new_admin_product_url
     assert_response :success
   end
 
   test 'should report not authorized to get new product' do
-    user = create(:user)
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user)
 
     get new_admin_product_url
     assert_redirected_to root_url
@@ -34,9 +30,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create a product' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     product = build(:product)
     assert_difference('Product.count') do
@@ -48,9 +42,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should response for create unprocessable entity' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     product = build(:product)
     assert_no_difference('Product.count') do
@@ -61,9 +53,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should report not authorized to create a product' do
-    user = create(:user)
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user)
 
     product = build(:product)
     assert_no_difference('Product.count') do
@@ -75,9 +65,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get edit product' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     product = create(:product)
 
@@ -86,9 +74,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should report not authorized to get edit product' do
-    user = create(:user)
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user)
 
     product = create(:product)
 
@@ -98,9 +84,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update a product' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     product = create(:product)
 
@@ -111,9 +95,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should response for update unprocessable entity' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     product = create(:product)
 
@@ -123,9 +105,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should report not authorized to update a product' do
-    user = create(:user)
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user)
 
     product = create(:product)
 
@@ -136,9 +116,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should delete a product' do
-    user = create(:user, role: 'admin')
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user, role: 'admin')
 
     product = create(:product)
 
@@ -151,9 +129,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should report not authorized to delete a product' do
-    user = create(:user)
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in @user = create(:user)
 
     product = create(:product)
 
