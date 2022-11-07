@@ -26,7 +26,9 @@ module Customer
     def update
       @order = Order.find(params[:id])
       authorize @order
-      if @order.update(status: 'completed', total: @order.calculate_total)
+      if @order.completed?
+        redirect_purchase_completed
+      elsif @order.update(status: 'completed', total: @order.calculate_total)
         @order.update_products_stock
         session[:order_id] = nil
         session[:checkout] = nil
@@ -34,6 +36,10 @@ module Customer
       else
         render :new, status: :unprocessable_entity
       end
+    end
+
+    def redirect_purchase_completed
+      redirect_to products_path, notice: 'Have already made this purchase'
     end
   end
 end
