@@ -5,9 +5,7 @@ require 'test_helper'
 class LikesControllerTest < ActionDispatch::IntegrationTest
   test 'should create a like for a product' do
     product = create(:product)
-    user = create(:user)
-
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    sign_in create(:user)
 
     assert_difference('Like.count') do
       post customer_likes_url, params: { product_id: product.id }
@@ -17,10 +15,18 @@ class LikesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Product liked successfully', flash[:notice]
   end
 
-  test 'should delete a like of a product' do
-    user = create(:user)
+  test 'should report no authorized to create a like for a product' do
+    product = create(:product)
+    assert_no_difference('Like.count') do
+      post customer_likes_url, params: { product_id: product.id }
+    end
 
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
+    assert_redirected_to root_url
+    assert_equal 'You are not authorized to perform this action.', flash[:alert]
+  end
+
+  test 'should delete a like of a product' do
+    sign_in user = create(:user)
 
     like = create(:like, user:)
 
