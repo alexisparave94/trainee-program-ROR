@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
     session[:order_id] = id
   end
 
-  # Method to validate if it should load a pending order 
+  # Method to validate if it should load a pending order
   def load_pending_order?
     user_signed_in? && session[:order_id].nil?
   end

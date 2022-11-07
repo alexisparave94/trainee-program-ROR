@@ -40,7 +40,7 @@ class CommentsController < ApplicationController
     redirect_to @commentable, notice: 'Comment was successfully added' if params[:product_id]
   end
 
-  # Method to redirect request to show customer order  
+  # Method to redirect request to show customer order
   def redirect_to_show_order
     redirect_to [:customer, @commentable], notice: 'Comment was successfully added' if params[:order_id]
   end

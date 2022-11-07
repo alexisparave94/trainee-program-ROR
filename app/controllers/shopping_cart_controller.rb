@@ -34,7 +34,7 @@ class ShoppingCartController < ApplicationController
 
   private
 
-  # Method to look for products that exceed the stock of an order 
+  # Method to look for products that exceed the stock of an order
   def lines_exceed_stock
     @virtual_order.map do |line|
       stock = Product.find(line['id']).stock

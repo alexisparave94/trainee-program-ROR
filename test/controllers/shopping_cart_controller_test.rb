@@ -3,10 +3,12 @@
 require 'test_helper'
 
 class ShoppingCartControllerTest < ActionDispatch::IntegrationTest
-  test 'should get shopping cart for not logged in user' do
-    product = create(:product)
+  setup do
+    @product = create(:product)
+  end
 
-    post order_lines_url, params: { order_line: { quantity: 2, price: product.price, product_id: product.id } }
+  test 'should get shopping cart for not logged in user' do
+    post order_lines_url, params: { order_line: { quantity: 2, price: @product.price, product_id: @product.id } }
 
     get shopping_cart_url
     assert_response :success
@@ -14,22 +16,17 @@ class ShoppingCartControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get shopping cart for logged in user' do
-    product = create(:product)
-    user = create(:user)
+    sign_in @user = create(:user)
 
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
-
-    order = create(:order, user:)
-    create(:order_line, order:, product:, quantity: 2, price: 20.0)
+    order = create(:order, user: @user)
+    create(:order_line, order:, product: @product, quantity: 2, price: 20.0)
 
     get shopping_cart_url
     assert_response :success
   end
 
   test 'should empty shopping cart no logged in user' do
-    product = create(:product)
-
-    post order_lines_url, params: { order_line: { quantity: 2, price: product.price, product_id: product.id } }
+    post order_lines_url, params: { order_line: { quantity: 2, price: @product.price, product_id: @product.id } }
 
     get empty_cart_url
 
@@ -38,12 +35,9 @@ class ShoppingCartControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should empty shopping cart with a logged in user' do
-    product = create(:product)
-    user = create(:user)
+    sign_in @user = create(:user)
 
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
-
-    post customer_order_lines_url, params: { order_line: { quantity: 5, price: product.price, product_id: product.id } }
+    post customer_order_lines_url, params: { order_line: { quantity: 5, price: @product.price, product_id: @product.id } }
 
     assert_difference('OrderLine.count', -1) do
       get empty_cart_url(order_id: session[:order_id])
@@ -54,12 +48,9 @@ class ShoppingCartControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get checkout order lines session checkout must be empty' do
-    product = create(:product)
-    user = create(:user)
+    sign_in @user = create(:user)
 
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
-
-    post customer_order_lines_url, params: { order_line: { quantity: 5, price: product.price, product_id: product.id } }
+    post customer_order_lines_url, params: { order_line: { quantity: 5, price: @product.price, product_id: @product.id } }
 
     get checkout_url
     assert_redirected_to shopping_cart_path
@@ -67,12 +58,9 @@ class ShoppingCartControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get checkout order lines session checkout must not be empty' do
-    product = create(:product)
-    user = create(:user)
+    sign_in @user = create(:user)
 
-    post new_user_session_url, params: { user: { email: user.email, password: user.password } }
-
-    post customer_order_lines_url, params: { order_line: { quantity: 15, price: product.price, product_id: product.id } }
+    post customer_order_lines_url, params: { order_line: { quantity: 15, price: @product.price, product_id: @product.id } }
 
     get checkout_url
     assert_redirected_to shopping_cart_path
