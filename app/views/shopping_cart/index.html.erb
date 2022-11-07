@@ -30,9 +30,6 @@
     </div>
     <% unless session[:checkout].nil? %>
       <% if session[:checkout].empty? %>
-        <p class='text-success fw-semibold mt-3'>
-          There is enough stock, you can buy the products
-        </p>
         <div data-turbo='false'>
           <%= button_to 'Buy', customer_order_path(id: session[:order_id] || 0), method: :patch, class:'btn btn-primary' %>
         </div>
