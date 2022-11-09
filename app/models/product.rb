@@ -14,7 +14,8 @@ class Product < ApplicationRecord
 
   # Scopes
   default_scope { order(:name) }
-  scope :available_products, -> { where('stock > 0') }
+  scope :available_products, -> { where('stock > 0').include_likes }
+  scope :include_likes, -> { includes(:likes) }
   scope :order_by_price, -> { order(:price) }
   scope :get_most_purchased_product, lambda {
                                        joins(order_lines: :order).where('orders.status': 1).group(:id)
@@ -44,5 +45,9 @@ class Product < ApplicationRecord
         product: name, field: key, previous_content: value[0], new_content: value[1]
       )
     end
+  end
+
+  def liked_by_current_user(current_user)
+    likes.select { |like| like.user_id == current_user.id }.first
   end
 end
