@@ -11,7 +11,7 @@ class OrderLineFormsController < ApplicationController
 
   def create
     @order_line_form = OrderLineForm.new(order_line_form_params)
-    if session[:virtual_order] = @order_line_form.create(@virtual_order, order_line_form_params[:quantity])
+    if session[:virtual_order] = @order_line_form.virtual_create(@virtual_order, order_line_form_params[:quantity])
       redirect_to shopping_cart_path, notice: 'Line was successfully added to shopping cart'
     else
       render :new, status: :unprocessable_entity
@@ -28,7 +28,7 @@ class OrderLineFormsController < ApplicationController
 
   def update
     @order_line_form = OrderLineForm.new(order_line_form_params)
-    if session[:virtual_order] = @order_line_form.update(@virtual_order)
+    if session[:virtual_order] = @order_line_form.virtual_update(@virtual_order)
       redirect_to shopping_cart_path, notice: 'Line was updated successfully'
     else
       render :edit, status: :unprocessable_entity

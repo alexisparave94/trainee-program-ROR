@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :orders, only: %i[index show create update]
     resources :likes, only: %i[create destroy]
     resources :order_lines
+    resources :order_line_forms, only: %i[new create edit update]
   end
 
   get 'shopping_cart', to: 'shopping_cart#index'
