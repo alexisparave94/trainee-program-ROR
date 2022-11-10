@@ -3,6 +3,7 @@
 # Class to manage interactions between no logged in users and products
 class ProductsController < ApplicationController
   before_action :save_input_states, only: %i[index]
+  before_action :set_product, only: %i[show]
 
   # Method to get index of products
   # GET /products
@@ -13,16 +14,14 @@ class ProductsController < ApplicationController
   # Method to get show product
   # GET /products/:id
   def show
-    @commentable = Product.find(params[:id])
-    @rate = current_user&.get_last_rate(@commentable)
-    @comment = Comment.new(rate: @rate)
+    @comment = RateCommentSetter.call(current_user, @commentable)
   end
 
   private
 
   # Method to find a prodcut by id
   def set_product
-    @product = Product.find(params[:id])
+    @commentable = Product.find(params[:id])
   end
 
   # Method to mantain options of search, filter and sort sections
