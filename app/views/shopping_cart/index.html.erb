@@ -24,8 +24,13 @@
       <% end %>
     </table>
     <div class='d-flex gap-2 mt-3'>
-      <%= link_to 'Empty cart', empty_cart_path(order_id: session[:order_id]), class:'btn btn-primary' %>
-      <%= link_to 'Checkout', checkout_path, class:'btn btn-primary' %>
+      <% if current_user %>
+        <%= link_to 'Empty cart', customer_empty_cart_path(order_id: session[:order_id]), class:'btn btn-primary' %>
+        <%= link_to 'Checkout', customer_checkout_path, class:'btn btn-primary' %>
+      <% else %>
+        <%= link_to 'Empty cart', empty_cart_path(order_id: session[:order_id]), class:'btn btn-primary' %>
+        <%= link_to 'Checkout', checkout_path, class:'btn btn-primary' %>
+      <% end %>
     </div>
     <% unless session[:checkout].nil? %>
       <% if session[:checkout].empty? %>

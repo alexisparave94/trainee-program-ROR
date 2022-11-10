@@ -18,10 +18,6 @@ class User < ApplicationRecord
   # Enum
   enum :role, %i[admin customer]
 
-  def get_last_rate(product)
-    comments.where(commentable_id: product.id).order(created_at: :DESC).first&.rate
-  end
-
   def self.define_user(user)
     @current_user = user
   end

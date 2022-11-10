@@ -6,8 +6,8 @@ module Admin
     # Method to get index of change logs
     # - GET /admin/change_logs
     def index
-      @logs = ChangeLog.all
       authorize ChangeLog
+      @logs = ChangeLog.all
     end
   end
 end

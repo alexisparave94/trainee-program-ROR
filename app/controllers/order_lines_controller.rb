@@ -3,6 +3,8 @@
 # Class to manage interactions between no logged in users and order lines of a shopping cart
 class OrderLinesController < ApplicationController
   before_action :set_virtual_order, only: %i[create edit update destroy]
+  after_action :virtual_order_empty, only: %i[destroy]
+  after_action :reset_checkout, only: %i[destroy]
 
   # Method to get the form to add a new product (order line) to the shopping cart
   # - GET /order_lines/new
@@ -56,13 +58,19 @@ class OrderLinesController < ApplicationController
   # Method to delete an order line of the shopping cart
   # - DELETE /order_lines/:id
   def destroy
-    @virtual_order.reject! { |line| line['id'] == params[:id].to_i }
-    session[:virtual_order] = @virtual_order.empty? ? nil : @virtual_order
-    session[:checkout] = nil
+    @virtual_order = OrderLineDeleter.call(params[:id], @virtual_order)
     redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
   end
 
   private
+
+  def virtual_order_empty
+    session[:virtual_order] = @virtual_order.empty? ? nil : @virtual_order
+  end
+
+  def reset_checkout
+    session[:checkout] = nil
+  end
 
   # Method to set strong paramas for order line
   def order_line_params

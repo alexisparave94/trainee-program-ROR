@@ -49,7 +49,7 @@ module Admin
     # - DELETE /admin/products/:id
     def destroy
       authorize @product
-      @product.destroy
+      ProductDeleter.call(@product)
       save_change_log(request.request_method)
       redirect_to products_path, notice: 'Product was successfully deleted'
     end

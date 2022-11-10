@@ -15,15 +15,21 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :products, only: %i[new create edit update destroy]
     resources :change_logs, only: %i[index]
+    resources :product_forms, only: %i[new create edit update]
   end
 
   namespace :customer do
     resources :orders, only: %i[index show create update]
     resources :likes, only: %i[create destroy]
     resources :order_lines
+    resources :order_line_forms, only: %i[new create edit update]
+    get 'empty_cart' => 'shopping_cart#empty_cart'
+    get 'checkout' => 'shopping_cart#checkout'
   end
 
   get 'shopping_cart', to: 'shopping_cart#index'
   get 'empty_cart' => 'shopping_cart#empty_cart'
   get 'checkout' => 'shopping_cart#checkout'
+
+  resources :order_line_forms, only: %i[new create edit update]
 end
