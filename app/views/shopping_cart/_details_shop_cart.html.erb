@@ -7,7 +7,7 @@
       <td style='vertical-align: middle'><%= format('$ %0.02f', order_line['price']) %></td>
       <td style='vertical-align: middle'><%= format('$ %0.02f', order_line['quantity'].to_i * order_line['price'].to_f) %></td>
       <td style='text-align: center'>
-        <%= link_to edit_order_line_path(id: order_line['id']), class:'btn btn-primary' do %>
+        <%= link_to edit_order_line_form_path(id: order_line['id']), class:'btn btn-primary' do %>
           <i class="bi bi-pencil"></i>
         <% end %>
       </td>

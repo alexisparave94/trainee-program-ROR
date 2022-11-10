@@ -18,8 +18,6 @@ class Admin::ProductFormsController < ApplicationController
 
   def update
     @product_form = ProductForm.new(product_form_params.merge(id: params[:id]))
-    pp product_form_params.merge('id' => params[:id])
-    pp @product_form
     if @product_form.update
       redirect_to root_path, notice: 'Product was updated successfully'
     else

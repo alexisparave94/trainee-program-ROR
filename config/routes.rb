@@ -27,4 +27,6 @@ Rails.application.routes.draw do
   get 'shopping_cart', to: 'shopping_cart#index'
   get 'empty_cart' => 'shopping_cart#empty_cart'
   get 'checkout' => 'shopping_cart#checkout'
+
+  resources :order_line_forms, only: %i[new create edit update]
 end
