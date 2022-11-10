@@ -1,8 +1,9 @@
 class ProductService < ApplicationService
   def initialize(params = {})
     @params = params
+    super()
   end
-  
+
   def call
     product_scope
     product_search
@@ -10,10 +11,10 @@ class ProductService < ApplicationService
     product_sort
   end
 
-  private 
+  private
 
   attr_reader :params
-  
+
   def product_scope
     @products = ProductsQuery.new({ search: params[:search], tag_ids: params[:tag_ids], sort: params[:sort] }).define_scope_for_products
   end
