@@ -4,7 +4,8 @@ class OrderLineFormsController < ApplicationController
   before_action :set_product_invalid_quantity, only: %i[create update]
   before_action :set_virtual_order, only: %i[create edit update destroy]
   before_action :set_virtual_line, only: %i[edit update]
-  
+  after_action :reset_checkout, only: %i[create update]
+
   def new
     @order_line_form = OrderLineForm.new
   end
@@ -61,8 +62,12 @@ class OrderLineFormsController < ApplicationController
     session[:virtual_order] = @virtual_order
   end
 
-   # Method to set a virtual line
-   def set_virtual_line
+  # Method to set a virtual line
+  def set_virtual_line
     @virtual_line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
+  end
+
+  def reset_checkout
+    session[:checkout] = nil
   end
 end

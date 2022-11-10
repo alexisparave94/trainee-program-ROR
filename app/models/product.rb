@@ -20,9 +20,6 @@ class Product < ApplicationRecord
                                                                  .order('SUM(order_lines.quantity) DESC').limit(1)
                                      }
 
-  # Validations
-  
-
   # Callback
   def save_change_log
     fields_and_values = changes.except('updated_at')

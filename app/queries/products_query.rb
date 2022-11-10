@@ -3,7 +3,7 @@
 # Class to manage service of search, filter and sort for products
 class ProductsQuery
   attr_reader :relation, :params
-  
+
   def initialize(params = {}, relation = Product.all)
     @relation = relation
     @params = params
@@ -12,6 +12,7 @@ class ProductsQuery
   # Method to scope or unscope products
   def define_scope_for_products
     return available_unscoped_for_customers if validate_unscoped?
+
     available_for_customers if validate_default_scope?
   end
 
@@ -22,12 +23,14 @@ class ProductsQuery
   # Method to search products by name
   def search_products_by_name
     return relation.where('LOWER(products.name) LIKE ?', "%#{params[:search].downcase}%") if params[:search]
+
     relation
   end
 
   # Method to filter products by tags
   def filter_products
     return relation.joins(:tags).where(tags: { id: params[:tag_ids] }) if params[:tag_ids] && params[:tag_ids].size > 1
+
     relation
   end
 
@@ -48,12 +51,12 @@ class ProductsQuery
 
   # Method to get available products for customers
   def available_for_customers
-    relation.includes(:likes).where('stock > 0')
+    relation.includes(:likes, :tags).where('stock > 0')
   end
 
-  # Method to get available products unscopes for customers 
+  # Method to get available products unscopes for customers
   def available_unscoped_for_customers
-    relation.unscoped.includes(:likes).where('stock > 0')
+    relation.unscoped.includes(:likes, :tags).where('stock > 0')
   end
 
   # Method to validate unscoped porducts
@@ -62,7 +65,7 @@ class ProductsQuery
       (params[:search] != '' && !params[:search].nil?)
   end
 
-   # Method to validate scoped by default porducts
+  # Method to validate scoped by default porducts
   def validate_default_scope?
     params[:search].nil? || params[:search] == ''
   end

@@ -11,11 +11,7 @@ class ShoppingCartController < ApplicationController
   # Method to delete all the lines of a shopping cart
   # - GET /empty_cart
   def empty_cart
-    if session[:order_id]
-      OrderLine.destroy_by(order_id: params[:order_id])
-    else
-      session[:virtual_order] = nil
-    end
+    session[:virtual_order] = ShoppingCartEmptier.call
     redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
   end
 
@@ -26,8 +22,8 @@ class ShoppingCartController < ApplicationController
       @order = Order.find(session[:order_id])
       session[:checkout] = @order.lines_exceed_stock.compact
     else
-      @virtual_order = session[:virtual_order]
-      session[:checkout] = lines_exceed_stock.compact
+      # @virtual_order = session[:virtual_order]
+      session[:checkout] = CheckoutHandler.call(session[:virtual_order])
     end
     redirect_to shopping_cart_path
   end

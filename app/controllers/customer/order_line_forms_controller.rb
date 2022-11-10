@@ -5,6 +5,7 @@ class Customer::OrderLineFormsController < ApplicationController
   before_action :set_product_invalid_quantity, only: %i[create update]
   before_action :set_order_line_form, only: %i[edit]
   before_action :set_product_edit, only: %i[edit]
+  after_action :reset_checkout, only: %i[create update]
 
   def new
     @order_line_form = OrderLineForm.new
@@ -19,8 +20,7 @@ class Customer::OrderLineFormsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     pp @order_line_form = OrderLineForm.new(order_line_form_params.merge(id: params[:id]))
@@ -61,20 +61,7 @@ class Customer::OrderLineFormsController < ApplicationController
     @product = Product.find(@order_line_form.product_id)
   end
 
-  # def set_product_invalid_quantity
-  #   @product = Product.find(order_line_form_params[:product_id])
-  # end
-
-  # # Method to create a virtual order to save it in the session storage
-  # def set_virtual_order
-  #   return @virtual_order = session[:virtual_order] if session[:virtual_order]
-
-  #   @virtual_order = []
-  #   session[:virtual_order] = @virtual_order
-  # end
-
-  #  # Method to set a virtual line
-  #  def set_virtual_line
-  #   @virtual_line = @virtual_order.select { |line| params[:id].to_i == line['id'] }.first
-  # end
+  def reset_checkout
+    session[:checkout] = nil
+  end
 end
