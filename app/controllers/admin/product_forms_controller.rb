@@ -32,8 +32,4 @@ class Admin::ProductFormsController < ApplicationController
   def product_form_params
     params.require(:product_form).permit(:name, :sku, :description, :stock, :price)
   end
-
-  def set_update_parms
-    @attrinutes = Product.find(params[:id]).attributes.except('id', )
-  end
 end
