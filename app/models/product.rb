@@ -14,17 +14,11 @@ class Product < ApplicationRecord
 
   # Scopes
   default_scope { order(:name) }
-  scope :available_products, -> { where('stock > 0').include_likes }
-  scope :include_likes, -> { includes(:likes) }
   scope :order_by_price, -> { order(:price) }
   scope :get_most_purchased_product, lambda {
                                        joins(order_lines: :order).where('orders.status': 1).group(:id)
                                                                  .order('SUM(order_lines.quantity) DESC').limit(1)
                                      }
-
-  scope :filter_by_tag, ->(tags) { joins(:tags).where(tags: { id: tags }) }
-  scope :sort_by_likes, -> { order(likes_count: :DESC) }
-  scope :sort_by_name, ->(form) { order(name: form) }
 
   # Validations
   validates :name, presence: { message: 'Must enter a name' }
