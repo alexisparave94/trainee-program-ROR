@@ -18,7 +18,7 @@
 </div>
 <div class='container-md d-flex mb-3 gap-2'>
   <% if policy(Product).new? %>
-    <%= link_to 'New Product', new_admin_product_path, class:'btn btn-primary' %>
+    <%= link_to 'New Product', new_admin_product_form_path, class:'btn btn-primary' %>
   <% end %>
   <% if policy(ChangeLog).index? %>
     <%= link_to admin_change_logs_path, class:'btn btn-secondary' do %>
@@ -69,7 +69,7 @@
           </div>
           <div>
             <% if policy(product).edit? %>
-              <%= link_to edit_admin_product_path(product), class:'btn btn-primary' do %>
+              <%= link_to edit_admin_product_form_path(product), class:'btn btn-primary' do %>
                 <i class="bi bi-pencil"></i>
               <% end %>
             <% end %>
