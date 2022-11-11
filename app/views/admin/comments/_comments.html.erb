@@ -12,7 +12,7 @@
       <% if comment.pending? %>
         <%= link_to 'Approve', admin_approve_comment_path(id: comment.id, product_id: commentable.id), class:'btn btn-primary' %>
       <% end %>
-      <% if current_user&.admin? %>
+      <% if policy(Comment).destroy? %>
         <%= link_to admin_comment_path(comment, product_id: commentable.id), data: { turbo_method: :delete }, class:'btn btn-danger' do %>
           <i class="bi bi-trash"></i>
         <% end %>
