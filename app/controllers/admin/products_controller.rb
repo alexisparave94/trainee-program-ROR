@@ -4,7 +4,7 @@
 module Admin
   # Class to manage interactions between admin users and products
   class ProductsController < ApplicationController
-    before_action :set_product, only: %i[edit update destroy]
+    before_action :set_product, only: %i[edit update destroy add_tag]
     before_action :authenticate_user!, only: %i[new create edit update destroy]
 
     # Method to get the form to create a new product
@@ -52,6 +52,11 @@ module Admin
       ProductDeleter.call(@product)
       save_change_log(request.request_method)
       redirect_to products_path, notice: 'Product was successfully deleted'
+    end
+
+    def add_tag
+      Admin::TagAdder.call(params[:tag_id], @product)
+      redirect_to @product, notice: 'Tag was successfully added'
     end
 
     private

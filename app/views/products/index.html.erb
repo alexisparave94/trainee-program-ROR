@@ -43,6 +43,18 @@
         <h6 class="card-subtitle mb-2 text-muted"><%= product.sku %></h6>
         <h5 class="card-title"><%= product.name %></h5>
         <p class="card-text"><%= product.description %></p>
+        <h6 class="card-subtitle mb-3 text-muted d-flex gap-2"> 
+          Tags: 
+          <% if product.tags.empty? %>
+            No tags assigned
+          <% else %>
+            <% product.tags.each do |tag| %>
+              <div>
+                <%= tag.name %>
+              </div>
+            <% end %>
+          <% end %>
+        </h6>
         <h6 class="card-subtitle mb-2 text-muted"><%= format('$ %0.02f', product.price) %></h6>
         <h6 class="card-subtitle mb-2 text-muted">Stock: <%= product.stock %></h6>
         <% if current_user&.admin? %>
