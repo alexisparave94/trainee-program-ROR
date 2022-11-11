@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 module Customer
+  # Service object to checkout order lines of a shopping cart
+  # for a logged in customer user
   class CheckoutHandler < ApplicationService
     def initialize(order_id)
       @order_id = order_id

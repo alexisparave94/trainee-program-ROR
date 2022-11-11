@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Service object to checkout virtual order lines of a shopping cart
+# for a no logged in user
 class CheckoutHandler < ApplicationService
   def initialize(virtual_order)
     @virtual_order = virtual_order
