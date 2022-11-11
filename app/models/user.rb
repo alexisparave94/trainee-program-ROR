@@ -15,6 +15,20 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  # Callback
+  before_validation :uniq_admin
+
+  # Validations
+  # validates :role, uniqueness: { message: "You can't create more than one admin user" }, if: :user_admin?
+
+  # validate :uniq_admin
+
+  def uniq_admin
+    return if User.admin.empty?
+
+    errors.add(:role, "You can't create more than one admin user")
+  end
+
   # Enum
   enum :role, %i[admin customer support]
 
