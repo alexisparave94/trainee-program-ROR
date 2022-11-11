@@ -19,7 +19,7 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.admin?
+    user&.admin? || user&.support?
   end
 
   def edit?

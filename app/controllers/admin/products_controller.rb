@@ -6,6 +6,7 @@ module Admin
   class ProductsController < ApplicationController
     before_action :set_product, only: %i[edit update destroy add_tag]
     before_action :authenticate_user!, only: %i[new create edit update destroy]
+    before_action :authorize_action
 
     # Method to get the form to create a new product
     # - GET /admin/products/new
@@ -48,7 +49,6 @@ module Admin
     # Method to delete a product
     # - DELETE /admin/products/:id
     def destroy
-      authorize @product
       ProductDeleter.call(@product)
       save_change_log(request.request_method)
       redirect_to products_path, notice: 'Product was successfully deleted'
@@ -69,6 +69,10 @@ module Admin
     # Method to set a specific product
     def set_product
       @product = Product.find(params[:id])
+    end
+
+    def authorize_action
+      authorize Product
     end
 
     # Method to save changes in the product in change log

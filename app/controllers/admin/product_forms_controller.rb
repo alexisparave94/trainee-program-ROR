@@ -1,4 +1,6 @@
 class Admin::ProductFormsController < ApplicationController
+  before_action :authorize_action
+
   def new
     @product_form = ProductForm.new
   end
@@ -29,5 +31,9 @@ class Admin::ProductFormsController < ApplicationController
 
   def product_form_params
     params.require(:product_form).permit(:name, :sku, :description, :stock, :price)
+  end
+
+  def authorize_action
+    authorize Product
   end
 end
