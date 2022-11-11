@@ -65,16 +65,8 @@
     </div>
   <% end %>
 </div>
-<div>
-  <% if @commentable.comments.empty? %>
-    <h4>No Comments</h4>
-  <% else %>
-    <h4>Comments</h4>
-    <% @commentable.comments.each do |comment| %>
-      <hr>
-      <p><%= comment.description %></p>
-      <p>By <%= comment.user.first_name %></p>
-      <p><%= time_ago_in_words(comment.created_at) %></p>
-    <% end %>
-  <% end %>
-</div>
+<% if current_user && ( current_user.admin? || current_user.support? ) %>
+  <%= render 'admin/comments/comments', commentable: @commentable %>
+<% else %>
+  <%= render 'comments/comments', commentable: @commentable %>
+<% end %>

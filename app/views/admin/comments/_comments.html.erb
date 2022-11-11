@@ -1,0 +1,22 @@
+<div>
+  <% if commentable.comments.empty? %>
+    <h4>No Comments</h4>
+  <% else %>
+    <h4>Comments</h4>
+    <% commentable.comments.each do |comment| %>
+      <hr>
+      <p><%= comment.description %></p>
+      <p>By <%= comment.user.first_name %></p>
+      <p><%= time_ago_in_words(comment.created_at) %></p>
+      <p>Status: <%= comment.status.capitalize %></p>
+      <% if comment.pending? %>
+        <%= link_to 'Approve', admin_approve_comment_path(id: comment.id, product_id: commentable.id), class:'btn btn-primary' %>
+      <% end %>
+      <% if current_user&.admin? %>
+        <%= link_to admin_comment_path(comment, product_id: commentable.id), data: { turbo_method: :delete }, class:'btn btn-danger' do %>
+          <i class="bi bi-trash"></i>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

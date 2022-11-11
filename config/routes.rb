@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     end
     resources :change_logs, only: %i[index]
     resources :product_forms, only: %i[new create edit update]
+    resources :comments, only: %i[destroy]
+    get 'approve_comment' => 'comments#approve_comment'
   end
 
   namespace :customer do

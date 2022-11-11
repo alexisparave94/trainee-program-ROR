@@ -3,7 +3,7 @@ class RateCommentSetter < ApplicationService
     @current_user = current_user
     @product = product
   end
-  
+
   def call
     set_rate
   end
@@ -15,8 +15,8 @@ class RateCommentSetter < ApplicationService
   def set_rate
     Comment.new(rate: get_last_rate(product))
   end
-  
+
   def get_last_rate(product)
-    current_user&.comments.where(commentable_id: product.id).order(created_at: :DESC).first&.rate
+    current_user && current_user.comments.where(commentable_id: product.id).order(created_at: :DESC).first&.rate
   end
 end

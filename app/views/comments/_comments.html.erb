@@ -1,0 +1,13 @@
+<div>
+  <% if commentable.comments.approved.empty? %>
+    <h4>No Comments</h4>
+  <% else %>
+    <h4>Comments</h4>
+    <% commentable.comments.approved.each do |comment| %>
+      <hr>
+      <p><%= comment.description %></p>
+      <p>By <%= comment.user.first_name %></p>
+      <p><%= time_ago_in_words(comment.created_at) %></p>
+    <% end %>
+  <% end %>
+</div>
