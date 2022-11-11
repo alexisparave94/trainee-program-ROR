@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :products, only: %i[new create edit update destroy] do
+    resources :products, only: %i[destroy] do
       post "add_tag", on: :member
     end
     resources :change_logs, only: %i[index]
