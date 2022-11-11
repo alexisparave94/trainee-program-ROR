@@ -16,7 +16,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   # Enum
-  enum :role, %i[admin customer]
+  enum :role, %i[admin customer support]
 
   def self.define_user(user)
     @current_user = user
