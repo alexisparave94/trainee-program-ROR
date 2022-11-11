@@ -10,6 +10,14 @@ class ProductPolicy < ApplicationPolicy
     end
   end
 
+  def permitted_attributes
+    if user.admin?
+      %i[sku name description price stock]
+    elsif user.support?
+      %i[sku name description stock]
+    end
+  end
+
   def create?
     user&.admin?
   end

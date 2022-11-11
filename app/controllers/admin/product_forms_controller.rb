@@ -30,7 +30,7 @@ class Admin::ProductFormsController < ApplicationController
   private
 
   def product_form_params
-    params.require(:product_form).permit(:name, :sku, :description, :stock, :price)
+    params.require(:product_form).permit(policy(Product).permitted_attributes)
   end
 
   def authorize_action
