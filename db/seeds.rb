@@ -49,6 +49,7 @@ user1 = User.create(email: 'admin@mail.com', password: '123456', first_name: 'Ad
 user2 = User.create(email: 'admin2@mail.com', password: '123456', first_name: 'Admin2', last_name: 'Two', role: 'admin')
 user3 = User.create(email: 'alexis@mail.com', password: '123456', first_name: 'Alexis', last_name: 'Parave')
 user4 = User.create(email: 'alex@mail.com', password: '123456', first_name: 'Alex', last_name: 'Vargas')
+user5 = User.new(email: 'support@mail.com', password: '123456', role: 'support', first_name: 'Support')
 
 puts 'Seedding Products'
 20.times do
