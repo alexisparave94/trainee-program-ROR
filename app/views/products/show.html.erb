@@ -67,6 +67,8 @@
 </div>
 <% if current_user && ( current_user.admin? || current_user.support? ) %>
   <%= render 'admin/comments/comments', commentable: @commentable %>
+<% elsif current_user && current_user.customer? %>
+  <%= render 'customer/comments/comments', commentable: @commentable %>
 <% else %>
   <%= render 'comments/comments', commentable: @commentable %>
 <% end %>
