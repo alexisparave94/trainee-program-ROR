@@ -7,6 +7,7 @@ class Order < ApplicationRecord
   has_many :order_lines, dependent: :destroy
   has_many :products, through: :order_lines
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :rates, as: :rateable, dependent: :destroy
 
   # Enum
   enum :status, %i[pending completed refused]

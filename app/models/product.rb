@@ -11,6 +11,7 @@ class Product < ApplicationRecord
   has_and_belongs_to_many :tags
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
+  has_many :rates, as: :rateable, dependent: :destroy
 
   # Scopes
   default_scope { order(:name) }

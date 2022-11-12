@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :change_logs, dependent: :nullify
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :rates, dependent: :destroy
 
   # Callback
   before_validation :uniq_admin

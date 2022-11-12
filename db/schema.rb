@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_11_010803) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_12_042548) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,7 +29,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_010803) do
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "description"
-    t.decimal "rate"
     t.string "commentable_type", null: false
     t.bigint "commentable_id", null: false
     t.datetime "created_at", null: false
@@ -88,6 +87,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_010803) do
     t.bigint "tag_id", null: false
   end
 
+  create_table "rates", force: :cascade do |t|
+    t.decimal "value"
+    t.bigint "user_id", null: false
+    t.string "rateable_type", null: false
+    t.bigint "rateable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rateable_type", "rateable_id"], name: "index_rates_on_rateable"
+    t.index ["user_id"], name: "index_rates_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -118,4 +128,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_010803) do
   add_foreign_key "order_lines", "orders"
   add_foreign_key "order_lines", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "rates", "users"
 end
