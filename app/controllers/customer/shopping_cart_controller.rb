@@ -22,8 +22,5 @@ module Customer
       session[:checkout] = Customer::CheckoutHandler.call(session[:order_id])
       redirect_to shopping_cart_path
     end
-
-    private
-
   end
 end

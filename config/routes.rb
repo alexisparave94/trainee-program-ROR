@@ -23,9 +23,9 @@ Rails.application.routes.draw do
   end
 
   namespace :customer do
-    resources :orders, only: %i[index show create update]
+    resources :orders, only: %i[index show update destroy]
     resources :likes, only: %i[create destroy]
-    resources :order_lines
+    resources :order_lines, only: %i[destroy]
     resources :order_line_forms, only: %i[new create edit update]
     get 'empty_cart' => 'shopping_cart#empty_cart'
     get 'checkout' => 'shopping_cart#checkout'

@@ -31,12 +31,4 @@ class Order < ApplicationRecord
   def calculate_total
     order_lines.reduce(0) { |acc, order_line| acc + order_line.total }
   end
-
-  def update_products_stock
-    order_lines.each do |order_line|
-      product = Product.find(order_line.product_id)
-      product.stock -= order_line.quantity
-      product.save
-    end
-  end
 end
