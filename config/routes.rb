@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :products, only: %i[new create edit update destroy] do
+    resources :products, only: %i[destroy] do
       post "add_tag", on: :member
     end
     resources :change_logs, only: %i[index]
@@ -23,10 +23,12 @@ Rails.application.routes.draw do
   end
 
   namespace :customer do
-    resources :orders, only: %i[index show create update]
+    resources :orders, only: %i[index show update destroy]
     resources :likes, only: %i[create destroy]
-    resources :order_lines
+    resources :order_lines, only: %i[destroy]
     resources :order_line_forms, only: %i[new create edit update]
+    resources :comment_product_forms, only: %i[create]
+    resources :comment_order_forms, only: %i[create]
     get 'empty_cart' => 'shopping_cart#empty_cart'
     get 'checkout' => 'shopping_cart#checkout'
   end

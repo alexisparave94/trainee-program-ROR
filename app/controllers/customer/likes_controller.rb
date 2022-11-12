@@ -3,23 +3,26 @@
 module Customer
   # Class to manage Likes of a product
   class LikesController < ApplicationController
+    before_action :authorize_action
+
     # Method to like a product
     # - POST /customer/likes
     def create
-      @product = Product.find(params[:product_id])
-      @like = Like.new(user: current_user, likeable: @product)
-      authorize @like
-      @like.save
+      Customer::Likes::LikeHandler.call(current_user, params[:product_id])
       redirect_to products_path, notice: 'Product liked successfully'
     end
 
     # Method to dislike a product
     # - DELETE /customer/likes/:id
     def destroy
-      @like = Like.find(params[:id])
-      authorize @like
-      @like.destroy
+      Customer::Likes::DislikeHandler.call(params[:id])
       redirect_to products_path, notice: 'Product disliked successfully'
+    end
+
+    private
+
+    def authorize_action
+      authorize Like
     end
   end
 end

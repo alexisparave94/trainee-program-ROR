@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 module Customer
+  # Service object to empty a shopping cart
+  # for a logged in customer user
   class ShoppingCartEmptier < ApplicationService
     def initialize(order_id)
       @order_id = order_id

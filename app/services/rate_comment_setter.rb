@@ -1,22 +1,18 @@
 class RateCommentSetter < ApplicationService
-  def initialize(current_user, product)
+  def initialize(current_user, commentable)
     @current_user = current_user
-    @product = product
+    @commentable = commentable
   end
 
   def call
-    set_rate
+    set_current_user_rate
   end
 
   private
 
-  attr_reader :current_user, :product
+  attr_reader :current_user, :commentable
 
-  def set_rate
-    Comment.new(rate: get_last_rate(product))
-  end
-
-  def get_last_rate(product)
-    current_user && current_user.comments.where(commentable_id: product.id).order(created_at: :DESC).first&.rate
+  def set_current_user_rate
+    current_user && current_user.rates.where(rateable_id: commentable.id).take
   end
 end

@@ -3,18 +3,18 @@
 module Customer
   # Service object to delete a product of a shopping cart
   # for a logged in customer user
-  class OrderLineDeleter < ApplicationService
-    def initialize(order_line)
-      @order_line = order_line
+  class OrderDeleter < ApplicationService
+    def initialize(order)
+      @order = order
       super()
     end
 
     def call
-      delete_order_line
+      delete_order
     end
 
-    def delete_order_line
-      @order_line.destroy
+    def delete_order
+      @order.destroy
     end
   end
 end

@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
+# Service object to delete a product of a shopping cart
+# for a no logged in user
 class OrderLineDeleter < ApplicationService
   def initialize(id_order_line, virtual_order)
-    super
     @id_order_line = id_order_line
     @virtual_order = virtual_order
+    super()
   end
 
   def call
