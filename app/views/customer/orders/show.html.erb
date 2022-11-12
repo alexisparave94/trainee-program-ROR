@@ -1,6 +1,6 @@
 
-<h3>Order bought on <%= @commentable.updated_at.to_fs(:db) %></h3>
-<p class='my-3 mb-2 fs-5'><strong>Rate: </strong><%= @rate || 'No rated' %></p>
+<h3>Order bought on <%= @comment_order_form.commentable.updated_at.to_fs(:db) %></h3>
+<p class='my-3 mb-2 fs-5'><strong>Rate: </strong><%= @comment_order_form.rate.value || 'No rated' %></p>
 <table class='table table-striped'>
   <thead>
     <th>#</th>
@@ -10,7 +10,7 @@
     <th style='text-align: center'>Subtotal</th>
   </thead>
   <tbody>
-    <% @commentable.order_lines.each.with_index do |order_line,i| %>
+    <% @comment_order_form.commentable.order_lines.each.with_index do |order_line,i| %>
       <tr>
         <td style='vertical-align: middle'><%= i+1 %></td>
         <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
@@ -23,30 +23,30 @@
   <tfoot>
     <tr>
       <td colspan="7">
-        <h5 class='mb-0'>Total: <%= format('$ %0.02f', @commentable.total) %></h5>
+        <h5 class='mb-0'>Total: <%= format('$ %0.02f', @comment_order_form.commentable.total) %></h5>
       </td>
     </tr>
   </tfoot>
 </table>
 <h4>Add a comments</h4>
 <div data-turbo='false'>
-  <%= form_with model: [@commentable, @comment] do |form| %>
+  <%= form_for @comment_order_form, url: customer_comment_order_forms_path do |form| %>
     <div class="field mb-3">
-      <%# form.label :description, class:'form-label' %>
+      <%= form.hidden_field :order_id, value: @comment_order_form.commentable.id %>
       <%= form.text_area :description, class: 'form-control' %>
       <div class='mt-3'>
-        <% unless @comment.errors.messages_for(:description).empty? %>
-          <% @comment.errors.messages_for(:description).each do |message| %>
+        <% unless @comment_order_form.errors.messages_for(:description).empty? %>
+          <% @comment_order_form.errors.messages_for(:description).each do |message| %>
             <p class='text-danger fw-semibold'>* <%= message %></p>
           <% end %>
         <% end %>
       </div>
-      <%= form.label :rate, class:'form-label' %>
+      <%= form.label :rate_value, 'Rate',class:'form-label' %>
       <em>(If you want you could rate or update your rate)</em>
-      <%= form.text_field :rate, class: 'form-control' %>
+      <%= form.text_field :rate_value, class: 'form-control' %>
       <div class='mt-3'>
-        <% unless @comment.errors.messages_for(:rate).empty? %>
-          <% @comment.errors.messages_for(:rate).each do |message| %>
+        <% unless @comment_order_form.errors.messages_for(:rate_value).empty? %>
+          <% @comment_order_form.errors.messages_for(:rate_value).each do |message| %>
             <p class='text-danger fw-semibold'>* <%= message %></p>
           <% end %>
         <% end %>
@@ -58,11 +58,11 @@
   <% end %>
 </div>
 <div>
-  <% if @commentable.comments.empty? %>
+  <% if @comment_order_form.commentable.comments.empty? %>
     <h4>No Comments</h4>
   <% else %>
     <h4>Comments</h4>
-    <% @commentable.comments.each do |comment| %>
+    <% @comment_order_form.commentable.comments.each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
       <p><%= time_ago_in_words(comment.created_at) %></p>

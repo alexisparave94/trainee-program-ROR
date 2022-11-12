@@ -17,10 +17,8 @@ module Customer
     # Method to get show of an order of a customer user
     # - GET customer/orders/:id
     def show
-      @commentable = Order.find(params[:id])
-      @rate = current_user.get_last_rate(@commentable)
-      @comment = Comment.new(rate: @rate)
-      authorize @commentable
+      @comment_order_form = Forms::CommentOrderForm.new({ order_id: params[:id] }, current_user)
+      # authorize @commentable
     end
 
     # Method to update an order to status completed of a customer user

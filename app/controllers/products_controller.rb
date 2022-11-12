@@ -14,7 +14,7 @@ class ProductsController < ApplicationController
   # Method to get show product
   # GET /products/:id
   def show
-    @comment_form = Forms::CommentForm.new({ product_id: params[:id] }, current_user)
+    @comment_product_form = Forms::CommentProductForm.new({ product_id: params[:id] }, current_user)
   end
 
   private

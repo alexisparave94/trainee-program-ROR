@@ -1,7 +1,7 @@
 class RateCommentSetter < ApplicationService
-  def initialize(current_user, product)
+  def initialize(current_user, commentable)
     @current_user = current_user
-    @product = product
+    @commentable = commentable
   end
 
   def call
@@ -10,9 +10,9 @@ class RateCommentSetter < ApplicationService
 
   private
 
-  attr_reader :current_user, :product
+  attr_reader :current_user, :commentable
 
   def set_current_user_rate
-    current_user && current_user.rates.where(rateable_id: product.id).take
+    current_user && current_user.rates.where(rateable_id: commentable.id).take
   end
 end
