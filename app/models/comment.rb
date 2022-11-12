@@ -9,8 +9,4 @@ class Comment < ApplicationRecord
 
   # Enum
   enum :status, %i[pending approved]
-
-  # Validations
-  validates :rate,
-            numericality: { in: 1..10, message: 'Rate must be between 1 and 10' }, allow_nil: true
 end

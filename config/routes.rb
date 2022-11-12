@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :likes, only: %i[create destroy]
     resources :order_lines, only: %i[destroy]
     resources :order_line_forms, only: %i[new create edit update]
+    resources :comment_forms, only: %i[create]
     get 'empty_cart' => 'shopping_cart#empty_cart'
     get 'checkout' => 'shopping_cart#checkout'
   end
