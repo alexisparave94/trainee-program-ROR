@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Service object to show a shopping cart
+# Service object to set orders
 class OrdersSetter < ApplicationService
   def initialize(user, order_id, virtual_order)
     @user = user

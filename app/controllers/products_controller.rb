@@ -14,15 +14,10 @@ class ProductsController < ApplicationController
   # Method to get show product
   # GET /products/:id
   def show
-    @comment_product_form = Forms::CommentProductForm.new({ product_id: params[:id] }, current_user)
+    @comment_product_form = ProductShower.call(params[:id], current_user)
   end
 
   private
-
-  # Method to find a prodcut by id
-  # def set_product
-  #   @commentable = Product.find(params[:id])
-  # end
 
   # Method to mantain options of search, filter and sort sections
   def save_input_states
