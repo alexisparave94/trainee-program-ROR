@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  # Class to manage interactions between customer users and comments for a product or am order
+  # Class to manage interactions between customer users and comments for a product or an order
   class CommentsController < ApplicationController
     before_action :authenticate_user!, only: %i[create]
     before_action :authorize_action

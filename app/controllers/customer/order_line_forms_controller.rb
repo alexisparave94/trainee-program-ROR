@@ -5,8 +5,9 @@ module Customer
   class OrderLineFormsController < ApplicationController
     skip_before_action :load_pending_order
     # before_action :authorize_action
-    before_action :set_order, only: %i[create]
-    after_action :reset_checkout, only: %i[create update]
+    before_action :set_order, only: %i[create update]
+    after_action :reset_session, only: %i[create update]
+    after_action :set_values, only: %i[new edit]
 
     # Method to get the form to add a new product (order line) to shopping cart
     # - GET /customer/order_line_forms/new
@@ -17,12 +18,11 @@ module Customer
     # Method to add a new product (order line) to shopping cart
     # - POST /customer/order_line_forms
     def create
-      @order_line_form = Forms::OrderLineForm.new(order_line_form_params)
-      if @order_line_form.create(@order)
-        redirect_to shopping_cart_path, notice: 'Line was successfully added to shopping cart'
-      else
-        render :new, status: :unprocessable_entity
-      end
+      Customer::OrderLines::OrderLineCreator.new(order_line_form_params, @order).call
+      redirect_to shopping_cart_path, notice: 'Product was successfully added'
+    rescue StandardError => e
+      flash[:error] = e
+      redirect_to new_customer_order_line_form_path(product_id: session[:product_id])
     end
 
     # Method to get the form to update an order line of the shopping cart
@@ -34,12 +34,11 @@ module Customer
     # Method to update an order line of the shopping cart
     # - PATCH /customer/order_line_forms/:id
     def update
-      @order_line_form = Forms::OrderLineForm.new(order_line_form_params.merge(id: params[:id]))
-      if @order_line_form.update
-        redirect_to shopping_cart_path, notice: 'Line was updated successfully'
-      else
-        render :edit, status: :unprocessable_entity
-      end
+      Customer::OrderLines::OrderLineUpdater.new(order_line_form_params, @order).call
+      redirect_to shopping_cart_path, notice: 'Product was successfully added'
+    rescue StandardError => e
+      flash[:error] = e
+      redirect_to edit_customer_order_line_form_path(product_id: session[:product_id])
     end
 
     private
@@ -63,8 +62,15 @@ module Customer
     end
 
     # Method to reset checkout
-    def reset_checkout
+    def reset_session
       session[:checkout] = nil
+      session[:product_id] = nil
+      session[:id] = nil
+    end
+
+    def set_values
+      session[:product_id] = params[:product_id]
+      session[:id] = params[:id]
     end
   end
 end
