@@ -34,13 +34,6 @@ module Forms
       @product.nil? ? nil : @product.id
     end
 
-    def create
-      return false unless valid?
-
-      @product = Product.create(name:, sku:, description:, stock:, price:)
-      save_change_log('Create')
-    end
-
     def update
       return false unless valid?
 
@@ -55,12 +48,6 @@ module Forms
       self.description = attr[:description].nil? ? @product.description : attr[:description]
       self.price = attr[:price].nil? ? @product.price : attr[:price]
       self.stock = attr[:stock].nil? ? @product.stock : attr[:stock]
-    end
-
-    # Method to save changes in the product in change log
-    def save_change_log(description)
-      @log = ChangeLog.new(user: @current_user, product: @product.name, description:)
-      @log.save
     end
   end
 end

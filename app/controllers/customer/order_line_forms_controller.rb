@@ -40,13 +40,6 @@ module Customer
       flash[:error] = e
       redirect_to edit_customer_order_line_form_path(product_id: session[:product_id])
     end
-    #   @order_line_form = Forms::OrderLineForm.new(order_line_form_params.merge(id: params[:id]))
-    #   if @order_line_form.update
-    #     redirect_to shopping_cart_path, notice: 'Line was updated successfully'
-    #   else
-    #     render :edit, status: :unprocessable_entity
-    #   end
-    # end
 
     private
 

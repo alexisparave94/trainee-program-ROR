@@ -16,13 +16,19 @@ module Admin
     # Method to create a new product
     # - POST /admin/product_forms
     def create
-      @product_form = Forms::ProductForm.new(product_form_params, current_user)
-      if @product_form.create
-        redirect_to root_path, notice: 'Product was created successfully'
-      else
-        render :new, status: :unprocessable_entity
-      end
+      Admin::ProductCreator.new(product_form_params, current_user).call
+      redirect_to root_path, notice: 'Product was successfully created'
+    rescue StandardError => e
+      flash[:error] = e
+      redirect_to new_admin_product_form_path
     end
+    #   @product_form = Forms::ProductForm.new(product_form_params, current_user)
+    #   if @product_form.create
+    #     redirect_to root_path, notice: 'Product was created successfully'
+    #   else
+    #     render :new, status: :unprocessable_entity
+    #   end
+    # end
 
     # Method to get the form to edit a new product
     # - GET /admin/product_forms/:id/edit
