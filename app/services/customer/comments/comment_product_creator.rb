@@ -29,7 +29,7 @@ module Customer
       private
 
       def parse_errors
-        @comment_order_form.errors.messages.map { |_key, error| error }.join(', ')
+        @comment_product_form.errors.messages.map { |_key, error| error }.join(', ')
       end
     end
   end
