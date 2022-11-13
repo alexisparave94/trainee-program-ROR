@@ -3,12 +3,6 @@
 module Customer
   # Class to manage interactions between users and shopping cart
   class ShoppingCartController < ApplicationController
-    # def index
-    #   return @order = Order.find(session[:order_id]) if current_user
-
-    #   @virtual_order = session[:virtual_order]
-    # end
-
     # Method to delete all the lines of a shopping cart
     # - GET /empty_cart
     def empty_cart

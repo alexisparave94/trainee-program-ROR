@@ -2,10 +2,10 @@
 
 # Class to manage interactions between users and shopping cart
 class ShoppingCartController < ApplicationController
+  # Method to show shopping cart
+  # - GET /shopping_cart
   def index
-    return @order = Order.find(session[:order_id]) if current_user
-
-    @virtual_order = session[:virtual_order]
+    @order, @virtual_order = OrdersSetter.call(current_user, session[:order_id], session[:virtual_order])
   end
 
   # Method to delete all the lines of a shopping cart
