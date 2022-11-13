@@ -24,7 +24,15 @@
   Stock: <%= @comment_product_form.commentable.stock %>
 </p>
 <p>
-  Rate: <%= @comment_product_form.rate&.value || 'No rated' %>
+  Rate: 
+  <% if @comment_product_form.commentable.rates.empty? %>
+    No rated
+  <% else %>
+    <%= @comment_product_form.commentable.rates.reduce(0) { |acc, rate| acc + rate.value }/@comment_product_form.commentable.rates.size %>
+  <% end %>
+</p>
+<p>
+  Your rate: <%= @comment_product_form.rate&.value || 'No rated' %>
 </p>
 <% if current_user&.admin? %>
   <div class='mb-3'>
