@@ -9,7 +9,6 @@ module Customer
       def initialize(params, order)
         @params = params
         @order = order
-        # @product = @params[:product_id] && Product.find(@params[:product_id])
         super()
       end
 

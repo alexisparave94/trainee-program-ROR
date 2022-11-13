@@ -19,18 +19,8 @@ module Forms
         super(attr)
       else
         @order_line = OrderLine.find(attr[:id])
-        self.product_id = attr[:product_id].nil? ? @order_line.product_id : attr[:product_id]
-        self.price =  attr[:price].nil? ? @order_line.price : attr[:price]
         self.quantity = attr[:quantity].nil? ? @order_line.quantity : attr[:quantity]
-        self.order_id = attr[:order_id].nil? ? @order_line.order_id : attr[:order_id]
-        self.total = attr[:total].nil? ? @order_line.total : attr[:total]
       end
-    end
-
-    def update
-      return false unless valid?
-
-      @order_line.update(quantity:)
     end
 
     def id
