@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 module Customer
-  # Class to manage interactions between users and shopping cart
+  # Class to manage interactions between customer users and shopping cart
   class ShoppingCartController < ApplicationController
     # Method to delete all the lines of a shopping cart
-    # - GET /empty_cart
+    # - GET /customer/empty_cart
     def empty_cart
       Customer::ShoppingCartEmptier.call(params[:order_id])
       redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
     end
 
     # Method to checkout if there is enough stock for all the products of a shopping cart
-    # - GET /checkout
+    # - GET /customer/checkout
     def checkout
       session[:checkout] = Customer::CheckoutHandler.call(session[:order_id])
       redirect_to shopping_cart_path
