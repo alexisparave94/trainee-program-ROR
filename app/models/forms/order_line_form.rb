@@ -10,7 +10,8 @@ module Forms
     # Validations
     validates :quantity, numericality: { only_integer: true, message: 'Quantity must be an integer' }
     validates :quantity,
-              numericality: { greater_than_or_equal_to: 1, message: 'Quantity must be a positive number greather than 0' }
+              numericality: { greater_than_or_equal_to: 1, 
+                              message: 'Quantity must be a positive number greather than 0' }
 
     def initialize(attr = {})
       @product = attr[:product_id] && Product.find(attr[:product_id])
@@ -26,26 +27,6 @@ module Forms
       end
     end
 
-    def virtual_create(virtual_order, quantity)
-      return false unless valid?
-
-      add_virtual_product(virtual_order, quantity)
-    end
-
-    def virtual_update(virtual_order)
-      return false unless valid?
-
-      define_virtual_line(virtual_order)
-      set_quantity_for_virtual_line
-      virtual_order
-    end
-
-    def create(order)
-      return false unless valid?
-
-      add_product(order)
-    end
-
     def update
       return false unless valid?
 
@@ -54,51 +35,6 @@ module Forms
 
     def id
       @order_line.nil? ? nil : @order_line.id
-    end
-
-    private
-
-    # Method to add a new line or if the line exists only sum quantities
-    def add_virtual_product(virtual_order, quantity)
-      look_for_virtual_line_in_virtual_order(virtual_order)
-      if @virtual_line
-        @virtual_line['quantity'] += quantity.to_i
-      else
-        virtual_order << { id: @product.id, name: @product.name, price: @product.price.to_f,
-                           quantity: quantity.to_i }
-      end
-      virtual_order
-    end
-
-    # Method to look for a product in a virtual order
-    def look_for_virtual_line_in_virtual_order(virtual_order)
-      @virtual_line = virtual_order.select { |line| line['id'] == @product.id }.first
-    end
-
-    # Method to set a virtual line
-    def define_virtual_line(virtual_order)
-      @virtual_line = virtual_order.select { |line| @product.id.to_i == line['id'].to_i }.first
-    end
-
-    # Method to set the quantity of a virtual line
-    def set_quantity_for_virtual_line
-      @virtual_line['quantity'] = quantity.to_i
-    end
-
-    # Method to add a new order line or if the line exists only sum quantities
-    def add_product(order)
-      @order_line = order.order_lines.find_by(product_id:)
-      if @order_line.nil?
-        @order_line = OrderLine.create(
-          order_id: order.id,
-          product_id:,
-          price:,
-          quantity:
-        )
-      else
-        @order_line.quantity += quantity.to_i
-        @order_line.save
-      end
     end
   end
 end

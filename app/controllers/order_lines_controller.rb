@@ -10,7 +10,7 @@ class OrderLinesController < ApplicationController
   # - DELETE /order_lines/:id
   def destroy
     @virtual_order = OrderLineDeleter.call(params[:id], @virtual_order)
-    redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
+    redirect_to shopping_cart_path, notice: 'Product was successfully deleted'
   end
 
   private
