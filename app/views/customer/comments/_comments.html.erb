@@ -3,7 +3,7 @@
     <h4>No Comments</h4>
   <% else %>
     <h4>Comments</h4>
-    <% commentable.comments.pending.where(user_id: current_user.id).each do |comment| %>
+    <% commentable.comments.includes(:user).pending.where(user_id: current_user.id).each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
       <p>By <%= comment.user.first_name %></p>
