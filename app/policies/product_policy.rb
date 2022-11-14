@@ -37,4 +37,8 @@ class ProductPolicy < ApplicationPolicy
   def destroy?
     user&.admin?
   end
+
+  def add_tag?
+    user&.admin? || user&.support?
+  end
 end
