@@ -23,7 +23,8 @@ module Customer
         else
           Rate.create(value: @comment_product_form.rate_value, user: @user, rateable: @commentable)
         end
-        @comment = Comment.create(description: @comment_product_form.description, user: @user, commentable: @commentable)
+        @comment = Comment.create(description: @comment_product_form.description, user: @user,
+                                  commentable: @commentable)
       end
 
       private

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RateCommentSetter < ApplicationService
   def initialize(current_user, commentable)
     @current_user = current_user

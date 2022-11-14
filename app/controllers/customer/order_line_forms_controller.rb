@@ -4,8 +4,8 @@ module Customer
   # Class to manage interactions between logged in customer users and order lines of a shopping cart
   class OrderLineFormsController < ApplicationController
     skip_before_action :load_pending_order
-    # before_action :authorize_action
     before_action :set_order, only: %i[create update]
+    before_action :authorize_action
     after_action :reset_session, only: %i[create update]
     after_action :set_values, only: %i[new edit]
 
@@ -49,9 +49,11 @@ module Customer
     end
 
     # Method to authorize actions
-    # def authorize_action
-    #   authorize OrderLine
-    # end
+    def authorize_action
+      return authorize OrderLine.find(params[:id]) if params[:id]
+
+      authorize OrderLine
+    end
 
     # Method to create an order, if there is not an order id referenced in the session
     def set_order
@@ -61,13 +63,14 @@ module Customer
       session[:order_id] = @order.id
     end
 
-    # Method to reset checkout
+    # Method to reset values of session storage
     def reset_session
       session[:checkout] = nil
       session[:product_id] = nil
       session[:id] = nil
     end
 
+    # Method to set values in session storage
     def set_values
       session[:product_id] = params[:product_id]
       session[:id] = params[:id]
