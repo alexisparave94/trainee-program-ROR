@@ -21,6 +21,10 @@
 </tbody>
 <tfoot>
   <tr>
-    <td colspan="7"><h5 class='mb-0'>Total: <%= format('$ %0.02f', @virtual_order.reduce(0) { |sum, line| sum + line['quantity'].to_i * line['price'].to_f }) %></h5></td>
+    <td colspan="7">
+      <h5 class='mb-0'>
+        Total: <%= decorate(Order.new).total_virtual_order(@virtual_order) %>
+        </h5>
+      </td>
   </tr>
 </tfoot>

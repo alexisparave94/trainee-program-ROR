@@ -50,8 +50,10 @@
   <%= form_for @comment_product_form, url: customer_comment_products_path do |form| %>
     <div class="field mb-3">
       <% if flash[:error] %>
-        <div class="alert alert-danger py-2" role="alert">
-          <%= flash[:error] %>
+        <div class="alert alert-danger pb-1" role="alert">
+          <ul>
+            <%= decorate(ErrorForm.new('error')).list_errors(flash[:error]) %>
+          </ul>
         </div>
       <% end %>
       <%= form.hidden_field :product_id, value: @comment_product_form.commentable.id %>
