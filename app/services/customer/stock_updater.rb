@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Customer
+  # Service object to update stock of product when buy an order
   class StockUpdater < ApplicationService
     def initialize(order)
       @order = order

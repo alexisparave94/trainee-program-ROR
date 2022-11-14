@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Admin
+  # Service object to approved a comment
   class CommentApprover < ApplicationService
     def initialize(comment)
       @comment = comment

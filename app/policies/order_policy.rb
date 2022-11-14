@@ -21,4 +21,8 @@ class OrderPolicy < ApplicationPolicy
   def show?
     user&.customer? && record.user_id == user.id
   end
+
+  def destroy?
+    user&.customer? && record.user_id == user.id
+  end
 end

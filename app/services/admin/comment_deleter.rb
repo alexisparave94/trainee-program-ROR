@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Admin
+  # Service object to delete a comment
   class CommentDeleter < ApplicationService
     def initialize(comment)
       @comment = comment

@@ -47,4 +47,32 @@ class OrderLineFormsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to shopping_cart_path
     assert_equal 'Quantity was successfully updated', flash[:notice]
   end
+
+  test 'should get new order line for a customer user' do
+    sign_in @user = create(:user)
+
+    get new_customer_order_line_form_path, params: { product_id: @product.id }
+    assert_response :success
+  end
+
+  test 'should create order line for customer user' do
+    sign_in @user = create(:user)
+
+    assert_difference('OrderLine.count') do
+      post customer_order_line_forms_url, params: { forms_order_line_form: { quantity: 2, price: @product.price, product_id: @product.id } }
+    end
+
+    assert_redirected_to shopping_cart_path
+    assert_equal 'Product was successfully added', flash[:notice]
+  end
+
+  test 'should get edit order line for a customer user' do
+    sign_in @user = create(:user)
+
+    order = create(:order, user: @user)
+    order_line = create(:order_line, order:, product: @product, quantity: 2, price: 20.0)
+
+    get edit_customer_order_line_form_url(order_line), params: { product_id: @product.id }
+    assert_response :success
+  end
 end

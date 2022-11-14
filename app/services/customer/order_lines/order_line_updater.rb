@@ -7,9 +7,10 @@ module Customer
       class NotValidEntryRecord < StandardError; end
 
       def initialize(params, order)
-        @params = params
-        @order = order
-        @order_line = @order.order_lines.find_by(product_id: @params[:product_id])
+        pp @params = params
+        pp @order = order
+        pp @order.order_lines
+        pp @order_line = @order.order_lines.find_by(product_id: @params[:product_id])
         super()
       end
 
