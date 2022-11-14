@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+# Service object to get the user's rate of a commentable object
 class RateCommentSetter < ApplicationService
   def initialize(current_user, commentable)
     @current_user = current_user
     @commentable = commentable
+    super()
   end
 
   def call

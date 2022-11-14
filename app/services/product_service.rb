@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Service object to manage list of products to show in index products
 class ProductService < ApplicationService
   def initialize(params = {})
     @params = params
