@@ -25,7 +25,7 @@ class User < ApplicationRecord
   # validate :uniq_admin
 
   def uniq_admin
-    return if User.admin.empty?
+    return if !admin? || User.admin.empty?
 
     errors.add(:role, "You can't create more than one admin user")
   end
