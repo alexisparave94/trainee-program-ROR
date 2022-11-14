@@ -34,7 +34,7 @@
 <p>
   Your rate: <%= @comment_product_form.rate&.value || 'No rated' %>
 </p>
-<% if current_user&.admin? %>
+<% if current_user&.admin? || current_user&.support? %>
   <div class='mb-3'>
     <h4>Add tags</h4>
     <div>
