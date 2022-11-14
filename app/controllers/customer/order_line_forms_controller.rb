@@ -35,7 +35,7 @@ module Customer
     # - PATCH /customer/order_line_forms/:id
     def update
       Customer::OrderLines::OrderLineUpdater.new(order_line_form_params, @order).call
-      redirect_to shopping_cart_path, notice: 'Product was successfully added'
+      redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
     rescue StandardError => e
       flash[:error] = e
       redirect_to edit_customer_order_line_form_path(product_id: session[:product_id])
