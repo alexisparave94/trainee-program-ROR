@@ -4,6 +4,7 @@
 class ApiController < ActionController::API
   include Pundit::Authorization
   include ErrorHandler
+  include Pagy::Backend
 
   def not_found
     render json: { error: 'not_found' }
@@ -18,5 +19,9 @@ class ApiController < ActionController::API
     rescue ActiveRecord::RecordNotFound, JWT::DecodeError => e
       render json: { errors: e.message }, status: :unauthorized
     end
+  end
+
+  def paginate(resource, items = 20)
+    @pagy, @record = pagy(resource, items:)
   end
 end

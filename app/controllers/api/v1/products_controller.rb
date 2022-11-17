@@ -8,7 +8,9 @@ module Api
       # GET /api/v1/products
       def index
         @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] })
-        render json: @products, status: :ok
+
+        @result = paginate(@products, params[:limit])
+        render json: @result, status: :ok
       end
 
       # Method to get show product
