@@ -7,7 +7,7 @@ module Api
       # Method to get index of products
       # GET /api/v1/products
       def index
-        @products = ProductService.call({ search: params[:search], tag_ids: params[:tag_id], sort: params[:sort_id] })
+        @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] })
         render json: @products, status: :ok
       end
 

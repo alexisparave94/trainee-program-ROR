@@ -12,6 +12,4 @@ class OrdersQuery
   def completed_orders
     relation.where(status: params[:status]).order(created_at: :DESC)
   end
-
-  # @orders = current_user.orders.where(status: 'completed').order(created_at: :DESC)
 end
