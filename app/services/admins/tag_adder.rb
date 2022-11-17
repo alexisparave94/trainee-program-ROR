@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Admin
+module Admins
   # Service object to add tags to a product
   class TagAdder < ApplicationService
     def initialize(tag_id, product)
