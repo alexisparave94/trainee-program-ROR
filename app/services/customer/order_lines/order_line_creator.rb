@@ -4,8 +4,6 @@ module Customer
   module OrderLines
     # Service object to create an order line
     class OrderLineCreator < ApplicationService
-      class NotValidEntryRecord < StandardError; end
-
       def initialize(params, order)
         @params = params
         @order = order
@@ -14,7 +12,7 @@ module Customer
 
       def call
         @order_line_form = Forms::OrderLineForm.new(@params)
-        raise(NotValidEntryRecord, parse_errors) unless @order_line_form.valid?
+        raise(NotValidEntryRecord, parse_errors) unless @order_line_form.valid? && @order.pending?
 
         add_product
       end
@@ -39,6 +37,7 @@ module Customer
           @order_line.quantity += @params[:quantity].to_i
           @order_line.save
         end
+        @order_line
       end
     end
   end
