@@ -6,7 +6,7 @@ class ChangeLog < ApplicationRecord
   belongs_to :user
 
   # Validations
-  validates :description, presence: true
+  # validates :description, presence: true
 
   def format_description(request_method)
     case request_method
