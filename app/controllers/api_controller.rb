@@ -21,7 +21,22 @@ class ApiController < ActionController::API
     end
   end
 
-  def paginate(resource, items = 20)
-    @pagy, @record = pagy(resource, items:)
+  def paginate(collection, items = 20)
+    @pagy, @result = pagy(collection, items:)
+  end
+
+  def json_api_format(representer, type, pagy = nil)
+    if pagy
+      { meta: {
+          pagination: { page: pagy.page,limit: pagy.items, total_items: pagy.count,
+                        total_pages: pagy.pages,
+                        prev_page: pagy.prev,
+                        next_page: pagy.next,
+                        last_page: pagy.last }
+        },
+        data: { type => representer } }
+    else
+      { data: { type => representer } }
+    end
   end
 end
