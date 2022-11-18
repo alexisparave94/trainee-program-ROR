@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
   # Method to get index of products
   # GET /products
   def index
-    @products = ProductService.call({ search: params[:search], tag_ids: params[:tag_id], sort: params[:sort_id] })
+    @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] })
   end
 
   # Method to get show product
@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
   # Method to mantain options of search, filter and sort sections
   def save_input_states
     @search = params[:search].strip unless params[:search].nil?
-    @selected_tags_ids = params[:tag_id]
-    @selected_sort_id = params[:sort_id]
+    @selected_tags = params[:tags]
+    @selected_sort = params[:sort]
   end
 end

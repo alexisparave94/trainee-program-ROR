@@ -11,6 +11,8 @@ module Customer
 
     def call
       set_order
+      raise(NotValidEntryRecord, parse_errors) unless @order.pending?
+
       lines_exceed_stock.compact
     end
 

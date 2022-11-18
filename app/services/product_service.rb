@@ -19,7 +19,7 @@ class ProductService < ApplicationService
   attr_reader :params
 
   def product_scope
-    @products = ProductsQuery.new({ search: params[:search], tag_ids: params[:tag_ids],
+    @products = ProductsQuery.new({ search: params[:search], tags: params[:tags],
                                     sort: params[:sort] }).define_scope_for_products
   end
 
@@ -28,7 +28,7 @@ class ProductService < ApplicationService
   end
 
   def product_filter
-    @products = ProductsQuery.new({ tag_ids: params[:tag_ids] }, @products).filter_products
+    @products = ProductsQuery.new({ tags: params[:tags] }, @products).filter_products
   end
 
   def product_sort

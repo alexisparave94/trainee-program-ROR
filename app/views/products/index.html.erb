@@ -7,11 +7,11 @@
       </div>
       <div class='d-flex gap-1 checkbox-group' style='font-size: 1.1rem'>
         <strong><%= form.label 'Filter by Tags:' %></strong>
-        <%= form.collection_check_boxes :tag_id, Tag.all, :id, :name, checked: @selected_tags_ids %>
+        <%= form.collection_check_boxes :tags, Tag.all, :name, :name, checked: @selected_tags %>
       </div>
       <div class='d-flex gap-2 radio-button-group' style='font-size: 1.1rem'>
         <strong><%= form.label 'Sort by:' %></strong>
-        <%= form.collection_radio_buttons :sort_id, Poro::Sort.sort_options, :id, :name, checked: @selected_sort_id %>
+        <%= form.collection_radio_buttons :sort, Poro::Sort.sort_options, :query_param, :name, checked: @selected_sort %>
       </div>
     <% end %>
   </div>

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Admin
+module Admins
   # Service object to approved a comment
   class CommentApprover < ApplicationService
     def initialize(comment)

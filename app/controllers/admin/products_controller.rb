@@ -12,12 +12,12 @@ module Admin
     # Method to delete a product
     # - DELETE /admin/products/:id
     def destroy
-      ProductDeleter.call(@product)
+      Admins::ProductDeleter.call(@product, @current_user)
       redirect_to products_path, notice: 'Product was successfully deleted'
     end
 
     def add_tag
-      Admin::TagAdder.call(params[:tag_id], @product)
+      Admins::TagAdder.call(params[:tag_id], @product)
       redirect_to @product, notice: 'Tag was successfully added'
     end
 

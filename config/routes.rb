@@ -34,4 +34,21 @@ Rails.application.routes.draw do
   get 'checkout' => 'shopping_cart#checkout'
 
   resources :order_line_forms, only: %i[new create edit update]
+
+  # Api routes
+  namespace :api do
+    namespace :v1 do
+      post '/sign_in' => 'sessions#sign_in'
+      resources :products, only: %i[index show]
+      # namespace :customer do
+        resources :likes, only: %i[create]
+        resources :order_lines, only: %i[create]
+        resources :orders, only: %i[index]
+        get 'checkout' => 'shopping_cart#checkout'
+      # end
+      namespace :admin do
+        resources :products, only: %i[show create update destroy]
+      end
+    end
+  end
 end

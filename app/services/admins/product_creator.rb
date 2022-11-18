@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module Admin
+module Admins
   # Service object to create a product
   class ProductCreator < ApplicationService
-    class NotValidEntryRecord < StandardError; end
+    # class NotValidEntryRecord < StandardError; end
 
     def initialize(params, user)
       @params = params
@@ -21,6 +21,7 @@ module Admin
                                 stock: @params[:stock],
                                 price: @params[:price])
       save_change_log('Create')
+      @product
     end
 
     private

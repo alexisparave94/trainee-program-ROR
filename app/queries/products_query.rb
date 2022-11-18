@@ -29,7 +29,9 @@ class ProductsQuery
 
   # Method to filter products by tags
   def filter_products
-    return relation.joins(:tags).where(tags: { id: params[:tag_ids] }) if params[:tag_ids] && params[:tag_ids].size > 1
+    return relation.joins(:tags).where(tags: { name: params[:tags] }) if params[:tags] &&
+                                                                         (params[:tags].size > 1 ||
+                                                                         params[:tags][0] != '')
 
     relation
   end
@@ -38,12 +40,11 @@ class ProductsQuery
   def sort_products
     return relation if params[:sort].nil? || params[:sort] == ''
 
-    sort_by = params[:sort]
-    case sort_by
-    when 'like'
-      relation.order(likes_count: :DESC)
-    when 'ASC', 'DESC'
-      relation.order(name: sort_by)
+    set_sort_order
+    if @sort_order
+      relation.order("#{@sort_by} #{@sort_order}")
+    else
+      relation.order(@sort_by)
     end
   end
 
@@ -61,12 +62,27 @@ class ProductsQuery
 
   # Method to validate unscoped porducts
   def validate_unscoped?
-    (params[:search] == '' && (params[:tag_ids].size > 1 || !params[:sort].empty?)) ||
-      (params[:search] != '' && !params[:search].nil?)
+    valid_combination_of_search_tags_and_sort_params? || valid_sort_params?
   end
 
   # Method to validate scoped by default porducts
   def validate_default_scope?
     params[:search].nil? || params[:search] == ''
+  end
+
+  def set_sort_order
+    return @sort_by = params[:sort] unless params[:sort][0] == '-'
+
+    @sort_by = params[:sort][1..]
+    @sort_order = 'DESC'
+  end
+
+  def valid_combination_of_search_tags_and_sort_params?
+    (params[:search] == '' && (params[:tags].size > 1 || !params[:sort].empty?)) ||
+      (params[:search] != '' && !params[:search].nil?)
+  end
+
+  def valid_sort_params?
+    (params[:sort] && !params[:sort].empty?)
   end
 end

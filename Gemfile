@@ -87,3 +87,10 @@ gem 'devise'
 
 # Use Pundit for authorization
 gem 'pundit', '~> 2.2'
+
+# Use Json Web Token (JWT) for token based authentication
+gem 'jwt'
+
+
+# Use Pagy to paginate resources
+  gem 'pagy'
