@@ -91,6 +91,9 @@ gem 'pundit', '~> 2.2'
 # Use Json Web Token (JWT) for token based authentication
 gem 'jwt'
 
-
 # Use Pagy to paginate resources
-  gem 'pagy'
+gem 'pagy'
+
+# Use Representable to format json response
+gem 'representable'
+gem 'multi_json'
