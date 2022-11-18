@@ -11,7 +11,7 @@ module Api
       def index
         authorize Order
         @orders = Customer::OrderLister.call(@current_user, 'completed')
-        render json: @orders, status: :ok
+        render json: json_api_format(OrderRepresenter.for_collection.new(@orders), 'orders'), status: :ok
       end
     end
   end
