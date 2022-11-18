@@ -4,13 +4,15 @@ module Customer
   module OrderLines
     # Service object to create an order line
     class OrderLineCreator < ApplicationService
-      def initialize(params, order)
+      def initialize(params, user, order = nil)
         @params = params
+        @user = user
         @order = order
         super()
       end
 
       def call
+        set_order
         @order_line_form = Forms::OrderLineForm.new(@params)
         raise(NotValidEntryRecord, parse_errors) unless @order_line_form.valid? && @order.pending?
 
@@ -21,6 +23,16 @@ module Customer
 
       def parse_errors
         @order_line_form.errors.messages.map { |_key, error| error }.join(', ')
+      end
+
+      def set_order
+        return if @order
+
+        @order = zero_pending_order? ? Order.create(user: @user) : @user.orders.where(status: 'pending').take
+      end
+
+      def zero_pending_order?
+        @user.orders.where(status: 'pending').empty?
       end
 
       # Method to add a new order line or if the line exists only sum quantities
