@@ -8,6 +8,7 @@ module Customer
         @params = params
         @user = user
         @order = order
+        @product = Product.find(@params[:product_id])
         @token = token
         super()
       end
@@ -47,12 +48,12 @@ module Customer
 
       # Method to add a new order line or if the line exists only sum quantities
       def add_product
-        @order_line = @order.order_lines.find_by(product_id: @params[:product_id])
+        @order_line = @order.order_lines.find_by(product_id: @product.id)
         if @order_line.nil?
           @order_line = OrderLine.create(
             order_id: @order.id,
-            product_id: @params[:product_id],
-            price: @params[:price],
+            product: @product,
+            price: @product.price,
             quantity: @params[:quantity]
           )
         else

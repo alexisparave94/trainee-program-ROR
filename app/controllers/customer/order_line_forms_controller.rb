@@ -12,7 +12,7 @@ module Customer
     # Method to get the form to add a new product (order line) to shopping cart
     # - GET /customer/order_line_forms/new
     def new
-      @order_line_form = Forms::OrderLineForm.new(product_id: params[:product_id])
+      @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
     end
 
     # Method to add a new product (order line) to shopping cart
@@ -38,7 +38,7 @@ module Customer
     # Method to update an order line of the shopping cart
     # - PATCH /customer/order_line_forms/:id
     def update
-      @order_line = Customer::OrderLines::OrderLineUpdater.new(order_line_form_params, @order).call
+      @order_line = Customer::OrderLines::OrderLineUpdater.call(order_line_form_params, @order)
       redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
     rescue StandardError => e
       flash[:error] = e
