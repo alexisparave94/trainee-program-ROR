@@ -14,7 +14,8 @@ module Customer
       def call
         set_order
         @order_line_form = Forms::OrderLineForm.new(@params)
-        raise(NotValidEntryRecord, parse_errors) unless @order_line_form.valid? && @order.pending?
+        new_order unless @order.pending?
+        raise(StandardError, parse_errors) unless @order_line_form.valid?
 
         add_product
       end
@@ -23,6 +24,10 @@ module Customer
 
       def parse_errors
         @order_line_form.errors.messages.map { |_key, error| error }.join(', ')
+      end
+
+      def new_order
+        @order = Order.create(user: @user)
       end
 
       def set_order

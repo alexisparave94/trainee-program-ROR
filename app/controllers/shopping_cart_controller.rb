@@ -6,6 +6,10 @@ class ShoppingCartController < ApplicationController
   # - GET /shopping_cart
   def index
     @order, @virtual_order = OrdersSetter.call(current_user, session[:order_id], session[:virtual_order])
+  rescue StandardError => e
+    flash[:error] = e
+    session[:order_id] = nil
+    redirect_to products_path
   end
 
   # Method to delete all the lines of a shopping cart
