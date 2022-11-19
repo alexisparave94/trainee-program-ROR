@@ -5,7 +5,7 @@ module Forms
   class ProductForm
     include ActiveModel::Model
 
-    attr_accessor :name, :sku, :description, :stock, :price, :product
+    attr_accessor :name, :sku, :description, :stock, :price, :product, :image
 
     # Validations
     validates :name, presence: { message: 'Must enter a name' }

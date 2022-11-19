@@ -12,6 +12,7 @@ class Product < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :rates, as: :rateable, dependent: :destroy
+  has_one_attached :image
 
   # Scopes
   default_scope { order(:name) }
@@ -35,5 +36,9 @@ class Product < ApplicationRecord
 
   def liked_by_current_user(current_user)
     likes.select { |like| like.user_id == current_user.id }.first
+  end
+
+  has_one_attached :image do |attachable|
+    attachable.variant :thumb, resize_to_limit: [220, 220]
   end
 end

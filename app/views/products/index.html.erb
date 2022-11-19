@@ -64,6 +64,11 @@
             <%= product.rates.reduce(0) { |acc, rate| acc + rate.value }/product.rates.size %>
           <% end %>
         </h6>
+        <div class='d-flex justify-content-center mb-2'>
+          <% if product.image.attached? %>
+            <%= image_tag product.image.variant(:thumb) %>
+          <% end %>
+        </div>
         <% if current_user&.admin? %>
         <% end %>
         <%= link_to product, class:'btn btn-primary' do %>

@@ -3,7 +3,6 @@
 module Admins
   # Service object to create a product
   class ProductUpdater < ApplicationService
-    # class NotValidEntryRecord < StandardError; end
 
     def initialize(params, product_id, user = nil)
       @params = params
@@ -17,11 +16,7 @@ module Admins
       @product_form = Forms::ProductForm.new(@params)
       raise(NotValidEntryRecord, parse_errors) unless @product_form.valid?
 
-      @product.update(name: @params[:name],
-                      sku: @params[:sku],
-                      description: @params[:description],
-                      stock: @params[:stock],
-                      price: @params[:price])
+      @product.update(@params)
       @product
     end
 
