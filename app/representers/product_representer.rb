@@ -10,6 +10,7 @@ class ProductRepresenter < Representable::Decorator
   property :stock
   property :price
   property :likes_count
+  property :image_url
   property :created_at
   property :updated_at
 end

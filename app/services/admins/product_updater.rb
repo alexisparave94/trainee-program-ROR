@@ -3,7 +3,6 @@
 module Admins
   # Service object to create a product
   class ProductUpdater < ApplicationService
-
     def initialize(params, product_id, user = nil)
       @params = params
       @product = Product.find(product_id)

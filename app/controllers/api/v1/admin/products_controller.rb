@@ -12,15 +12,17 @@ module Api
         # Method to create a new product
         # - POST /api/v1/admin/products
         def create
-          @product = Admins::ProductCreator.new(product_form_params, @current_user).call
-          render json: @product, status: :ok
+          @product = Admins::ProductCreator.call(product_form_params, @current_user)
+          @result = add_url_to_result(@product)
+          render json: json_api_format(ProductRepresenter.new(@result), 'product'), status: :ok
         end
 
         # Method to update a product
         # - PATCH /api/v1/admin/product_forms/:id
         def update
-          @product = Admins::ProductUpdater.new(product_form_params, params[:id], @current_user).call
-          render json: @product, status: :ok
+          @product = Admins::ProductUpdater.call(product_form_params, params[:id], @current_user)
+          @result = add_url_to_result(@product)
+          render json: json_api_format(ProductRepresenter.new(@result), 'product'), status: :ok
         end
 
         # Method to delete a product

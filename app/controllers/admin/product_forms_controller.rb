@@ -18,7 +18,7 @@ module Admin
     # Method to create a new product
     # - POST /admin/product_forms
     def create
-      Admins::ProductCreator.new(product_form_params, current_user).call
+      Admins::ProductCreator.call(product_form_params, current_user)
       redirect_to root_path, notice: 'Product was successfully created'
     rescue StandardError => e
       flash[:error] = e
@@ -34,7 +34,7 @@ module Admin
     # Method to update a product
     # - PATCH /admin/product_forms/:id
     def update
-      Admins::ProductUpdater.new(product_form_params, params[:id], current_user).call
+      Admins::ProductUpdater.call(product_form_params, params[:id], current_user)
       redirect_to root_path, notice: 'Product was successfully updated'
     rescue StandardError => e
       flash[:error] = e
