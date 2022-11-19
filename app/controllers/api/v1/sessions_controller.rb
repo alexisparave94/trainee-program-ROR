@@ -10,8 +10,10 @@ module Api
         @user = User.find_by(email: params[:email])
         if @user.valid_password?(params[:password])
           token = JsonWebToken.encode(user_id: @user.id)
-          render json: { token:, first_name: @user.first_name,
-                         email: @user.email }, status: :ok
+          render json: json_api_format(
+            { token:, first_name: @user.first_name, email: @user.email },
+            'session'
+          ), status: :ok
         else
           render json: { error: 'unauthorized' }, status: :unauthorized
         end
