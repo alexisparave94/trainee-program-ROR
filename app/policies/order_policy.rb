@@ -25,4 +25,8 @@ class OrderPolicy < ApplicationPolicy
   def destroy?
     user&.customer? && record.user_id == user.id
   end
+
+  def checkout?
+    user&.customer? && record.user_id == user.id
+  end
 end

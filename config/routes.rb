@@ -44,7 +44,7 @@ Rails.application.routes.draw do
         resources :likes, only: %i[create]
         resources :order_lines, only: %i[create]
         resources :orders, only: %i[index]
-        get 'checkout' => 'shopping_cart#checkout'
+        get 'checkout' => 'orders#checkout'
       # end
       namespace :admin do
         resources :products, only: %i[show create update destroy]
