@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Class to representar a product in json
-class ProductRepresenter < Representable::Decorator
+class ProductUrlRepresenter < Representable::Decorator
   include Representable::JSON
 
   property :id
@@ -10,6 +10,7 @@ class ProductRepresenter < Representable::Decorator
   property :stock
   property :price
   property :likes_count
+  property :image_url
   property :created_at
   property :updated_at
 end

@@ -10,7 +10,7 @@ module Api
         @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] })
         paginate(@products, params[:limit])
         @result = add_url_to_result(@result)
-        render json: json_api_format(ProductRepresenter.for_collection.new(@result), 'products', @pagy), status: :ok
+        render json: json_api_format(ProductUrlRepresenter.for_collection.new(@result), 'products', @pagy), status: :ok
       end
 
       # Method to get show product
@@ -18,7 +18,7 @@ module Api
       def show
         @product = ProductGetter.call(params[:id])
         @result = add_url_to_result(@product)
-        render json: json_api_format(ProductRepresenter.new(@result), 'product'), status: :ok
+        render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
       end
     end
   end

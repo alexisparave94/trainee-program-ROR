@@ -14,7 +14,7 @@ module Api
         def create
           @product = Admins::ProductCreator.call(product_form_params, @current_user)
           @result = add_url_to_result(@product)
-          render json: json_api_format(ProductRepresenter.new(@result), 'product'), status: :ok
+          render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end
 
         # Method to update a product
@@ -22,7 +22,7 @@ module Api
         def update
           @product = Admins::ProductUpdater.call(product_form_params, params[:id], @current_user)
           @result = add_url_to_result(@product)
-          render json: json_api_format(ProductRepresenter.new(@result), 'product'), status: :ok
+          render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end
 
         # Method to delete a product

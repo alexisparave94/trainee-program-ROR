@@ -12,10 +12,10 @@ module Api
       # - POST /api/v1/customer/likes
       def create
         @like = Customer::Likes::LikeHandler.call(@current_user, params[:product_id])
-        render json: @like, status: :ok
+        render json: json_api_format(LikeRepresenter.new(@like), 'like'), status: :ok
       end
 
-      # private
+      private
 
       def authorize_action
         authorize Like

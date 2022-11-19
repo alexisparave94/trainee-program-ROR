@@ -54,6 +54,7 @@ class ApiController < ActionController::API
 
   def insert_url(item_struct, item)
     image_url = item.image.attached? ? url_for(item.image) : ''
-    item_struct.new(item.id, item.name, item.description, item.stock, item.price, item.likes_count, item.created_at, item.updated_at, image_url)
+    item_struct.new(item.id, item.name, item.description, item.stock, item.price, item.likes_count,
+                    item.created_at, item.updated_at, image_url)
   end
 end
