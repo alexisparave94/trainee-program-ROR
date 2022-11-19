@@ -11,8 +11,8 @@ class ApiController < ActionController::API
   end
 
   def authorize_request
-    header = request.headers['Authorization']
-    header = header.split.last if header
+    @token = request.headers['Authorization']
+    header = @token.split.last if @token
     begin
       @decoded = JsonWebToken.decode(header)
       @current_user = User.find(@decoded[:user_id])

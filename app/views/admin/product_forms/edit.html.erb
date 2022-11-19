@@ -3,8 +3,10 @@
   <div class='col-sm-4 col-md-4 col-lg-4'>
     <%= form_for @product_form, url: admin_product_form_path(@product_form.id), method: :patch do |form| %>
       <% if flash[:error] %>
-        <div class="alert alert-danger py-2" role="alert">
-          <%= flash[:error] %>
+        <div class="alert alert-danger pb-1" role="alert">
+          <ul>
+            <%= decorate(ErrorForm.new('error')).list_errors(flash[:error]) %>
+          </ul>
         </div>
       <% end %>
       <div class="field mb-3">

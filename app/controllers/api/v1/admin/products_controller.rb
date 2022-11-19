@@ -12,7 +12,7 @@ module Api
         # Method to create a new product
         # - POST /api/v1/admin/products
         def create
-          @product = Admins::ProductCreator.call(product_form_params, @current_user)
+          @product = Admins::ProductCreator.call(product_form_params, @current_user, @token)
           @result = add_url_to_result(@product)
           render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end
@@ -20,7 +20,7 @@ module Api
         # Method to update a product
         # - PATCH /api/v1/admin/product_forms/:id
         def update
-          @product = Admins::ProductUpdater.call(product_form_params, params[:id], @current_user)
+          @product = Admins::ProductUpdater.call(product_form_params, params[:id], @current_user, @token)
           @result = add_url_to_result(@product)
           render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end

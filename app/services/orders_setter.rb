@@ -11,7 +11,7 @@ class OrdersSetter < ApplicationService
 
   def call
     set_order
-    raise(StandardError, 'The purchase has been completed') unless @order.pending?
+    raise(StandardError, 'The purchase has been completed') unless !@user || @order.pending?
 
     [@order, @virtual_order]
   end

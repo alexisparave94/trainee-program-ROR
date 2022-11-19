@@ -13,10 +13,7 @@ module ErrorHandler
       rescue_from ActiveRecord::RecordNotFound do |e|
         respond(:record_not_found, :not_found, e.to_s)
       end
-      rescue_from NotValidEntryRecord do |e|
-        respond(e.error, e.status, e.message)
-      end
-      rescue_from NotEnoughStock do |e|
+      rescue_from NotValidEntryRecord, NotEnoughStock do |e|
         respond(e.error, e.status, e.message)
       end
     end

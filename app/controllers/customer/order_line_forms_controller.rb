@@ -72,7 +72,7 @@ module Customer
       session[:checkout] = nil
       session[:product_id] = nil
       session[:id] = nil
-      session[:order_id] = @order_line.order_id
+      session[:order_id] = @order_line.order_id if @order_line
     end
 
     # Method to set values in session storage
