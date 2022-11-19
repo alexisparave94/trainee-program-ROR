@@ -3,7 +3,6 @@
 module Admins
   # Service object to create a product
   class ProductCreator < ApplicationService
-
     def initialize(params, user)
       @params = params
       @user = user

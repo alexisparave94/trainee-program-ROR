@@ -16,6 +16,9 @@ module ErrorHandler
       rescue_from NotValidEntryRecord do |e|
         respond(e.error, e.status, e.message)
       end
+      rescue_from NotEnoughStock do |e|
+        respond(e.error, e.status, e.message)
+      end
     end
   end
 

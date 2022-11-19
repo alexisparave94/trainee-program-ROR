@@ -6,10 +6,13 @@ module Customer
   class ShoppingCartEmptier < ApplicationService
     def initialize(order_id)
       @order_id = order_id
+      @order = Order.find(order_id)
       super()
     end
 
     def call
+      raise(StandardError, 'The purchase has been completed') unless @order.pending?
+
       empty_cart
     end
 

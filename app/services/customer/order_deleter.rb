@@ -10,6 +10,8 @@ module Customer
     end
 
     def call
+      raise(StandardError, 'The purchase has been completed') unless @order.pending?
+
       delete_order
     end
 

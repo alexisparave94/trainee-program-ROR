@@ -10,8 +10,8 @@ module Api
       # Method to checkout if there is enough stock for all the products of a shopping cart
       # - GET /api/v1/customer/checkout
       def checkout
-        @exceed_order_lines = Customer::CheckoutHandler.call(params[:order_id])
-        render json: @exceed_order_lines, status: :ok
+        @order = Customer::CheckoutHandlerApi.call(params[:order_id])
+        render json: json_api_format(OrderRepresenter.new(@order), 'order'), status: :ok
       end
     end
     # end
