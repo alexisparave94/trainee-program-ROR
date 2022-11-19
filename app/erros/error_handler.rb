@@ -8,7 +8,7 @@ module ErrorHandler
       #   respond(:standard_error, 500, e.to_s)
       # end
       rescue_from Pundit::NotAuthorizedError do |e|
-        respond(:not_authorized_found, :unauthorized, e.to_s)
+        respond(:not_authorized_error, :unauthorized, e.to_s)
       end
       rescue_from ActiveRecord::RecordNotFound do |e|
         respond(:record_not_found, :not_found, e.to_s)

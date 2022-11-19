@@ -12,11 +12,11 @@ module Api
       # Method to add a produst to a shopping cart api endpoint
       # - POST /api/v1/order_lines
       def create
-        @order_line = Customer::OrderLines::OrderLineCreator.new(order_line_form_params, @current_user).call
+        @order_line = Customer::OrderLines::OrderLineCreator.call(order_line_form_params, @current_user, nil, @token)
         render json: json_api_format(OrderLineRepresenter.new(@order_line), 'order_line'), status: :ok
       end
 
-      # private
+      private
 
       def order_line_form_params
         params.require(:forms_order_line_form).permit(:product_id, :price, :quantity, :order_id)

@@ -4,10 +4,11 @@ module Customer
   module OrderLines
     # Service object to create an order line
     class OrderLineCreator < ApplicationService
-      def initialize(params, user, order = nil)
+      def initialize(params, user, order = nil, token = nil)
         @params = params
         @user = user
         @order = order
+        @token = token
         super()
       end
 
@@ -15,7 +16,7 @@ module Customer
         set_order
         @order_line_form = Forms::OrderLineForm.new(@params)
         new_order unless @order.pending?
-        raise(StandardError, parse_errors) unless @order_line_form.valid?
+        handle_error
 
         add_product
       end
@@ -24,6 +25,10 @@ module Customer
 
       def parse_errors
         @order_line_form.errors.messages.map { |_key, error| error }.join(', ')
+      end
+
+      def parse_errors_api
+        @order_line_form.errors.messages
       end
 
       def new_order
@@ -55,6 +60,14 @@ module Customer
           @order_line.save
         end
         @order_line
+      end
+
+      def handle_error
+        if @token
+          raise(NotValidEntryRecord, parse_errors_api) unless @order_line_form.valid?
+        else
+          raise(StandardError, parse_errors) unless @order_line_form.valid?
+        end
       end
     end
   end
