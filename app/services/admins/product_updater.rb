@@ -13,7 +13,7 @@ module Admins
 
     def call
       update_params if @user.support?
-      @product_form = Forms::ProductForm.new(@params)
+      @product_form = Forms::EditProductForm.new(@params)
       handle_error
 
       @product.update(@params)

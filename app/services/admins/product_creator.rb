@@ -11,7 +11,7 @@ module Admins
     end
 
     def call
-      @product_form = Forms::ProductForm.new(@params)
+      @product_form = Forms::NewProductForm.new(@params)
       handle_error
       @product = Product.create(@params)
       save_change_log('Create')

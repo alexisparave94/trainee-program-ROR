@@ -12,13 +12,13 @@ module Admin
     # Method to get the form to create a new product
     # - GET /admin/product_forms/new
     def new
-      @product_form = Forms::ProductForm.new
+      @product_form = Admins::NewProductFormGetter.call
     end
 
     # Method to create a new product
     # - POST /admin/product_forms
     def create
-      Admins::ProductCreator.call(product_form_params, current_user)
+      @product_form = Admins::ProductCreator.call(new_product_form_params, current_user)
       redirect_to root_path, notice: 'Product was successfully created'
     rescue StandardError => e
       flash[:error] = e
@@ -28,13 +28,13 @@ module Admin
     # Method to get the form to edit a new product
     # - GET /admin/product_forms/:id/edit
     def edit
-      @product_form = Forms::ProductForm.new(id: params[:id])
+      @product_form = Admins::EditProductFormGetter.call(id: params[:id])
     end
 
     # Method to update a product
     # - PATCH /admin/product_forms/:id
     def update
-      Admins::ProductUpdater.call(product_form_params, params[:id], current_user)
+      Admins::ProductUpdater.call(edit_product_form_params, params[:id], current_user)
       redirect_to root_path, notice: 'Product was successfully updated'
     rescue StandardError => e
       flash[:error] = e
@@ -44,8 +44,12 @@ module Admin
     private
 
     # Method to set strong paramas for product form
-    def product_form_params
-      params.require(:forms_product_form).permit(policy(Product).permitted_attributes)
+    def new_product_form_params
+      params.require(:forms_new_product_form).permit(policy(Product).permitted_attributes)
+    end
+
+    def edit_product_form_params
+      params.require(:forms_edit_product_form).permit(policy(Product).permitted_attributes)
     end
 
     # Method to authorize actions

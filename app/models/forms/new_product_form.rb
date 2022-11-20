@@ -2,7 +2,7 @@
 
 module Forms
   # Class to manage Product Form model
-  class ProductForm
+  class NewProductForm
     include ActiveModel::Model
 
     attr_accessor :name, :sku, :description, :stock, :price, :product, :image
