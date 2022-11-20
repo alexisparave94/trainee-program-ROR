@@ -28,7 +28,8 @@ module Customer
     # Method to get the form to update an order line of the shopping cart
     # - GET /customer/order_line_forms/:id/edit
     def edit
-      @order_line_form = Customer::OrderLines::EditFormGetter.call(id: params[:id], product_id: params[:product_id])
+      @order_line_form = Customer::OrderLines::EditFormGetter.call({ id: params[:id], product_id: params[:product_id] },
+                                                                   current_user)
     rescue StandardError => e
       flash[:alert] = e
       session[:order_id] = nil

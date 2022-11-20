@@ -25,10 +25,10 @@ class OrderLineFormsController < ApplicationController
   # Method to get the form to update an order line of the shopping cart
   # - GET /order_line_forms/:id/edit
   def edit
-    @order_line_form = Forms::OrderLineForm.new(
-      product_id: params[:id],
-      price: params[:price],
-      quantity: params[:quantity]
+    @order_line_form = Customer::OrderLines::EditFormGetter.call(
+      { product_id: params[:id],
+        price: params[:price],
+        quantity: params[:quantity] }
     )
   end
 
