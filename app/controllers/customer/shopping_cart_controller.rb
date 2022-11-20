@@ -9,7 +9,7 @@ module Customer
       Customer::ShoppingCartEmptier.call(params[:order_id])
       redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
     rescue StandardError => e
-      flash[:error] = e
+      flash[:alert] = e
       session[:order_id] = nil
       redirect_to products_path
     end
@@ -20,7 +20,7 @@ module Customer
       session[:checkout] = Customer::CheckoutHandler.call(session[:order_id])
       redirect_to shopping_cart_path
     rescue StandardError => e
-      flash[:error] = e
+      flash[:alert] = e
       session[:order_id] = nil
       redirect_to products_path
     end
