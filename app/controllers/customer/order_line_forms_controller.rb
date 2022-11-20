@@ -18,7 +18,7 @@ module Customer
     # Method to add a new product (order line) to shopping cart
     # - POST /customer/order_line_forms
     def create
-      @order_line = Customer::OrderLines::OrderLineCreator.new(order_line_form_params, current_user, @order).call
+      @order_line = Customer::OrderLines::OrderLineCreator.call(order_line_form_params, current_user, @order)
       redirect_to shopping_cart_path, notice: 'Product was successfully added'
     rescue StandardError => e
       flash[:error] = e
@@ -30,7 +30,7 @@ module Customer
     def edit
       @order_line_form = Customer::OrderLines::EditFormGetter.call(id: params[:id], product_id: params[:product_id])
     rescue StandardError => e
-      flash[:error] = e
+      flash[:alert] = e
       session[:order_id] = nil
       redirect_to products_path
     end

@@ -9,7 +9,7 @@ class OrderLineFormsController < ApplicationController
   # Method to get the form to add a new product (order line) to the shopping cart
   # - GET /order_line_forms/new
   def new
-    @order_line_form = Forms::OrderLineForm.new(product_id: params[:product_id])
+    @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
   end
 
   # Method to add a new product (order line) to the shopping cart
@@ -35,7 +35,7 @@ class OrderLineFormsController < ApplicationController
   # Method to update an order line of the shopping cart
   # - PATCH /order_line_forms/:id
   def update
-    VirtualOrderLineUpdater.new(order_line_form_params, @virtual_order).call
+    VirtualOrderLineUpdater.call(order_line_form_params, @virtual_order)
     redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
   rescue StandardError => e
     flash[:error] = e

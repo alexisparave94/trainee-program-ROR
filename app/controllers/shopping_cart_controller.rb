@@ -7,7 +7,7 @@ class ShoppingCartController < ApplicationController
   def index
     @order, @virtual_order = OrdersSetter.call(current_user, session[:order_id], session[:virtual_order])
   rescue StandardError => e
-    flash[:error] = e
+    flash[:alert] = e
     session[:order_id] = nil
     redirect_to products_path
   end
