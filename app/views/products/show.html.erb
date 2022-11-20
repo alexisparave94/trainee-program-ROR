@@ -23,17 +23,19 @@
 <p>
   Stock: <%= @comment_product_form.commentable.stock %>
 </p>
-<p>
-  Rate: 
-  <% if @comment_product_form.commentable.rates.empty? %>
-    No rated
-  <% else %>
-    <%= @comment_product_form.commentable.rates.reduce(0) { |acc, rate| acc + rate.value }/@comment_product_form.commentable.rates.size %>
-  <% end %>
-</p>
-<p>
-  Your rate: <%= @comment_product_form.rate&.value || 'No rated' %>
-</p>
+<% if @current_user.customer? %>  
+  <p>
+    Rate: 
+    <% if @comment_product_form.commentable.rates.empty? %>
+      No rated
+    <% else %>
+      <%= @comment_product_form.commentable.rates.reduce(0) { |acc, rate| acc + rate.value }/@comment_product_form.commentable.rates.size %>
+    <% end %>
+  </p>
+  <p>
+    Your rate: <%= @comment_product_form.rate&.value || 'No rated' %>
+  </p>
+<% end %>
 <% if current_user&.admin? || current_user&.support? %>
   <div class='mb-3'>
     <h4>Add tags</h4>
@@ -65,16 +67,18 @@
           <% end %>
         <% end %>
       </div>
-      <%= form.label :rate_value, 'Rate', class:'form-label' %>
-      <em>(If you want you could rate or update your rate)</em>
-      <%= form.text_field :rate_value, class: 'form-control' %>
-      <div class='mt-3'>
-        <% unless @comment_product_form.errors.messages_for(:rate_value).empty? %>
-          <% @comment_product_form.errors.messages_for(:rate_value).each do |message| %>
-            <p class='text-danger fw-semibold'>* <%= message %></p>
+      <% if @current_user.customer? %>  
+        <%= form.label :rate_value, 'Rate', class:'form-label' %>
+        <em>(If you want you could rate or update your rate)</em>
+        <%= form.text_field :rate_value, class: 'form-control' %>
+        <div class='mt-3'>
+          <% unless @comment_product_form.errors.messages_for(:rate_value).empty? %>
+            <% @comment_product_form.errors.messages_for(:rate_value).each do |message| %>
+              <p class='text-danger fw-semibold'>* <%= message %></p>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
     <div class="d-grid mb-3">
       <%= form.submit 'Add Comment', class: 'btn btn-primary' %>

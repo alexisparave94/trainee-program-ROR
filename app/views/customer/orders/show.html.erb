@@ -33,7 +33,7 @@
   <%= form_for @comment_order_form, url: customer_comment_orders_path do |form| %>
     <div class="field mb-3">
       <% if flash[:error] %>
-        <div class="alert alert-danger py-2" role="alert">
+        <div class="alert alert-danger pb-1" role="alert">
           <ul>
             <%= decorate(ErrorForm.new('error')).list_errors(flash[:error]) %>
           </ul>

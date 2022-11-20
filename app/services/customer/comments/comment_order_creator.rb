@@ -4,8 +4,6 @@ module Customer
   module Comments
     # Service object to like a product
     class CommentOrderCreator < ApplicationService
-      class NotValidEntryRecord < StandardError; end
-
       def initialize(user, params)
         @user = user
         @params = params
@@ -16,7 +14,7 @@ module Customer
 
       def call
         @comment_order_form = Forms::CommentOrderForm.new(@params)
-        raise(NotValidEntryRecord, parse_errors) unless @comment_order_form.valid?
+        raise(StandardError, parse_errors) unless @comment_order_form.valid?
 
         if @rate
           @rate.update(value: @comment_order_form.rate_value) unless @comment_order_form.rate_value.empty?
