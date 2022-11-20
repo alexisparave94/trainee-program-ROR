@@ -3,7 +3,6 @@
     <h4>No Comments</h4>
   <% else %>
     <h4>Comments</h4>
-    <%# commentable.comments.includes(:user).pending.where(user_id: current_user.id).each do |comment| %>
     <% commentable.pending_comments_of_user(current_user).each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
@@ -11,7 +10,7 @@
       <p><%= time_ago_in_words(comment.created_at) %></p>
       <p>Status: <%= comment.status.capitalize %></p>
     <% end %>
-    <% commentable.comments.approved.each do |comment| %>
+    <% commentable.aproved_comments_of_produc.each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
       <p>By <%= comment.user.first_name %></p>

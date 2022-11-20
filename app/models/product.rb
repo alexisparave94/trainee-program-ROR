@@ -42,6 +42,10 @@ class Product < ApplicationRecord
     comments.includes(:user).pending.where(user_id: current_user.id)
   end
 
+  def aproved_comments_of_produc
+    comments.includes(:user).approved
+  end
+
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_limit: [220, 220]
   end

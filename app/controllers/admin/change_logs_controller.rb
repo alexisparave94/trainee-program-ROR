@@ -7,7 +7,7 @@ module Admin
     # - GET /admin/change_logs
     def index
       authorize ChangeLog
-      @logs = ChangeLog.all
+      @logs = Admins::ChangeLogLister.call
     end
   end
 end
