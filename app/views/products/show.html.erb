@@ -29,7 +29,7 @@
     <% if @comment_product_form.commentable.rates.empty? %>
       No rated
     <% else %>
-      <%= @comment_product_form.commentable.rates.reduce(0) { |acc, rate| acc + rate.value }/@comment_product_form.commentable.rates.size %>
+      <%= decorate(@comment_product_form.commentable).average_rate(@comment_product_form.commentable.rates) %>
     <% end %>
   </p>
   <p>

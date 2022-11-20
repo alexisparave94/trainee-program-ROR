@@ -61,7 +61,7 @@
           <% if product.rates.empty? %>
             No rated
           <% else %>
-            <%= product.rates.reduce(0) { |acc, rate| acc + rate.value }/product.rates.size %>
+            <%= decorate(product).average_rate(product.rates) %>
           <% end %>
         </h6>
         <div class='d-flex justify-content-center mb-2'>
