@@ -8,7 +8,7 @@ module Customer
     # Method to add a new comment
     # - POST /customer/comment_product_forms
     def create
-      Customer::Comments::CommentOrderCreator.new(current_user, comment_order_form_params).call
+      Customer::Comments::CommentOrderCreator.call(current_user, comment_order_form_params)
       flash[:notice] = 'Comment was successfully added'
     rescue StandardError => e
       flash[:error] = e
