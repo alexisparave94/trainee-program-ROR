@@ -2,7 +2,7 @@
 
 # Class to manage Product Model
 class Product < ApplicationRecord
-  before_update :save_change_log
+  # before_update :save_change_log
 
   # Associations
   has_many :order_lines, dependent: :destroy
@@ -24,6 +24,8 @@ class Product < ApplicationRecord
 
   # Callback
   def save_change_log
+    return if User.give_user&.customer?
+
     fields_and_values = changes.except('updated_at')
     fields_and_values.each do |key, value|
       ChangeLog.create(

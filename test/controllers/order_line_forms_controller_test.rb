@@ -75,4 +75,35 @@ class OrderLineFormsControllerTest < ActionDispatch::IntegrationTest
     get edit_customer_order_line_form_url(order_line), params: { product_id: @product.id }
     assert_response :success
   end
+
+  # Api
+  test 'should create a new order and add the product for customer user api' do
+    @user = create(:user)
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    assert_difference('OrderLine.count') do
+      post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
+    end
+
+    assert_response :success
+    assert_equal 2, response.parsed_body['data']['order_line']['quantity']
+  end
+
+  test 'should sum quantities of same product in an order for customer user api' do
+    @user = create(:user)
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
+
+    assert_no_difference('OrderLine.count') do
+      post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
+    end
+
+    assert_response :success
+    assert_equal 4, response.parsed_body['data']['order_line']['quantity']
+  end
 end
