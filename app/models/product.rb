@@ -38,6 +38,10 @@ class Product < ApplicationRecord
     likes.select { |like| like.user_id == current_user.id }.first
   end
 
+  def pending_comments_of_user(current_user)
+    comments.includes(:user).pending.where(user_id: current_user.id)
+  end
+
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_limit: [220, 220]
   end
