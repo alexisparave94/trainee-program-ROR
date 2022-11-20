@@ -23,7 +23,7 @@
 <p>
   Stock: <%= @comment_product_form.commentable.stock %>
 </p>
-<% if @current_user.customer? %>  
+<% if @current_user&.customer? %>  
   <p>
     Rate: 
     <% if @comment_product_form.commentable.rates.empty? %>
@@ -67,7 +67,7 @@
           <% end %>
         <% end %>
       </div>
-      <% if @current_user.customer? %>  
+      <% if @current_user&.customer? %>  
         <%= form.label :rate_value, 'Rate', class:'form-label' %>
         <em>(If you want you could rate or update your rate)</em>
         <%= form.text_field :rate_value, class: 'form-control' %>

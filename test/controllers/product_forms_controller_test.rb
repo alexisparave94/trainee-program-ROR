@@ -23,7 +23,7 @@ class ProductFormsControllerTest < ActionDispatch::IntegrationTest
 
     product = build(:product)
     assert_difference('Product.count') do
-      post admin_product_forms_path, params: { forms_product_form: { sku: product.sku, name: product.name, description: product.description, price: product.price, stock: product.stock } }
+      post admin_product_forms_path, params: { forms_new_product_form: { sku: product.sku, name: product.name, description: product.description, price: product.price, stock: product.stock } }
     end
 
     assert_redirected_to root_url
@@ -56,7 +56,7 @@ class ProductFormsControllerTest < ActionDispatch::IntegrationTest
 
     product = create(:product)
 
-    patch admin_product_form_path(id: product.id), params: { forms_product_form: { sku: product.sku, name: product.name, description: product.description, price: product.price, stock: product.stock } }
+    patch admin_product_form_path(id: product.id), params: { forms_edit_product_form: { sku: product.sku, name: product.name, description: product.description, price: product.price, stock: product.stock } }
 
     assert_redirected_to root_path
     assert_equal 'Product was successfully updated', flash[:notice]

@@ -5,7 +5,6 @@ module Api
     # module Customer
     # Class to manage order lines since api
     class OrderLinesController < ApiController
-      before_action :set_order
       before_action :authorize_request
       before_action :authorize_action
 
@@ -24,11 +23,6 @@ module Api
 
       def authorize_action
         authorize OrderLine
-      end
-
-      # Method to set a specific order line
-      def set_order
-        @order = Order.find(order_line_form_params[:order_id])
       end
     end
     # end

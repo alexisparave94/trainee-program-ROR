@@ -12,7 +12,7 @@ module Api
         # Method to create a new product
         # - POST /api/v1/admin/products
         def create
-          @product = Admins::ProductCreator.call(product_form_params, @current_user, @token)
+          @product = Admins::ProductCreator.call(new_product_form_params, @current_user, @token)
           @result = add_url_to_result(@product)
           render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end
@@ -20,7 +20,7 @@ module Api
         # Method to update a product
         # - PATCH /api/v1/admin/product_forms/:id
         def update
-          @product = Admins::ProductUpdater.call(product_form_params, params[:id], @current_user, @token)
+          @product = Admins::ProductUpdater.call(edit_product_form_params, params[:id], @current_user, @token)
           @result = add_url_to_result(@product)
           render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end
@@ -35,8 +35,12 @@ module Api
         private
 
         # Method to set strong params for product form
-        def product_form_params
-          params.require(:forms_product_form).permit(policy(Product).permitted_attributes)
+        def new_product_form_params
+          params.require(:forms_new_product_form).permit(policy(Product).permitted_attributes)
+        end
+
+        def edit_product_form_params
+          params.require(:forms_edit_product_form).permit(policy(Product).permitted_attributes)
         end
 
         # Method to set a specific product

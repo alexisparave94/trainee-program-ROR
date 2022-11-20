@@ -8,7 +8,8 @@ class OrderLineRepresenter < Representable::Decorator
   property :quantity
   property :price
   property :total
-  property :product_id
+  property :order_id
+  property :product, decorator: ProductRepresenter
   property :created_at
   property :updated_at
 end
