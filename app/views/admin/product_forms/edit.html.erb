@@ -3,20 +3,15 @@
   <div class='col-sm-4 col-md-4 col-lg-4'>
     <%= form_for @product_form, url: admin_product_form_path(@product_form.id), method: :patch do |form| %>
       <% if flash[:error] %>
-        <div class="alert alert-danger py-2" role="alert">
-          <%= flash[:error] %>
+        <div class="alert alert-danger pb-1" role="alert">
+          <ul>
+            <%= decorate(ErrorForm.new('error')).list_errors(flash[:error]) %>
+          </ul>
         </div>
       <% end %>
       <div class="field mb-3">
         <%= form.label :sku, class:'form-label' %>
         <%= form.text_field :sku, value: @product_form.product.sku, class: 'form-control' %>
-          <div class='mt-3'>
-            <% unless @product_form.errors.messages_for(:sku).empty? %>
-              <% @product_form.errors.messages_for(:sku).each do |message| %>
-                <p class='text-danger fw-semibold'>* <%= message %></p>
-              <% end %>
-            <% end %>
-          </div>
       </div>
       <div class="field mb-3">
         <%= form.label :name, class:'form-label' %>
@@ -37,25 +32,15 @@
         <div class="field mb-3">
           <%= form.label :price, class:'form-label' %>
           <%= form.text_field :price, value: @product_form.product.price, class: 'form-control' %>
-            <div class='mt-3'>
-              <% unless @product_form.errors.messages_for(:price).empty? %>
-                <% @product_form.errors.messages_for(:price).each do |message| %>
-                  <p class='text-danger fw-semibold'>* <%= message %></p>
-                <% end %>
-              <% end %>
-            </div>
         </div>
       <% end %>
       <div class="field mb-3">
         <%= form.label :stock, class:'form-label' %>
         <%= form.text_field :stock, value: @product_form.product.stock, class: 'form-control' %>
-          <div class='mt-3'>
-            <% unless @product_form.errors.messages_for(:stock).empty? %>
-              <% @product_form.errors.messages_for(:stock).each do |message| %>
-                <p class='text-danger fw-semibold'>* <%= message %></p>
-              <% end %>
-            <% end %>
-          </div>
+      </div>
+      <div class="mb-3">
+        <%= form.label :image, class:'form-label' %>
+        <%= form.file_field :image, class:"form-control" %>
       </div>
 
       <div class="d-grid mb-3">

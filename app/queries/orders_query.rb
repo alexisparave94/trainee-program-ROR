@@ -10,6 +10,6 @@ class OrdersQuery
   end
 
   def completed_orders
-    relation.includes(:order_lines).where(status: params[:status]).order(created_at: :DESC)
+    relation.includes(order_lines: :product).where(status: params[:status]).order(created_at: :DESC)
   end
 end

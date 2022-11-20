@@ -4,7 +4,6 @@ module Customer
   module Comments
     # Service object to like a product
     class CommentProductCreator < ApplicationService
-      class NotValidEntryRecord < StandardError; end
 
       def initialize(user, params)
         @user = user
@@ -16,11 +15,11 @@ module Customer
 
       def call
         @comment_product_form = Forms::CommentProductForm.new(@params)
-        raise(NotValidEntryRecord, parse_errors) unless @comment_product_form.valid?
+        raise(StandardError, parse_errors) unless @comment_product_form.valid?
 
         if @rate
           @rate.update(value: @comment_product_form.rate_value) unless @comment_product_form.rate_value.empty?
-        else
+        elsif !@comment_product_form.rate_value.empty?
           Rate.create(value: @comment_product_form.rate_value, user: @user, rateable: @commentable)
         end
         @comment = Comment.create(description: @comment_product_form.description, user: @user,

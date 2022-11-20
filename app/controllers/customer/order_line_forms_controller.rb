@@ -12,13 +12,13 @@ module Customer
     # Method to get the form to add a new product (order line) to shopping cart
     # - GET /customer/order_line_forms/new
     def new
-      @order_line_form = Forms::OrderLineForm.new(product_id: params[:product_id])
+      @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
     end
 
     # Method to add a new product (order line) to shopping cart
     # - POST /customer/order_line_forms
     def create
-      Customer::OrderLines::OrderLineCreator.new(order_line_form_params, current_user, @order).call
+      @order_line = Customer::OrderLines::OrderLineCreator.call(order_line_form_params, current_user, @order)
       redirect_to shopping_cart_path, notice: 'Product was successfully added'
     rescue StandardError => e
       flash[:error] = e
@@ -28,13 +28,18 @@ module Customer
     # Method to get the form to update an order line of the shopping cart
     # - GET /customer/order_line_forms/:id/edit
     def edit
-      @order_line_form = Forms::OrderLineForm.new(id: params[:id], product_id: params[:product_id])
+      @order_line_form = Customer::OrderLines::EditFormGetter.call({ id: params[:id], product_id: params[:product_id] },
+                                                                   current_user)
+    rescue StandardError => e
+      flash[:alert] = e
+      session[:order_id] = nil
+      redirect_to products_path
     end
 
     # Method to update an order line of the shopping cart
     # - PATCH /customer/order_line_forms/:id
     def update
-      Customer::OrderLines::OrderLineUpdater.new(order_line_form_params, @order).call
+      @order_line = Customer::OrderLines::OrderLineUpdater.call(order_line_form_params, @order)
       redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
     rescue StandardError => e
       flash[:error] = e
@@ -68,6 +73,7 @@ module Customer
       session[:checkout] = nil
       session[:product_id] = nil
       session[:id] = nil
+      session[:order_id] = @order_line.order_id if @order_line
     end
 
     # Method to set values in session storage

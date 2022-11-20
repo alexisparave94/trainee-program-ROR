@@ -8,7 +8,7 @@ module Forms
     attr_accessor :description, :rate_value, :order_id, :user, :commentable, :rate
 
     # Validations
-    validates :description, presence: { message: 'Must enter a description' }
+    validates :description, presence: { message: 'Must enter a content to comment' }
     validates :rate_value, numericality: { in: 1..10, message: 'Rate must be between 1 and 10' }, allow_blank: true
 
     def initialize(attr = {}, user = nil)

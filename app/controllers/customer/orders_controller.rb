@@ -18,7 +18,8 @@ module Customer
     # Method to get show of an order of a customer user
     # - GET customer/orders/:id
     def show
-      @comment_order_form = Forms::CommentOrderForm.new({ order_id: params[:id] }, current_user)
+      # @comment_order_form = Forms::CommentOrderForm.new({ order_id: params[:id] }, current_user)
+      @comment_order_form = Customer::OrderShower.call({ order_id: params[:id] }, current_user)
       # authorize @commentable
     end
 
@@ -38,6 +39,10 @@ module Customer
     def destroy
       Customer::OrderDeleter.call(@order)
       redirect_to products_path, notice: 'Shopping cart was successfully deleted'
+    rescue StandardError => e
+      flash[:error] = e
+      session[:order_id] = nil
+      redirect_to products_path
     end
 
     private

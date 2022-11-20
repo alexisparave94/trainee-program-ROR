@@ -7,10 +7,10 @@ module Customer
       class NotValidEntryRecord < StandardError; end
 
       def initialize(params, order)
-        pp @params = params
-        pp @order = order
-        pp @order.order_lines
-        pp @order_line = @order.order_lines.find_by(product_id: @params[:product_id])
+        @params = params
+        @order = order
+        @order.order_lines
+        @order_line = @order.order_lines.find_by(product_id: @params[:product_id])
         super()
       end
 
@@ -19,6 +19,7 @@ module Customer
         raise(NotValidEntryRecord, parse_errors) unless @order_line_form.valid?
 
         @order_line.update(quantity: @params[:quantity])
+        @order_line
       end
 
       private

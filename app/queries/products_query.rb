@@ -52,12 +52,12 @@ class ProductsQuery
 
   # Method to get available products for customers
   def available_for_customers
-    relation.includes(:likes, :tags, :rates).where('stock > 0')
+    relation.eager_load(:likes, :tags, :rates, image_attachment: :blob).where('stock > 0')
   end
 
   # Method to get available products unscopes for customers
   def available_unscoped_for_customers
-    relation.unscoped.includes(:likes, :tags, :rates).where('stock > 0')
+    relation.unscoped.eager_load(:likes, :tags, :rates, image_attachment: :blob).where('stock > 0')
   end
 
   # Method to validate unscoped porducts

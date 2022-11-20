@@ -10,11 +10,13 @@ class OrdersSetter < ApplicationService
   end
 
   def call
-    set_orders
+    set_order
+    raise(StandardError, 'The purchase has been completed') unless !@user || @order.pending?
+
+    [@order, @virtual_order]
   end
 
-  def set_orders
+  def set_order
     @order = Order.find(@order_id) if @user
-    [@order, @virtual_order]
   end
 end

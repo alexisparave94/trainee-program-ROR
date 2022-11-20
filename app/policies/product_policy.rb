@@ -12,9 +12,9 @@ class ProductPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user.admin?
-      %i[sku name description price stock]
+      %i[sku name description price stock image]
     elsif user.support?
-      %i[sku name description stock]
+      %i[sku name description stock image]
     end
   end
 

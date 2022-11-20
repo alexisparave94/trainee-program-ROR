@@ -7,7 +7,6 @@ module Admin
     before_action :set_product
     before_action :authenticate_user!
     before_action :authorize_action
-    after_action :save_change_log, only: %i[destroy]
 
     # Method to delete a product
     # - DELETE /admin/products/:id
@@ -31,12 +30,6 @@ module Admin
     # Method to authorize actions
     def authorize_action
       authorize Product
-    end
-
-    # Method to save changes in the product in change log
-    def save_change_log
-      @log = ChangeLog.new(user: current_user, product: @product.name, description: 'Delete')
-      @log.save
     end
   end
 end

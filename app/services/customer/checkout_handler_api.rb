@@ -3,7 +3,7 @@
 module Customer
   # Service object to checkout order lines of a shopping cart
   # for a logged in customer user
-  class CheckoutHandler < ApplicationService
+  class CheckoutHandlerApi < ApplicationService
     def initialize(order_id)
       @order_id = order_id
       super()
@@ -11,9 +11,13 @@ module Customer
 
     def call
       set_order
-      raise(StandardError, 'The purchase has been completed') unless @order.pending?
+      raise(NotValidEntryRecord, 'The purchase has been completed') unless @order.pending?
 
-      lines_exceed_stock.compact
+      raise(NotEnoughStock, lines_exceed_stock.compact) unless lines_exceed_stock.compact.empty?
+
+      @order.update(status: 'completed', total: @order.calculate_total)
+      Customer::StockUpdater.call(@order)
+      @order
     end
 
     private

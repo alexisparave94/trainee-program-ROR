@@ -4,9 +4,9 @@ module Customer
   module Likes
     # Service object to like a product
     class LikeHandler < ApplicationService
-      def initialize(current_user, product_id)
-        @current_user = current_user
-        @product_id = product_id
+      def initialize(user, product_id)
+        @user = user
+        @likeable = Product.find(product_id)
         super()
       end
 
@@ -17,8 +17,14 @@ module Customer
       private
 
       def like
-        Like.create(user: @current_user,
-                    likeable: Product.find(@product_id))
+        raise(NotValidEntryRecord, 'You have already liked it') unless like_valid?
+
+        Like.create(user: @user,
+                    likeable: @likeable)
+      end
+
+      def like_valid?
+        @user.likes.where(likeable: @likeable).empty?
       end
     end
   end

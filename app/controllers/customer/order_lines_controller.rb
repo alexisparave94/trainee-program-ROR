@@ -13,6 +13,10 @@ module Customer
     def destroy
       Customer::OrderLineDeleter.call(@order_line)
       redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
+    rescue StandardError => e
+      flash[:alert] = e
+      session[:order_id] = nil
+      redirect_to products_path
     end
 
     private
