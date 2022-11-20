@@ -95,8 +95,11 @@ gem 'jwt'
 gem 'pagy'
 
 # Use Representable to format json response
-gem 'representable'
 gem 'multi_json'
+gem 'representable'
 
 # Use GCS gem to use active storage with gcp
 gem 'google-cloud-storage'
+
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+gem 'rack-cors'
