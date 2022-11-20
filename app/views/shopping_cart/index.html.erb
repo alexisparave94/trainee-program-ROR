@@ -2,7 +2,7 @@
   <h1>Current Cart</h1>
 </div>
 <div>
-  <% if (session[:virtual_order].nil? && current_user.nil?) || (current_user && @order.order_lines.empty?) %>
+  <% if show_empty_messsage?(session[:virtual_order], current_user, @order) %>
     <div class="alert alert-info d-flex justify-content-center fw-semibold fs-5 py-4" role="alert">
       Your cart its empty
     </div>
