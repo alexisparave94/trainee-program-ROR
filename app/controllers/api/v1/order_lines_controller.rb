@@ -12,7 +12,7 @@ module Api
       # - POST /api/v1/order_lines
       def create
         @order_line = Customer::OrderLines::OrderLineCreator.call(order_line_form_params, @current_user, nil, @token)
-        render json: json_api_format(OrderLineRepresenter.new(@order_line), 'order_line'), status: :ok
+        render json: json_api_format(OrderRepresenter.new(@order_line.order), 'order'), status: :ok
       end
 
       private
