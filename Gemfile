@@ -104,4 +104,5 @@ gem 'google-cloud-storage'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
-# gem 'ruby-vips'
+# Documentation swagger
+gem 'swagger-blocks'

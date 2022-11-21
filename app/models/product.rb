@@ -2,6 +2,43 @@
 
 # Class to manage Product Model
 class Product < ApplicationRecord
+  # include Swagger::Blocks
+
+  # swagger_schema :Product do
+  #   key :required, [:id]
+  #   property :data do
+  #     property :id do
+  #       key :type, :integer
+  #       key :format, :int64
+  #     end
+  #     property :name do
+  #       key :type, :string
+  #     end
+  #     property :description do
+  #       key :type, :string
+  #     end
+  #     property :stock do
+  #       key :type, :integer
+  #       key :format, :int64
+  #     end
+  #     property :price do
+  #       key :type, :string
+  #     end
+  #     property :likes_count do
+  #       key :type, :integer
+  #       key :format, :int64
+  #     end
+  #     property :image_url do
+  #       key :type, :string
+  #     end
+  #     property :created_at do
+  #       key :type, :string
+  #     end
+  #     property :updated_at do
+  #       key :type, :string
+  #     end
+  #   end
+  # end
   # before_update :save_change_log
 
   # Associations

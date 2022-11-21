@@ -15,6 +15,31 @@ module Api
 
       # Method to get show product
       # GET /api/v1/products/:id
+      swagger_path '/products/{id}' do
+        operation :get do
+          key :summary, 'Find Product by ID'
+          key :description, 'Returns a single product'
+          key :operationId, 'findProductById'
+          key :tags, [
+            'product'
+          ]
+          parameter name: :id, in: :path do
+            key :description, 'ID of product to fetch'
+            key :required, true
+            key :type, :integer
+            key :format, :int64
+          end
+          response 200 do
+            key :description, 'Product response'
+            schema '$ref': :ProductSwagger
+          end
+          response 401 do
+            key :description, 'Record not found'
+            schema '$ref': :ErrorModel
+          end
+        end
+      end
+
       def show
         @product = ProductGetter.call(params[:id])
         @result = add_url_to_result(@product)
