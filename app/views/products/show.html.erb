@@ -47,6 +47,7 @@
     </div>
   </div>
 <% end %>
+<% if @current_user&.customer? %> 
 <h4>Add a comments</h4>
 <div data-turbo='false'>
   <%= form_for @comment_product_form, url: customer_comment_products_path do |form| %>
@@ -66,8 +67,7 @@
             <p class='text-danger fw-semibold'>* <%= message %></p>
           <% end %>
         <% end %>
-      </div>
-      <% if @current_user&.customer? %>  
+      </div> 
         <%= form.label :rate_value, 'Rate', class:'form-label' %>
         <em>(If you want you could rate or update your rate)</em>
         <%= form.text_field :rate_value, class: 'form-control' %>
@@ -78,13 +78,13 @@
             <% end %>
           <% end %>
         </div>
-      <% end %>
     </div>
     <div class="d-grid mb-3">
       <%= form.submit 'Add Comment', class: 'btn btn-primary' %>
     </div>
   <% end %>
 </div>
+<% end %>
 <% if current_user && ( current_user.admin? || current_user.support? ) %>
   <%= render 'admin/comments/comments', commentable: @comment_product_form.commentable %>
 <% elsif current_user && current_user.customer? %>

@@ -2,45 +2,6 @@
 
 # Class to manage Product Model
 class Product < ApplicationRecord
-  # include Swagger::Blocks
-
-  # swagger_schema :Product do
-  #   key :required, [:id]
-  #   property :data do
-  #     property :id do
-  #       key :type, :integer
-  #       key :format, :int64
-  #     end
-  #     property :name do
-  #       key :type, :string
-  #     end
-  #     property :description do
-  #       key :type, :string
-  #     end
-  #     property :stock do
-  #       key :type, :integer
-  #       key :format, :int64
-  #     end
-  #     property :price do
-  #       key :type, :string
-  #     end
-  #     property :likes_count do
-  #       key :type, :integer
-  #       key :format, :int64
-  #     end
-  #     property :image_url do
-  #       key :type, :string
-  #     end
-  #     property :created_at do
-  #       key :type, :string
-  #     end
-  #     property :updated_at do
-  #       key :type, :string
-  #     end
-  #   end
-  # end
-  # before_update :save_change_log
-
   # Associations
   has_many :order_lines, dependent: :destroy
   has_many :orders, through: :order_lines
@@ -58,20 +19,6 @@ class Product < ApplicationRecord
                                        joins(order_lines: :order).where('orders.status': 1).group(:id)
                                                                  .order('SUM(order_lines.quantity) DESC').limit(1)
                                      }
-
-  # Callback
-  def save_change_log
-    return if User.give_user&.customer?
-
-    fields_and_values = changes.except('updated_at')
-    fields_and_values.each do |key, value|
-      ChangeLog.create(
-        user: User.give_user,
-        description: 'Update',
-        product: name, field: key, previous_content: value[0], new_content: value[1]
-      )
-    end
-  end
 
   def liked_by_current_user(current_user)
     likes.select { |like| like.user_id == current_user.id }.first
