@@ -2,8 +2,6 @@
 
 # Class to manage Product Model
 class Product < ApplicationRecord
-  # before_update :save_change_log
-
   # Associations
   has_many :order_lines, dependent: :destroy
   has_many :orders, through: :order_lines
@@ -21,20 +19,6 @@ class Product < ApplicationRecord
                                        joins(order_lines: :order).where('orders.status': 1).group(:id)
                                                                  .order('SUM(order_lines.quantity) DESC').limit(1)
                                      }
-
-  # Callback
-  def save_change_log
-    return if User.give_user&.customer?
-
-    fields_and_values = changes.except('updated_at')
-    fields_and_values.each do |key, value|
-      ChangeLog.create(
-        user: User.give_user,
-        description: 'Update',
-        product: name, field: key, previous_content: value[0], new_content: value[1]
-      )
-    end
-  end
 
   def liked_by_current_user(current_user)
     likes.select { |like| like.user_id == current_user.id }.first

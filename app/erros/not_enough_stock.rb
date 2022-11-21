@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class to handle no enough stock
 class NotEnoughStock < StandardError
   attr_reader :status, :error, :message
 

@@ -11,6 +11,31 @@ module Api
 
         # Method to create a new product
         # - POST /api/v1/admin/products
+        swagger_path '/admin/products' do
+          operation :post do
+            key :summary, 'Create a product'
+            key :description, 'Create a product'
+            key :operationId, 'createProduct'
+            key :tags, [
+              'admin-product'
+            ]
+            security bearerAuth: []
+            parameter name: :product_data, in: :body do
+              key :description, 'Data to create a product'
+              key :required, true
+              schema '$ref': :ProductInputSwagger
+            end
+            response 200 do
+              key :description, 'Product response'
+              schema '$ref': :ProductSwagger
+            end
+            response 422 do
+              key :description, 'Unprocessable entity'
+              schema '$ref': :ErrorModel
+            end
+          end
+        end
+
         def create
           @product = Admins::ProductCreator.call(new_product_form_params, @current_user, @token)
           @result = add_url_to_result(@product)

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class to handle no invalid entry error
 class NotValidEntryRecord < StandardError
   attr_reader :status, :error, :message
 

@@ -15,8 +15,9 @@ module Admins
       update_params if @user.support?
       @product_form = Forms::EditProductForm.new(@params)
       handle_error
-
+      @changed_attributes = set_changed_attributes
       @product.update(@params)
+      save_change_log
       @product
     end
 
@@ -40,6 +41,24 @@ module Admins
       else
         raise(StandardError, parse_errors) unless @product_form.valid?
       end
+    end
+
+    # Method to save changes in the product in change log
+    def save_change_log
+      @changed_attributes.each do |attr|
+        ChangeLog.create(
+          user: @user,
+          description: 'Update',
+          product: @product.name, field: attr[0], previous_content: attr[1], new_content: attr[2]
+        )
+      end
+    end
+
+    def set_changed_attributes
+      attr_before_update = @product.attributes.except('id', 'created_at', 'updated_at', 'likes_count')
+      params_hash = @params.to_hash
+      params_hash.map { |key, value| value == attr_before_update[key] ? nil : [key, attr_before_update[key], value] }
+                 .compact
     end
   end
 end

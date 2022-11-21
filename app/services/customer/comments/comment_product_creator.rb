@@ -4,7 +4,6 @@ module Customer
   module Comments
     # Service object to like a product
     class CommentProductCreator < ApplicationService
-
       def initialize(user, params)
         @user = user
         @params = params

@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
+# Class to handle no authorization error
 class NotAuthorizeUser < StandardError
   attr_reader :status, :error, :message
 
   def initialize(error = nil, status = nil, message = nil)
     super()
     @error = error || 401
-    @status = status || :unauthotize
+    @status = status || :unauthorized
     @message = message || 'Something went wrong'
   end
 

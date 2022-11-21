@@ -290,6 +290,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.1.0)
       railties (>= 6.0.0)
+    swagger-blocks (3.0.0)
     thor (1.2.1)
     timeout (0.3.0)
     trailblazer-option (0.1.2)
@@ -348,6 +349,7 @@ DEPENDENCIES
   selenium-webdriver
   sprockets-rails
   stimulus-rails
+  swagger-blocks
   turbo-rails
   tzinfo-data
   web-console
