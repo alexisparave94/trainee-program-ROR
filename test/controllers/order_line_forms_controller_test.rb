@@ -88,7 +88,7 @@ class OrderLineFormsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal 2, response.parsed_body['data']['order_line']['quantity']
+    assert_equal 2, response.parsed_body['data']['order']['order_lines'][0]['quantity']
   end
 
   test 'should sum quantities of same product in an order for customer user api' do
@@ -104,6 +104,6 @@ class OrderLineFormsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal 4, response.parsed_body['data']['order_line']['quantity']
+    assert_equal 4, response.parsed_body['data']['order']['order_lines'][0]['quantity']
   end
 end
