@@ -15,9 +15,9 @@ module Admins
       update_params if @user.support?
       @product_form = Forms::EditProductForm.new(@params)
       handle_error
-      # @changed_attributes = set_changed_attributes
+      @changed_attributes = set_changed_attributes
       @product.update(@params)
-      # save_change_log
+      save_change_log
       @product
     end
 
