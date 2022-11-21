@@ -76,7 +76,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     token = response.parsed_body['data']['session']['token']
 
     post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
-    order_id = response.parsed_body['data']['order_line']['order_id']
+    order_id = response.parsed_body['data']['order']['id']
 
     get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
 
@@ -91,7 +91,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     token = response.parsed_body['data']['session']['token']
 
     post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 20, product_id: @product.id } }, headers: { Authorization: token }
-    order_id = response.parsed_body['data']['order_line']['order_id']
+    order_id = response.parsed_body['data']['order']['id']
 
     get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
 
@@ -107,7 +107,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     token = response.parsed_body['data']['session']['token']
 
     post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
-    order_id = response.parsed_body['data']['order_line']['order_id']
+    order_id = response.parsed_body['data']['order']['id']
 
     get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
     get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }

@@ -10,6 +10,10 @@ class CommentPolicy < ApplicationPolicy
     end
   end
 
+  def create?
+    user&.customer?
+  end
+
   def destroy?
     user&.admin?
   end
