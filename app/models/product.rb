@@ -2,6 +2,7 @@
 
 # Class to manage Product Model
 class Product < ApplicationRecord
+  include Rails.application.routes.url_helpers
   # Associations
   has_many :order_lines, dependent: :destroy
   has_many :orders, through: :order_lines
