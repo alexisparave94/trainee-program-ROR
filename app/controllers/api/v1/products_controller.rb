@@ -6,6 +6,34 @@ module Api
     class ProductsController < ApiController
       # Method to get index of products
       # GET /api/v1/products
+      swagger_path '/products' do
+        operation :get do
+          key :description, 'Returns all products'
+          key :operationId, 'findProducts'
+          key :tags, [
+            'product'
+          ]
+          parameter name: :search, in: :query do
+            key :description, 'word to look for on names fo products'
+            key :type, :string
+          end
+          parameter name: :limit, in: :query do
+            key :description, 'maximum number of results to return'
+            key :type, :integer
+          end
+          parameter name: :page, in: :query do
+            key :description, 'number of page to return'
+            key :type, :integer
+          end
+          response 200, description: 'Products response' do
+            schema '$ref': :MetaPagination
+          end
+          response 422, description: 'Unprocessable entity' do
+            schema '$ref': :ErrorModel
+          end
+        end
+      end
+
       def index
         @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] })
         paginate(@products, params[:limit])
@@ -31,9 +59,9 @@ module Api
           end
           response 200 do
             key :description, 'Product response'
-            schema '$ref': :ProductSwagger
+            schema '$ref': :ProductSimpleResponse
           end
-          response 401 do
+          response 404 do
             key :description, 'Record not found'
             schema '$ref': :ErrorModel
           end

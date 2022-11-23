@@ -9,6 +9,21 @@ module Api
 
       # Method to get index of completed orders of a customer user
       # - GET api/v1/orders
+      swagger_path '/orders' do
+        operation :get do
+          key :description, 'Returns all orders of a user'
+          key :operationId, 'findOrders'
+          key :tags, ['orders']
+          security Bearer: []
+          response 200, description: 'Orders response' do
+            schema '$ref': :OrdersResponse
+          end
+          response 422, description: 'Unprocessable entity' do
+            schema '$ref': :ErrorModel
+          end
+        end
+      end
+
       def index
         authorize Order
         @orders = Customer::OrderLister.call(@current_user, 'completed')

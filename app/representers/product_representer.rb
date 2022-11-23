@@ -5,6 +5,7 @@ class ProductRepresenter < Representable::Decorator
   include Representable::JSON
 
   property :id
+  property :sku
   property :name
   property :description
   property :stock

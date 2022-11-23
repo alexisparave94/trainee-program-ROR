@@ -42,7 +42,7 @@ class ApiController < ActionController::API
   end
 
   def add_url_to_result(result)
-    item_struct = Struct.new(:id, :name, :description, :stock, :price, :likes_count,
+    item_struct = Struct.new(:id, :sku, :name, :description, :stock, :price, :likes_count,
                              :created_at, :updated_at, :image_url)
     if result.is_a?(Product)
       insert_url(item_struct, result)
@@ -55,7 +55,7 @@ class ApiController < ActionController::API
 
   def insert_url(item_struct, item)
     image_url = item.image.attached? ? url_for(item.image) : ''
-    item_struct.new(item.id, item.name, item.description, item.stock, item.price, item.likes_count,
+    item_struct.new(item.id, item.sku, item.name, item.description, item.stock, item.price, item.likes_count,
                     item.created_at, item.updated_at, image_url)
   end
 end

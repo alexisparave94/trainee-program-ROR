@@ -15,9 +15,9 @@ class ApidocsController < ActionController::Base
       key :name, 'product'
       key :description, 'Product operations'
     end
-    security_definition :bearerAuth do
-      key :type, :http
-      key :name, :bearerAuth
+    security_definition :Bearer do
+      key :type, :apiKey
+      key :name, :Authorization
       key :in, :header
     end
     key :host, 'localhost:3000'
@@ -31,7 +31,12 @@ class ApidocsController < ActionController::Base
     Api::V1::ProductsController,
     Api::V1::Admin::ProductsController,
     Api::V1::SessionsController,
+    Api::V1::OrdersController,
     Api::V1::ProductSwagger,
+    Api::V1::MetaPagination,
+    Api::V1::Session,
+    Api::V1::OrderLineSwagger,
+    Api::V1::OrderSwagger,
     Api::V1::Session,
     Api::V1::ErrorModel,
     self

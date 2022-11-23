@@ -16,21 +16,20 @@ module Api
             key :summary, 'Create a product'
             key :description, 'Create a product'
             key :operationId, 'createProduct'
-            key :tags, [
-              'admin-product'
-            ]
-            security bearerAuth: []
+            key :tags, ['admin-product']
+            security Bearer: []
             parameter name: :product_data, in: :body do
               key :description, 'Data to create a product'
               key :required, true
-              schema '$ref': :ProductInputSwagger
+              schema '$ref': :NewProductInput
             end
-            response 200 do
-              key :description, 'Product response'
-              schema '$ref': :ProductSwagger
+            response 200, description: 'Successfull response' do
+              schema '$ref': :ProductSimpleResponse
             end
-            response 422 do
-              key :description, 'Unprocessable entity'
+            response 401, description: 'unauthorized' do
+              schema '$ref': :ErrorModel
+            end
+            response 422, description: 'Unprocessable entity' do
               schema '$ref': :ErrorModel
             end
           end
@@ -42,12 +41,60 @@ module Api
           render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
         end
 
+        swagger_path '/admin/products/{id}' do
+          operation :patch do
+            key :summary, 'Update A Product'
+            key :description, 'Update a single product'
+            key :operationId, 'updateProduct'
+            key :tags, ['admin-product']
+            security Bearer: []
+            parameter name: :id, in: :path, type: :integer do
+              key :description, 'ID of product to update'
+              key :required, true
+            end
+            parameter name: :product_data, in: :body do
+              key :description, 'Data to update a product'
+              key :required, true
+              schema '$ref': :EditProductInput
+            end
+            response 200, description: 'Product Updated' do
+              schema '$ref': :ProductSimpleResponse
+            end
+            response 404, description: 'Record not found' do
+              schema '$ref': :ErrorModel
+            end
+            response 422, description: 'Unprocessable entity' do
+              schema '$ref': :ErrorModel
+            end
+          end
+        end
+
         # Method to update a product
-        # - PATCH /api/v1/admin/product_forms/:id
+        # - PATCH /api/v1/admin/products/:id
         def update
           @product = Admins::ProductUpdater.call(edit_product_form_params, params[:id], @current_user, @token)
           @result = add_url_to_result(@product)
           render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
+        end
+
+        swagger_path '/admin/products/{id}' do
+          operation :delete do
+            key :description, 'deletes a product based on the ID supplied'
+            key :operationId, 'deleteProduct'
+            key :tags, ['admin-product']
+            security Bearer: []
+            parameter name: :id, in: :path, type: :integer do
+              key :description, 'ID of product to delete'
+              key :required, true
+            end
+            response 204, description: 'product deleted'
+            response 401, description: 'unauthorized' do
+              schema '$ref': :ErrorModel
+            end
+            response 404, description: 'Record not found' do
+              schema '$ref': :ErrorModel
+            end
+          end
         end
 
         # Method to delete a product
