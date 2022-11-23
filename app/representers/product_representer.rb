@@ -13,4 +13,11 @@ class ProductRepresenter < Representable::Decorator
   property :likes_count
   property :created_at
   property :updated_at
+
+  property :image_url, exec_context: :decorator
+
+  def image_url
+    # represented.image.attached? ? represented.image : ''
+    represented.image.attached? ? represented.image.variant(:thumb).url : ''
+  end
 end

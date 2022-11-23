@@ -28,14 +28,14 @@ class ApiController < ActionController::API
 
   def json_api_format(representer, type, pagy = nil)
     if pagy
-      { meta: {
+      { data: { type => representer },
+        meta: {
           pagination: { page: pagy.page, limit: pagy.items, total_items: pagy.count,
                         total_pages: pagy.pages,
                         prev_page: pagy.prev,
                         next_page: pagy.next,
                         last_page: pagy.last }
-        },
-        data: { type => representer } }
+        } }
     else
       { data: { type => representer } }
     end
@@ -54,7 +54,7 @@ class ApiController < ActionController::API
   end
 
   def insert_url(item_struct, item)
-    image_url = item.image.attached? ? url_for(item.image) : ''
+    image_url = item.image.attached? ? url_for(item.image.variant(:thumb)) : ''
     item_struct.new(item.id, item.sku, item.name, item.description, item.stock, item.price, item.likes_count,
                     item.created_at, item.updated_at, image_url)
   end
