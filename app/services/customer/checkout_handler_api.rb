@@ -17,6 +17,7 @@ module Customer
 
       @order.update(status: 'completed', total: @order.calculate_total)
       Customer::StockUpdater.call(@order)
+      Customer::LastUserNotifier.call(@order)
       @order
     end
 

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Job to update likes count
 class UpdateLikesCountJob < ApplicationJob
   queue_as :default
 

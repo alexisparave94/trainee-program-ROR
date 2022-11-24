@@ -66,7 +66,7 @@
         </h6>
         <div class='d-flex justify-content-center mb-2'>
           <% if product.image.attached? %>
-            <%= image_tag product.image.variant(:thumb) %>
+            <%= image_tag product.image.variant(:thumb).processed %>
             <%# image_tag product.image %>
           <% end %>
         </div>
