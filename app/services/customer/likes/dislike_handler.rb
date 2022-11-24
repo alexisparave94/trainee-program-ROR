@@ -6,17 +6,21 @@ module Customer
     class DislikeHandler < ApplicationService
       def initialize(id)
         @id = id
+        @like = Like.find(@id)
+        @product = @like.likeable
         super()
       end
 
       def call
         dislike
+        @like
       end
 
       private
 
       def dislike
-        Like.find(@id).destroy
+        @like.destroy
+        UpdateLikesCountJob.perform_later(@product, -1)
       end
     end
   end

@@ -19,6 +19,7 @@ module Customer
       def like
         raise(NotValidEntryRecord, 'You have already liked it') unless like_valid?
 
+        UpdateLikesCountJob.perform_later(@likeable, 1)
         Like.create(user: @user,
                     likeable: @likeable)
       end
