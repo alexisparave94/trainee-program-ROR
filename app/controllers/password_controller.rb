@@ -10,6 +10,9 @@ class PasswordController < ApplicationController
     @user = ResetPasswordSender.call(reset_password_params)
     flash[:notice] = 'Instructions sent'
     render :forgot_password
+  rescue StandardError => e
+    flash[:error] = e
+    redirect_to forgot_password_path
   end
 
   private
