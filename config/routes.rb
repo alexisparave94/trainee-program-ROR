@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :apidocs, only: [:index]
   # get '/api' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
   get '/api' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
+
   devise_for :users
   root 'products#index'
 
@@ -44,9 +45,10 @@ Rails.application.routes.draw do
       post '/sign_in' => 'sessions#sign_in'
       resources :products, only: %i[index show]
       # namespace :customer do
-        resources :likes, only: %i[create]
+        resources :likes, only: %i[create destroy]
         resources :order_lines, only: %i[create]
         resources :orders, only: %i[index]
+        resources :comment_users, only: %i[create]
         get 'checkout' => 'orders#checkout'
       # end
       namespace :admin do

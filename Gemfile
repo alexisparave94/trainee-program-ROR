@@ -106,3 +106,5 @@ gem 'rack-cors'
 
 # Documentation swagger
 gem 'swagger-blocks'
+
+gem 'sidekiq', '~>6.0.0'

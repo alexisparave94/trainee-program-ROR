@@ -17,7 +17,7 @@ class ProductRepresenter < Representable::Decorator
   property :image_url, exec_context: :decorator
 
   def image_url
-    # represented.image.attached? ? represented.image : ''
-    represented.image.attached? ? represented.image.variant(:thumb).url : ''
+    # represented.image.attached? ? represented.image.url : ''
+    represented.image.attached? ? represented.image.variant(:thumb).processed.url : ''
   end
 end
