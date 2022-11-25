@@ -43,13 +43,22 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default :charset => "utf-8"
   # SMTP settings for gmail  
+  # config.action_mailer.smtp_settings = {
+  # address:              'smtp.gmail.com',
+  # port:                 587,
+  # user_name:           'aparavev@gmail.com',
+  # password:            'zggfguhqpebzyqey',
+  # authentication:      'plain',
+  # enable_starttls_auto: true  
+  # }
+  # Mailtrap
   config.action_mailer.smtp_settings = {
-  address:              'smtp.gmail.com',
-  port:                 587,
-  user_name:           'aparavev@gmail.com',
-  password:            'zggfguhqpebzyqey',
-  authentication:      'plain',
-  enable_starttls_auto: true  
+    :user_name => '476b355f8f4a53',
+    :password => 'c6e9c2f24f4fc3',
+    :address => 'smtp.mailtrap.io',
+    :domain => 'smtp.mailtrap.io',
+    :port => '2525',
+    :authentication => :cram_md5
   }
 
   config.action_mailer.perform_caching = false
