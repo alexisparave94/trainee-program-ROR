@@ -37,8 +37,8 @@ module Api
 
         def create
           @product = Admins::ProductCreator.call(new_product_form_params, @current_user, @token)
-          @result = add_url_to_result(@product)
-          render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
+          # @result = add_url_to_result(@product)
+          render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         swagger_path '/admin/products/{id}' do
@@ -73,8 +73,8 @@ module Api
         # - PATCH /api/v1/admin/products/:id
         def update
           @product = Admins::ProductUpdater.call(edit_product_form_params, params[:id], @current_user, @token)
-          @result = add_url_to_result(@product)
-          render json: json_api_format(ProductUrlRepresenter.new(@result), 'product'), status: :ok
+          # @result = add_url_to_result(@product)
+          render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         swagger_path '/admin/products/{id}' do

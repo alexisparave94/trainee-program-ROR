@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :rates, dependent: :destroy
+  has_many :received_comments, class_name: 'Comment', as: :commentable, dependent: :destroy
 
   # Callback
   before_validation :uniq_admin
