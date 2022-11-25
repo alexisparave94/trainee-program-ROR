@@ -13,6 +13,7 @@ class ProductRepresenter < Representable::Decorator
   property :likes_count
   property :created_at
   property :updated_at
+  property :discarded_at
 
   property :image_url, exec_context: :decorator
 

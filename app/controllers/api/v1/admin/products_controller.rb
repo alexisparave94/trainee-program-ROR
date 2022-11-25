@@ -6,8 +6,8 @@ module Api
       # Class to manage interactions between no logged in users and products
       class ProductsController < ApiController
         before_action :authorize_request
-        before_action :authorize_action
-        before_action :set_product, only: %i[update destroy]
+        # before_action :authorize_action
+        before_action :set_product, only: %i[update destroy discard restore]
 
         # Method to create a new product
         # - POST /api/v1/admin/products
@@ -102,6 +102,20 @@ module Api
         def destroy
           @product = Admins::ProductDeleter.call(@product, @current_user)
           render json: @product, status: :no_content
+        end
+
+        # Method to soft delete a product
+        # - PATCH /api/v1/admin/products/soft_delete/:id
+        def discard
+          @product = Admins::ProductSoftDeleter.call(@product, @current_user)
+          render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
+        end
+
+        # Method to soft delete a product
+        # - PATCH /api/v1/admin/products/soft_delete/:id
+        def restore
+          @product = Admins::ProductRestorer.call(@product, @current_user)
+          render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         private

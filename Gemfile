@@ -107,4 +107,8 @@ gem 'rack-cors'
 # Documentation swagger
 gem 'swagger-blocks'
 
+# Gem sidekiq to implement backgorund jobs
 gem 'sidekiq', '~>6.0.0'
+
+# Gem discard to implement soft delete
+gem 'discard', '~> 1.2'
