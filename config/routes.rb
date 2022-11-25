@@ -53,6 +53,8 @@ Rails.application.routes.draw do
       # end
       namespace :admin do
         resources :products, only: %i[show create update destroy]
+        patch 'products/soft_delete/:id' => 'products#discard', as: :product_soft_delete
+        patch 'products/restore/:id' => 'products#restore', as: :product_restore
       end
     end
   end
