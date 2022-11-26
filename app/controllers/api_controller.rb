@@ -6,6 +6,7 @@ class ApiController < ActionController::API
   include ErrorHandler
   include Pagy::Backend
   include Swagger::Blocks
+  include SwaggerControllers
 
   def authorize_request
     @token = request.headers['Authorization']
