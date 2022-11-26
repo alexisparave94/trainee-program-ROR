@@ -7,7 +7,7 @@ module ErrorHandler
       # rescue_from StandardError do |e|
       #   respond(:standard_error, 500, e.to_s)
       # end
-      rescue_from Pundit::NotAuthorizedError do |e|
+      rescue_from Pundit::NotAuthorizedError, JWT::DecodeError do |e|
         respond(:not_authorized_error, :unauthorized, e.to_s)
       end
       rescue_from ActiveRecord::RecordNotFound do |e|

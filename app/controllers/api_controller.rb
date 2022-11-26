@@ -11,16 +11,8 @@ class ApiController < ActionController::API
   def authorize_request
     @token = request.headers['Authorization']
     header = @token.split.last if @token
-    begin
-      @decoded = JsonWebToken.decode(header)
-      @current_user = User.find(@decoded[:user_id])
-    rescue JWT::DecodeError => e
-      render json: {
-        errors: e,
-        status: :unauthorized,
-        message: e.message
-      }, status: :unauthorized
-    end
+    @decoded = JwtDecoder.call(header)
+    @current_user = User.find(@decoded[:user_id])
   end
 
   def paginate(collection, items = 20)

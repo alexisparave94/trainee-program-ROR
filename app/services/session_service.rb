@@ -17,7 +17,7 @@ class SessionService < ApplicationService
   def authenticate_user
     raise(NotAuthorizeUser, 'Invalid credentials') unless @user.valid_password?(@password)
 
-    token = JsonWebToken.encode(user_id: @user.id)
+    token = JwtEncoder.call(user_id: @user.id)
     [token, @user]
   end
 end
