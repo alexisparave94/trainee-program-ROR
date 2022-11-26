@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :apidocs, only: [:index]
-  # get '/api' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
   get '/api' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
 
   devise_for :users
