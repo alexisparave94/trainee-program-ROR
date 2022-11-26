@@ -5,8 +5,9 @@ class CommentRepresenter < Representable::Decorator
   include Representable::JSON
 
   property :id
-  property :user, as: :author, decorator: UserRepresenter
   property :description
+  property :status
+  property :user, as: :author, decorator: UserRepresenter
   property :commentable, as: :comment_receiver, decorator: UserRepresenter
   property :created_at
   property :updated_at
