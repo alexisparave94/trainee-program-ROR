@@ -2,6 +2,7 @@
 
 # Class to manage User Model
 class User < ApplicationRecord
+  include Discard::Model
   attr_accessor :user
 
   # Include default devise modules. Others available are:
@@ -18,18 +19,18 @@ class User < ApplicationRecord
   has_many :received_comments, class_name: 'Comment', as: :commentable, dependent: :destroy
 
   # Callback
-  before_validation :uniq_admin
+  # before_validation :uniq_admin
 
   # Validations
   # validates :role, uniqueness: { message: "You can't create more than one admin user" }, if: :user_admin?
 
   # validate :uniq_admin
 
-  def uniq_admin
-    return if !admin? || User.admin.empty?
+  # def uniq_admin
+  #   return if !admin? || User.admin.empty?
 
-    errors.add(:role, "You can't create more than one admin user")
-  end
+  #   errors.add(:role, "You can't create more than one admin user")
+  # end
 
   # Enum
   enum :role, %i[admin customer support]

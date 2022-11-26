@@ -8,4 +8,8 @@ class UserRepresenter < Representable::Decorator
   property :first_name
   property :last_name
   property :email
+  property :role
+  property :created_at
+  property :updated_at
+  property :discarded_at
 end

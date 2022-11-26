@@ -10,6 +10,7 @@ module Admins
 
     def call
       approve_comment
+      @comment
     end
 
     def approve_comment
