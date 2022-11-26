@@ -3,16 +3,16 @@
     <h4>No Comments</h4>
   <% else %>
     <h4>Comments</h4>
-    <% commentable.comments.each do |comment| %>
+    <% commentable.comments_include_user.each do |comment| %>
       <hr>
       <p><%= comment.description %></p>
       <p>By <%= comment.user.first_name %></p>
       <p><%= time_ago_in_words(comment.created_at) %></p>
       <p>Status: <%= comment.status.capitalize %></p>
       <% if comment.pending? %>
-        <%= link_to 'Approve', admin_approve_comment_path(id: comment.id, product_id: commentable.id), class:'btn btn-primary' %>
+        <%= link_to 'Approve', admin_comments_approve_path(id: comment.id, product_id: commentable.id), data: { turbo_method: :patch }, class:'btn btn-primary' %>
       <% end %>
-      <% if policy(Comment).destroy? %>
+      <% if policy(comment).destroy? %>
         <%= link_to admin_comment_path(comment, product_id: commentable.id), data: { turbo_method: :delete }, class:'btn btn-danger' do %>
           <i class="bi bi-trash"></i>
         <% end %>

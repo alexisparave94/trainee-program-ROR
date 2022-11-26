@@ -34,6 +34,10 @@ class Product < ApplicationRecord
     comments.includes(:user).approved
   end
 
+  def comments_include_user
+    comments.includes(:user)
+  end
+
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_limit: [220, 220]
   end
