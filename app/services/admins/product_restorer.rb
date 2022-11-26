@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admins
-  # Service object to soft delete a product
+  # Service object to restore a product
   class ProductRestorer < ApplicationService
     def initialize(product, user)
       @product = product

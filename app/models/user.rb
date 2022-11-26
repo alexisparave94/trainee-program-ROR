@@ -2,6 +2,7 @@
 
 # Class to manage User Model
 class User < ApplicationRecord
+  include Discard::Model
   attr_accessor :user
 
   # Include default devise modules. Others available are:

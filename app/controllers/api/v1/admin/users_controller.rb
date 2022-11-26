@@ -15,6 +15,20 @@ module Api
           render json: json_api_format(UserRepresenter.new(@user), 'user'), status: :created
         end
 
+        # Method to soft delete a user
+        # - PATCH /api/v1/admin/users/soft_delete/:id
+        def discard
+          @user = Admins::UserSoftDeleter.call(params[:id])
+          render json: json_api_format(UserRepresenter.new(@user), 'user'), status: :ok
+        end
+
+        # Method to restore a user
+        # - PATCH /api/v1/admin/users/restore/:id
+        def restore
+          @user = Admins::UserRestorer.call(params[:id])
+          render json: json_api_format(UserRepresenter.new(@user), 'user'), status: :ok
+        end
+
         private
 
         # Method to set strong params for user form

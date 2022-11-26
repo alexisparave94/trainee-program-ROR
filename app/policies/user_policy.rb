@@ -13,4 +13,12 @@ class UserPolicy < ApplicationPolicy
   def create?
     user&.admin?
   end
+
+  def discard?
+    user&.admin?
+  end
+
+  def restore?
+    user&.admin?
+  end
 end
