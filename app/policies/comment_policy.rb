@@ -15,10 +15,11 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.admin?
+    # user&.admin?
+    user&.admin? && (record.commentable_type == 'User' || record.commentable_type == 'Product')
   end
 
-  def approve_comment?
+  def approve?
     user&.admin? || user&.support?
   end
 end
