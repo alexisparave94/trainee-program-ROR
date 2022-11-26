@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :products, only: %i[show create update destroy]
         resources :comments, only: %i[destroy]
+        resources :users, only: %i[create]
         patch 'comments/approve/:id' => 'comments#approve'
         patch 'products/soft_delete/:id' => 'products#discard', as: :product_soft_delete
         patch 'products/restore/:id' => 'products#restore', as: :product_restore
