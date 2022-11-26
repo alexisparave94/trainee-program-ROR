@@ -12,7 +12,8 @@ class ApiController < ActionController::API
     @token = request.headers['Authorization']
     header = @token.split.last if @token
     begin
-      @decoded = JsonWebToken.decode(header)
+      # @decoded = JsonWebToken.decode(header)
+      @decoded = JwtDecoder.call(header)
       @current_user = User.find(@decoded[:user_id])
     rescue JWT::DecodeError => e
       render json: {
