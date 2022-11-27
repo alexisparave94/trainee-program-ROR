@@ -2,8 +2,9 @@
 
 # Service object to manage list of products to show in index products
 class ProductService < ApplicationService
-  def initialize(params = {})
+  def initialize(params = {}, api = nil)
     @params = params
+    @api = api
     super()
   end
 
@@ -12,6 +13,7 @@ class ProductService < ApplicationService
     product_search
     product_filter
     product_sort
+    paginate
   end
 
   private
@@ -33,5 +35,9 @@ class ProductService < ApplicationService
 
   def product_sort
     @products = ProductsQuery.new({ sort: params[:sort] }, @products).sort_products
+  end
+
+  def paginate
+    @api ? ResourcesPaginator.call(@products, @params) : @products
   end
 end
