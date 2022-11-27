@@ -10,10 +10,12 @@ module SwaggerControllers
         SwaggerControllers::OrdersController
       ].freeze
       MODELS = [
-        SwaggerControllers::ProductsController,
-        SwaggerControllers::Admin::ProductsController,
-        SwaggerControllers::SessionsController,
-        SwaggerControllers::OrdersController
+        SwaggerModels::ProductSwagger,
+        SwaggerModels::MetaPagination,
+        SwaggerModels::Session,
+        SwaggerModels::OrderSwagger,
+        SwaggerModels::OrderLineSwagger,
+        SwaggerModels::ErrorModel
       ].freeze
     end
   end
