@@ -15,6 +15,7 @@ class SessionService < ApplicationService
   private
 
   def authenticate_user
+    raise(NotAuthorizeUser, 'Your account has been disabled') if @user.discarded?
     raise(NotAuthorizeUser, 'Invalid credentials') unless @user.valid_password?(@password)
 
     token = JwtEncoder.call(user_id: @user.id)
