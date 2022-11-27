@@ -12,7 +12,7 @@ class ResetPasswordSender < ApplicationService
     @reset_password_form = Forms::ResetPasswordForm.new(@params)
     raise(StandardError, parse_errors) unless @reset_password_form.valid?
 
-    UserMailer.welcome_reset_password_instructions(@user).deliver
+    UserMailer.reset_password_instructions(@user).deliver
     @user
   end
 

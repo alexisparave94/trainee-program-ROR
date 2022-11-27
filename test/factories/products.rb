@@ -7,5 +7,6 @@ FactoryBot.define do
     description { 'This is a description' }
     price { 20.0 }
     stock { 10 }
+    likes_count { 1 }
   end
 end

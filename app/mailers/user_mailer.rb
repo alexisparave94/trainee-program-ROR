@@ -7,10 +7,10 @@ class UserMailer < Devise::Mailer
   default template_path: 'users/mailer'
   default from: 'donotreply@example.com'
 
-  def welcome_reset_password_instructions(user)
+  def reset_password_instructions(user)
     @user = user
     create_reset_password_token(@user)
-    mail(to: @user.email, subject: 'Welcome to the New Site')
+    mail(to: @user.email, subject: 'Reset password instructions')
   end
 
   private
