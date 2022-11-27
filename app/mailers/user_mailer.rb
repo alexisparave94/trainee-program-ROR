@@ -10,7 +10,7 @@ class UserMailer < Devise::Mailer
   def reset_password_instructions(user)
     @user = user
     create_reset_password_token(@user)
-    mail(to: @user.email, subject: 'Welcome to the New Site')
+    mail(to: @user.email, subject: 'Reset password instructions')
   end
 
   private
