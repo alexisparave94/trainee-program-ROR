@@ -16,7 +16,7 @@ module Api
       end
 
       # Method to like a product
-      # - POST /api/v1/customer/likes
+      # - DELETE /api/v1/customer/likes
       def destroy
         @like = Customer::Likes::DislikeHandler.call(params[:id])
         render json: @like, status: :no_content

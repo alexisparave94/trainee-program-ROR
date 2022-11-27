@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class LikesControllerTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   test 'should create a like for a product' do
     product = create(:product)
     sign_in create(:user)
@@ -68,5 +70,38 @@ class LikesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_equal 'You have already liked it', response.parsed_body['error']
+  end
+
+  # Jobs
+  test 'should enqueued update likes count job for like' do
+    product = create(:product)
+    @user = create(:user)
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    assert_enqueued_with(job: UpdateLikesCountJob, args: [product, 1]) do
+      post api_v1_likes_url, params: { product_id: product.id }, headers: { Authorization: token }
+    end
+
+    perform_enqueued_jobs
+    product.reload
+    assert_equal product.likes_count, 2
+  end
+
+  test 'should enqueued update likes count job for delete like' do
+    @user = create(:user)
+    like = create(:like, user: @user)
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    assert_enqueued_with(job: UpdateLikesCountJob, args: [like.likeable, -1]) do
+      delete api_v1_like_url(like), headers: { Authorization: token }
+    end
+
+    perform_enqueued_jobs
+    like.likeable.reload
+    assert_equal like.likeable.likes_count, 0
   end
 end

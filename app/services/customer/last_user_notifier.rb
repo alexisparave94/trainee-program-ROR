@@ -12,7 +12,7 @@ module Customer
     def call
       @order_lines = order_lines_which_products_reaches_3_of_stock
       define_products_per_user
-      pp @products_user_liked
+      # pp @products_user_liked
       @products_user_liked.each do |email, products|
         NotifyLastUserLikedJob.perform_later({ email:, products: })
       end
@@ -31,11 +31,11 @@ module Customer
         next if line.product.likes.empty?
 
         @user = line.product.likes.order(created_at: :DESC).take.user
-        save_product_per_user
+        save_product_per_user(line)
       end
     end
 
-    def save_product_per_user
+    def save_product_per_user(line)
       if @products_user_liked[@user.email]
         @products_user_liked[@user.email] << line.product
       else
