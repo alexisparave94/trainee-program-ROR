@@ -25,7 +25,7 @@ module SwaggerControllers
       end
 
       # A list of all classes that have swagger_* declarations.
-      SWAGGERED_CLASSES = [ CONTROLLERS, MODELS, self ].flatten.freeze
+      SWAGGERED_CLASSES = [CONTROLLERS, MODELS, self].flatten.freeze
 
       def index
         render json: Swagger::Blocks.build_root_json(SWAGGERED_CLASSES)
