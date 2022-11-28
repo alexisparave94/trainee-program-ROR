@@ -15,7 +15,7 @@ class UserMailerTest < ActionMailer::TestCase
     end
 
     # Test the body of the sent email contains what we expect it to
-    assert_equal ['donotreply@example.com'], email.from
+    assert_equal ['support@mail.com'], email.from
     assert_equal [user.email], email.to
     assert_equal 'Reset password instructions', email.subject
   end
