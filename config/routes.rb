@@ -51,7 +51,7 @@ Rails.application.routes.draw do
         get 'checkout' => 'orders#checkout'
       # end
       namespace :admin do
-        resources :products, only: %i[show create update destroy]
+        resources :products, only: %i[index create update destroy]
         resources :comments, only: %i[destroy]
         patch 'comments/approve/:id' => 'comments#approve'
         resources :users, only: %i[create]

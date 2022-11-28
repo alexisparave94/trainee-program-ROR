@@ -2,13 +2,15 @@
 
 # Service object to manage list of products to show in index products
 class ProductService < ApplicationService
-  def initialize(params = {}, api = nil)
+  def initialize(params = {}, user = nil, api = nil)
     @params = params
+    @user = user
     @api = api
     super()
   end
 
   def call
+    discard_products
     product_scope
     product_search
     product_filter
@@ -20,9 +22,13 @@ class ProductService < ApplicationService
 
   attr_reader :params
 
+  def discard_products
+    @products = ProductsQuery.new(nil, Product.all, @user).filter_discarded_products
+  end
+
   def product_scope
     @products = ProductsQuery.new({ search: params[:search], tags: params[:tags],
-                                    sort: params[:sort] }).define_scope_for_products
+                                    sort: params[:sort] }, @products).define_scope_for_products
   end
 
   def product_search

@@ -4,9 +4,15 @@
 class ProductsQuery
   attr_reader :relation, :params
 
-  def initialize(params = {}, relation = Product.all)
+  def initialize(params = {}, relation = Product.all, user = nil)
     @relation = relation
     @params = params
+    @user = user
+  end
+
+  # Only include undiscarde products
+  def filter_discarded_products
+    @user.nil? || @user.customer? ? relation.kept : relation
   end
 
   # Method to scope or unscope products
@@ -14,10 +20,6 @@ class ProductsQuery
     return available_unscoped_for_customers if validate_unscoped?
 
     available_for_customers if validate_default_scope?
-  end
-
-  def available_for_admin
-    relation.include_likes
   end
 
   # Method to search products by name
@@ -53,14 +55,17 @@ class ProductsQuery
   # Method to get available products for customers
   def available_for_customers
     relation.includes(:likes, :tags, :rates,
-                      image_attachment: { blob: { variant_records: { image_attachment: :blob } } }).where('stock > 0')
+                      image_attachment: { blob: { variant_records: { image_attachment: :blob } } })
   end
 
   # Method to get available products unscopes for customers
   def available_unscoped_for_customers
     relation.unscoped.includes(:likes, :tags, :rates,
                                image_attachment: { blob: { variant_records: { image_attachment: :blob } } })
-            .where('stock > 0')
+  end
+
+  def available_for_admin
+    relation.include_likes
   end
 
   # Method to validate unscoped porducts
