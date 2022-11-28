@@ -20,3 +20,5 @@ Layout/LineLength:
     - 'test/**/**'
 Metrics/MethodLength:
   Max: 15
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
