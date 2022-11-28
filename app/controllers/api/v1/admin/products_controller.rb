@@ -6,7 +6,7 @@ module Api
       # Class to manage interactions between no logged in users and products
       class ProductsController < ApiController
         before_action :authorize_request
-        # before_action :authorize_action
+        before_action :authorize_action
         before_action :set_product, only: %i[update destroy discard restore]
 
         # Method to get index of products
