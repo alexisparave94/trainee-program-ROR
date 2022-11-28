@@ -5,7 +5,7 @@ class UserMailer < Devise::Mailer
   helper :application
   include Devise::Controllers::UrlHelpers
   default template_path: 'users/mailer'
-  default from: 'donotreply@example.com'
+  default from: 'support@mail.com'
 
   def reset_password_instructions(user)
     @user = user

@@ -6,9 +6,8 @@ class NotifyLastUserLikedMailer < ApplicationMailer
   default from: 'support@mail.com'
 
   def notify(*args)
-    pp @email = args[0][:email]
-    pp @products = args[0][:products]
-    pp '======================'
+    @email = args[0][:email]
+    @products = args[0][:products]
     mail(to: @email, subject: 'Products that you liked has low stock')
   end
 end
