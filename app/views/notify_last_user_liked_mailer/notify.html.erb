@@ -9,6 +9,7 @@
       <% @products.each do |product| %>
       <li>
         <p><%= product.name %></p>
+        <p> Stock: <%= product.stock %></p>
         <% if product.image.attached? %>
           <img src="<%= product.image.variant(:thumb).processed.url %>" alt="Product image">
         <% end %>
