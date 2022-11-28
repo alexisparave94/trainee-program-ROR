@@ -9,6 +9,13 @@ module Api
         # before_action :authorize_action
         before_action :set_product, only: %i[update destroy discard restore]
 
+        # Method to get index of products
+        # GET /api/v1/admin/products
+        def index
+          @pagy, @products = ProductService.call(params, @current_user, 'api')
+          render json: json_api_format(ProductRepresenter.for_collection.new(@products), 'products', @pagy), status: :ok
+        end
+
         # Method to create a new product
         # - POST /api/v1/admin/products
         def create

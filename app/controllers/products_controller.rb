@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
   # Method to get index of products
   # GET /products
   def index
-    @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] })
+    @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] }, current_user)
   end
 
   # Method to get show product
