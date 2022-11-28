@@ -51,6 +51,6 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def restore?
-    user&.admin?|| user&.support?
+    user&.admin? || user&.support?
   end
 end

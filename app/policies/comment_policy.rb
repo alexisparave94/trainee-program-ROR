@@ -20,6 +20,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def approve?
-    user&.admin? || user&.support?
+    (user&.admin? && (record.commentable_type == 'User' || record.commentable_type == 'Product')) ||
+      (user&.support? && record.commentable_type == 'Product')
   end
 end
