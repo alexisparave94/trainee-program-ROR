@@ -18,6 +18,10 @@ class ProductPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    user&.admin? || user&.support?
+  end
+
   def create?
     user&.admin?
   end
@@ -39,6 +43,14 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def add_tag?
+    user&.admin? || user&.support?
+  end
+
+  def discard?
+    user&.admin? || user&.support?
+  end
+
+  def restore?
     user&.admin? || user&.support?
   end
 end
