@@ -35,6 +35,10 @@ class User < ApplicationRecord
   # Enum
   enum :role, %i[admin customer support]
 
+  def active_for_authentication?
+    super && !discarded?
+  end
+
   def self.define_user(user)
     @current_user = user
   end
