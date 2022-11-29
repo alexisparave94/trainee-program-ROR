@@ -7,13 +7,21 @@ module Api
       class ProductsController < ApiController
         before_action :authorize_request
         before_action :authorize_action
-        before_action :set_product, only: %i[update destroy discard restore]
+        before_action :set_product, only: %i[update discard]
+        before_action :set_product_available, only: %i[destroy restore]
 
         # Method to get index of products
         # GET /api/v1/admin/products
         def index
           @pagy, @products = ProductService.call(params, @current_user, 'api')
           render json: json_api_format(ProductRepresenter.for_collection.new(@products), 'products', @pagy), status: :ok
+        end
+
+        # Method to get show product
+        # GET /api/v1/products/:id
+        def show
+          @product = ProductGetter.call(params[:id], @current_user)
+          render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         # Method to create a new product
@@ -40,6 +48,7 @@ module Api
         # Method to soft delete a product
         # - PATCH /api/v1/admin/products/soft_delete/:id
         def discard
+          pp 'Hereeee discard'
           @product = Admins::ProductSoftDeleter.call(@product, @current_user)
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
@@ -65,6 +74,11 @@ module Api
         # Method to set a specific product
         def set_product
           @product = ProductGetter.call(params[:id])
+        end
+
+        # Method to set a specific product
+        def set_product_available
+          @product = Product.find(params[:id])
         end
 
         # Method to authorize actions

@@ -9,8 +9,8 @@ class ProductGetter < ApplicationService
   end
 
   def call
-    # available_product
-    @product
+    available_product
+    # @product
   end
 
   private
