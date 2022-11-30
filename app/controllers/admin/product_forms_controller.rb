@@ -5,7 +5,6 @@ module Admin
   class ProductFormsController < ApplicationController
     before_action :authenticate_user!
     before_action :authorize_action
-    before_action :set_user, only: %i[update]
     after_action :set_id, only: %i[edit]
     after_action :reset_id, only: %i[update]
 
@@ -55,11 +54,6 @@ module Admin
     # Method to authorize actions
     def authorize_action
       authorize Product
-    end
-
-    # Method to set current user
-    def set_user
-      User.define_user(current_user)
     end
 
     def set_id

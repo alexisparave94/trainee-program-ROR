@@ -56,6 +56,9 @@ group :development, :test do
 
   # Add Factory bot for testing
   gem 'factory_bot_rails'
+
+  # Dotenv gem to manage environment variables
+  gem 'dotenv-rails'
 end
 
 group :development do
