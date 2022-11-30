@@ -3,7 +3,6 @@
 # Class to manage User Model
 class User < ApplicationRecord
   include Discard::Model
-  attr_accessor :user
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -37,13 +36,5 @@ class User < ApplicationRecord
 
   def active_for_authentication?
     super && !discarded?
-  end
-
-  def self.define_user(user)
-    @current_user = user
-  end
-
-  def self.give_user
-    @current_user
   end
 end
