@@ -1,6 +1,8 @@
-FROM ruby:2.5.1-alpine
+FROM ruby:3.1.0-alpine
 
-ENV BUNDLER_VERSION=2.0.2
+# ENV BUNDLER_VERSION=2.0.2
+# ENV BUNDLER_VERSION=2.3.12
+# 2.3.7
 
 RUN apk add --update --no-cache \
       binutils-gold \
@@ -18,17 +20,19 @@ RUN apk add --update --no-cache \
       libxml2-dev \
       libxslt-dev \
       libgcrypt-dev \
+      glib-dev \
+      vips-dev \
       make \
       netcat-openbsd \
       nodejs \
       openssl \
       pkgconfig \
       postgresql-dev \
-      python \
+      python3 \
       tzdata \
       yarn
 
-RUN gem install bundler -v 2.0.2
+# RUN gem install bundler -v 2.3.12
 
 WORKDIR /app
 
@@ -38,9 +42,9 @@ RUN bundle config build.nokogiri --use-system-libraries
 
 RUN bundle check || bundle install
 
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
 
-RUN yarn install --check-files
+# RUN yarn install --check-files
 
 COPY . ./ 
 
