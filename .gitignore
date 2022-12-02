@@ -31,3 +31,5 @@
 /config/master.key
 gtj-gcs.keyfile
 .env
+
+echo coverage >> .gitignore

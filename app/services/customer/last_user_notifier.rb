@@ -30,6 +30,7 @@ module Customer
       @order_lines.includes(product: { likes: :user }).each do |line|
         next if line.product.likes.empty?
 
+        # Refactor query object
         @user = line.product.likes.order(created_at: :DESC).take.user
         save_product_per_user(line)
       end
