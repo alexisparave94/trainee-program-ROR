@@ -35,7 +35,8 @@
     <% unless session[:checkout].nil? %>
       <% if session[:checkout].empty? %>
         <div data-turbo='false' class='mt-3'>
-          <%= button_to 'Buy', customer_order_path(id: session[:order_id] || 0), method: :patch, class:'btn btn-primary' %>
+          <%# button_to 'Buy', customer_order_path(id: session[:order_id] || 0), method: :patch, class:'btn btn-primary' %>
+          <%= button_to 'Buy', checkout_pay_path, class:'btn btn-primary' %>
         </div>
       <% else %>
         <p>
