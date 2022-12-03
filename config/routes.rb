@@ -68,4 +68,7 @@ Rails.application.routes.draw do
 
   get 'forgot_password' => 'password#forgot_password'
   post 'reset_password' => 'password#reset_password'
+
+  post 'checkout_pay' => 'checkout_pay#create'
+  resources :webhooks, only: %i[create]
 end
