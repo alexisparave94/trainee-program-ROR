@@ -1,0 +1,1 @@
+Stripe.api_key = ENV['SRIPE_API_KEY']
