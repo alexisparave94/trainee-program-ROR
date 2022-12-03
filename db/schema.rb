@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_26_094401) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_02_114356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -107,6 +107,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_26_094401) do
     t.datetime "updated_at", null: false
     t.integer "likes_count", default: 0
     t.datetime "discarded_at"
+    t.string "stripe_product_id"
     t.index ["discarded_at"], name: "index_products_on_discarded_at"
     t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["sku"], name: "index_products_on_sku", unique: true
