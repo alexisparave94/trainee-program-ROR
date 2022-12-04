@@ -24,10 +24,11 @@ class CheckoutSessionCompletedService < ApplicationService
       get_session
       set_order
       @order.update(status: 'completed', total: @order.calculate_total)
-      PurchaseDetailsMailer.purchase_details(@user.email, @order).deliver
+      # PurchaseDetailsMailer.purchase_details(@user.email, @order).deliver
       line_items.data.each do |line_item|
         reduce_stock(line_item)
       end
+      @user.transactions.create(status: 'success', description: 'checkout completed', amount: @event_object.amount_total)
       return 200
     end
   end

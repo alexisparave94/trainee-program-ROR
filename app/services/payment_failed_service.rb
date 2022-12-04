@@ -22,8 +22,8 @@ class PaymentFailedService < ApplicationService
     case @event.type
     when 'payment_intent.payment_failed'
       err = @event_object.last_payment_error
-      message = err.message
       PurchaseDetailsMailer.incompleted_purchase(@user.email, err.message).deliver
+      @user.transactions.create(status: 'failed', description: err.message, amount: @event_object.amount)
       return 400
     end
   end

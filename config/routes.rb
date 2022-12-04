@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :product_forms, only: %i[new create edit update]
     resources :comments, only: %i[destroy]
     patch 'comments/approve' => 'comments#approve'
+    resources :transactions, only: %i[index]
   end
 
   namespace :customer do
