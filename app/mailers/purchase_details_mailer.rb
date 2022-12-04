@@ -9,4 +9,10 @@ class PurchaseDetailsMailer < ApplicationMailer
     @order = order
     mail(to: @email, subject: 'Purchase Details')
   end
+
+  def incompleted_purchase(email, message)
+    @email = email
+    @message = message
+    mail(to: @email, subject: 'Incompleted Purchse')
+  end
 end

@@ -15,23 +15,43 @@ class StripeWebhookService < ApplicationService
 
   def webhook
     validate_webhook
+    @event_object = @event.data.object
+    set_user
 
-    # Handle the event
-    # pp '=============Event type================'
-    # pp @event
+    # Handle events
     case @event.type
     when 'checkout.session.completed'
-      # Review of stack before
       get_session
-      set_email
       set_order
       @order.update(status: 'completed', total: @order.calculate_total)
-      PurchaseDetailsMailer.purchase_details(@email, @order).deliver
+      PurchaseDetailsMailer.purchase_details(@user.email, @order).deliver
       line_items.data.each do |line_item|
         reduce_stock(line_item)
       end
-      # when 'failed'
-      # Notify failed
+    when 'payment_intent.payment_failed'
+      err = @event_object.last_payment_error
+      message = err.message
+      PurchaseDetailsMailer.incompleted_purchase(@user.email, err.message).deliver
+      # when 'charge.succeeded'
+      #   pp '===================='
+      #   pp 'Suceeeeeeddddddddddddd'
+      #   pp @event
+      #   pp charge = @event.data.object
+      #   pp user =  User.find_by(email: charge.billing_details.email)
+      #   order = user.orders.find_by(status: 'pending')
+      #   pp order.order_lines
+      #   verify_stock = order.order_lines.map do |order_line|
+      #     stock = Product.find(order_line.product_id).stock
+      #     current_quantity = order_line.quantity
+      #     stock < current_quantity ? order_line.product : nil
+      #   end
+      #   begin
+      #     pp arr = verify_stock.compact
+      #     pp arr.empty?
+      #     raise(StandardError,'Not enough stock') if arr.empty?
+      #   rescue StandardError => e
+      #     return 400
+      #   end
     end
   end
 
@@ -46,32 +66,29 @@ class StripeWebhookService < ApplicationService
       )
     rescue JSON::ParserError => e
       p e
-      status 400
-      # return
+      return status 400
     rescue Stripe::SignatureVerificationError => e
       # Invalid signature
       puts 'Signature error'
       p e
-      # return
+      return status 400
     end
   end
 
   def get_session
-    session_object = @event.data.object
-    @session = Stripe::Checkout::Session.retrieve({ id: session_object.id, expand: ['line_items', 'customer_details'] })
+    @session = Stripe::Checkout::Session.retrieve({ id: @event_object.id, expand: ['line_items', 'customer_details'] })
   end
   
   def line_items
     @session.line_items
   end
 
-  def set_email
-    @email = @session.customer_details.email
+  def set_user
+    @user =  User.find_by(stripe_customer_id: @event_object.customer)
   end
 
   def set_order
-    user = User.find_by(email: set_email)
-    @order = user.orders.find_by(status: 'pending')
+    @order = @user.orders.find_by(status: 'pending')
   end
 
   def reduce_stock(line_item)
