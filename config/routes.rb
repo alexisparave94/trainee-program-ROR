@@ -71,4 +71,6 @@ Rails.application.routes.draw do
 
   post 'checkout_pay' => 'checkout_pay#create'
   resources :webhooks, only: %i[create]
+  post 'webhooks/checkout_session_completed' => 'webhooks#checkout_session_completed'
+  post 'webhooks/payment_failed' => 'webhooks#payment_failed'
 end
