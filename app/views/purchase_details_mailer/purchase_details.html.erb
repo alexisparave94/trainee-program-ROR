@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Welcome to the new site</title>
+  </head>
+  <body>
+    <div>
+      <h2>Purchase Details</h2>
+      <% @order.order_lines.each do |line| %>
+        <h3><%= line.product.name %></h3>
+        <p><%= line.product.description %></p>
+        <p> Price: &nbsp;&nbsp;&nbsp;&emsp; <%= line.price %></p>
+        <p> Quantity: &nbsp;&nbsp;&emsp; <%= line.quantity %></p>
+        <p> Subtotal &emsp; <%= line.total %></p>
+      <% end %>
+      <h4> Total: <%=  @order.total %> </h4>
+    </div>
+  </body>
+</html>

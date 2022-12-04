@@ -10,7 +10,7 @@ class CheckoutPayController < ApplicationController
   # - POST /checkout_pay
   def create
     # @product = Product.all.first
-    session = StripeCheckoutService.call(@order, root_url, root_url)
+    session = StripeCheckoutService.call(current_user, @order, root_url, root_url)
     redirect_to session.url, allow_other_host: true
   end
 

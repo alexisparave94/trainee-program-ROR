@@ -17,11 +17,18 @@ class StripeWebhookService < ApplicationService
     validate_webhook
 
     # Handle the event
+    # pp '=============Event type================'
+    # pp @event
     case @event.type
     when 'checkout.session.completed'
+      # Review of stack before
+      get_session
+      set_email
+      set_order
+      @order.update(status: 'completed', total: @order.calculate_total)
+      PurchaseDetailsMailer.purchase_details(@email, @order).deliver
       line_items.data.each do |line_item|
         reduce_stock(line_item)
-        # Mailer
       end
       # when 'failed'
       # Notify failed
@@ -49,9 +56,22 @@ class StripeWebhookService < ApplicationService
     end
   end
 
+  def get_session
+    session_object = @event.data.object
+    @session = Stripe::Checkout::Session.retrieve({ id: session_object.id, expand: ['line_items', 'customer_details'] })
+  end
+  
   def line_items
-    session = @event.data.object
-    pp Stripe::Checkout::Session.retrieve({ id: session.id, expand: ['line_items'] }).line_items
+    @session.line_items
+  end
+
+  def set_email
+    @email = @session.customer_details.email
+  end
+
+  def set_order
+    user = User.find_by(email: set_email)
+    @order = user.orders.find_by(status: 'pending')
   end
 
   def reduce_stock(line_item)

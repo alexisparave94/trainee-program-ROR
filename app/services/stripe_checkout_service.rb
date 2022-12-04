@@ -3,7 +3,8 @@
 # Service object to empty a shopping cart
 # for a no logged in user
 class StripeCheckoutService < ApplicationService
-  def initialize(order, success_url, cancel_url)
+  def initialize(user, order, success_url, cancel_url)
+    @user = user
     @order = order
     @success_url = success_url
     @cancel_url = cancel_url
@@ -19,6 +20,7 @@ class StripeCheckoutService < ApplicationService
   def session
     Stripe::Checkout::Session.create(
       {
+        customer: @user.stripe_customer_id,
         payment_method_types: ['card'],
         line_items: stripe_format_line_items,
         mode: 'payment',
