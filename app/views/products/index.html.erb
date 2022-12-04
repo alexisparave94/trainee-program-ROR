@@ -25,7 +25,7 @@
       <i class="bi bi-file-earmark-text"></i>
     <% end %>
   <% end %>
-  <% if current_user.nil? || current_user&.admin? %>
+  <% if current_user&.admin? %>
     <%= link_to 'Log Transactions', admin_transactions_path, class:'btn btn-secondary' %>
   <% end %>
   <% if current_user.nil? || current_user&.customer? %>
@@ -37,6 +37,7 @@
   <% end %>
   <% if current_user&.customer? %>
     <%= link_to 'My orders', customer_orders_path, class:'btn btn-primary' %>
+    <%= link_to 'My Transactions', customer_transactions_path, class:'btn btn-secondary' %>
   <% end %>
 </div>
 <div class='container-md d-flex flex-column gap-4'>

@@ -3,6 +3,7 @@
 module Admin
   class TransactionsController < ApplicationController
     def index
+      authorize Transaction
       @transactions = Admins::TransactionService.call
     end
   end

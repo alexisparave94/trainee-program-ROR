@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :comment_orders, only: %i[create]
     get 'empty_cart' => 'shopping_cart#empty_cart'
     get 'checkout' => 'shopping_cart#checkout'
+    resources :transactions, only: %i[index]
   end
 
   get 'shopping_cart', to: 'shopping_cart#index'
