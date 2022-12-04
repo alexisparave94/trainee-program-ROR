@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         resources :orders, only: %i[index]
         resources :comment_users, only: %i[create]
         get 'checkout' => 'orders#checkout'
+        resources :transactions, only: %i[index]
       # end
       namespace :admin do
         resources :products, only: %i[index show create update destroy] do 
@@ -62,6 +63,7 @@ Rails.application.routes.draw do
         resources :users, only: %i[create]
         patch 'users/soft_delete/:id' => 'users#discard', as: :user_soft_delete
         patch 'users/restore/:id' => 'users#restore', as: :user_restore
+        resources :transactions, only: %i[index]
         # patch 'products/soft_delete/:id' => 'products#discard', as: :product_soft_delete
         # patch 'products/restore/:id' => 'products#restore', as: :product_restore
       end
