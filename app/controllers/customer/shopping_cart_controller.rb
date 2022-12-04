@@ -16,13 +16,13 @@ module Customer
 
     # Method to checkout if there is enough stock for all the products of a shopping cart
     # - GET /customer/checkout
-    def checkout
-      session[:checkout] = Customer::CheckoutHandler.call(session[:order_id])
-      redirect_to shopping_cart_path
-    rescue StandardError => e
-      flash[:alert] = e
-      session[:order_id] = nil
-      redirect_to products_path
-    end
+    # def checkout
+    #   session[:checkout] = Customer::CheckoutHandler.call(session[:order_id])
+    #   redirect_to shopping_cart_path
+    # rescue StandardError => e
+    #   flash[:alert] = e
+    #   session[:order_id] = nil
+    #   redirect_to products_path
+    # end
   end
 end

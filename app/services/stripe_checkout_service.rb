@@ -12,11 +12,17 @@ class StripeCheckoutService < ApplicationService
   end
 
   def call
+    raise(StandardError, 'Please check the current stock of the products')  unless check_stock.empty?
+
     session
   end
 
   private
 
+  def check_stock
+    Customer::CheckoutHandler.call(@order.id)
+  end
+  
   def session
     Stripe::Checkout::Session.create(
       {
