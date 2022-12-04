@@ -11,17 +11,7 @@ class StripeCheckoutService < ApplicationService
     super()
   end
 
-  def call
-    raise(StandardError, 'Please check the current stock of the products')  unless check_stock.empty?
-
-    session
-  end
-
   private
-
-  def check_stock
-    Customer::CheckoutHandler.call(@order.id)
-  end
   
   def session
     Stripe::Checkout::Session.create(
@@ -46,6 +36,14 @@ class StripeCheckoutService < ApplicationService
         },
         quantity: line.quantity
       }
+    end
+  end
+
+  def lines_exceed_stock
+    @order.order_lines.map do |order_line|
+      stock = Product.find(order_line.product_id).stock
+      current_quantity = order_line.quantity
+      stock < current_quantity ? order_line.product : nil
     end
   end
 end
