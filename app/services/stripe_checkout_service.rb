@@ -12,7 +12,7 @@ class StripeCheckoutService < ApplicationService
   end
 
   private
-  
+
   def session
     Stripe::Checkout::Session.create(
       {

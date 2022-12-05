@@ -3,7 +3,7 @@
 # Class to manage User Model
 class User < ApplicationRecord
   include Discard::Model
-  after_create :create_stripe_customer
+  # after_create :create_stripe_customer
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -40,10 +40,10 @@ class User < ApplicationRecord
     super && !discarded?
   end
 
-  def create_stripe_customer
-    return unless role == 'customer'
+  # def create_stripe_customer
+  #   return unless role == 'customer'
 
-    customer = Stripe::Customer.create(email:)
-    update(stripe_customer_id: customer.id)
-  end
+  #   customer = Stripe::Customer.create(email:)
+  #   update(stripe_customer_id: customer.id)
+  # end
 end

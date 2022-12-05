@@ -8,15 +8,16 @@ SimpleCov.start do
   add_filter '/app/services/'
   add_filter '/app/docs/'
   add_filter '/app/decorators/'
+  add_filter '/app/queries/'
   add_filter '/app/errors/'
   add_filter '/app/helpers/'
   add_filter '/app/policies/'
   add_filter '/app/erros/'
   add_filter '/app/representers/'
-  # add_filter '/app/models/'
+  add_filter '/app/models/'
 
   add_group 'Controllers', 'app/controllers'
-  add_group 'Models', 'app/models'
+  # add_group 'Models', 'app/models'
   # add_group 'Jobs', 'app/jobs'
   # add_group 'Mailers', 'app/mailers'
 end

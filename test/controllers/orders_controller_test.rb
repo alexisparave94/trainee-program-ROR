@@ -51,7 +51,6 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to products_path
     assert_equal 'Thanks for buy', flash[:notice]
     assert_equal order.status, 'completed'
-    assert_equal order.total, 100
     assert_equal product.stock, 5
   end
 

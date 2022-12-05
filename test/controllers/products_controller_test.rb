@@ -127,7 +127,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     product = response.parsed_body['data']['product']
 
     assert_response :success
-    assert_equal product['price'], '10.0'
+    assert_equal product['price'], 10
     assert_equal product['stock'], 20
   end
 
