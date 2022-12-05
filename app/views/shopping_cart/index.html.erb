@@ -26,16 +26,23 @@
     <div class='d-flex gap-2 mt-3'>
       <% if current_user %>
         <%= link_to 'Empty cart', customer_empty_cart_path(order_id: session[:order_id]), class:'btn btn-primary' %>
-        <%= link_to 'Checkout', customer_checkout_path, class:'btn btn-primary' %>
+        <%# link_to 'Checkout', customer_checkout_path, class:'btn btn-primary' %>
+        <div data-turbo='false'>
+          <%= button_to 'Checkout', checkout_pay_path, class:'btn btn-primary' %>
+        </div>
       <% else %>
         <%= link_to 'Empty cart', empty_cart_path(order_id: session[:order_id]), class:'btn btn-primary' %>
-        <%= link_to 'Checkout', checkout_path, class:'btn btn-primary' %>
+        <%# link_to 'Checkout', checkout_path, class:'btn btn-primary' %>
+        <div data-turbo='false'>
+          <%= button_to 'Checkout', checkout_pay_path, class:'btn btn-primary' %>
+        </div>
       <% end %>
     </div>
     <% unless session[:checkout].nil? %>
       <% if session[:checkout].empty? %>
         <div data-turbo='false' class='mt-3'>
-          <%= button_to 'Buy', customer_order_path(id: session[:order_id] || 0), method: :patch, class:'btn btn-primary' %>
+          <%# button_to 'Buy', customer_order_path(id: session[:order_id] || 0), method: :patch, class:'btn btn-primary' %>
+          <%# button_to 'Buy', checkout_pay_path, class:'btn btn-primary' %>
         </div>
       <% else %>
         <p>
@@ -43,11 +50,11 @@
             <% session[:checkout].each do |line| %>
               <% if current_user %>
                 <li class='text-danger fw-semibold'>
-                  <%= "There is only a stock of #{line['stock']} for #{line['name']}" %>
+                  <%# "There is only a stock of #{line['stock']} for #{line['name']}" %>
                 </li>
               <% else %>
                 <li class='text-danger fw-semibold'>
-                  <%= "There is only a stock of #{line['stock']} for #{line['line']['name']}" %>
+                  <%# "There is only a stock of #{line['stock']} for #{line['line']['name']}" %>
                 </li>
               <% end %>
             <% end %>

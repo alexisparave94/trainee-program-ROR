@@ -21,8 +21,8 @@ class ShoppingCartController < ApplicationController
 
   # Method to checkout if there is enough stock for all the products of a shopping cart
   # - GET /checkout
-  def checkout
-    session[:checkout] = CheckoutHandler.call(session[:virtual_order])
-    redirect_to shopping_cart_path
-  end
+  # def checkout
+  #   session[:checkout] = CheckoutHandler.call(session[:virtual_order])
+  #   redirect_to shopping_cart_path
+  # end
 end

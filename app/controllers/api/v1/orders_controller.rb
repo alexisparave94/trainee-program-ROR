@@ -19,8 +19,9 @@ module Api
       # - GET /api/v1/customer/checkout
       def checkout
         authorize @order
-        @order = Customer::CheckoutHandlerApi.call(params[:order_id])
-        render json: json_api_format(OrderRepresenter.new(@order), 'order'), status: :ok
+        # @order = Customer::CheckoutHandlerApi.call(params[:order_id])
+        session = Customer::StripeCheckoutApiService.call(@current_user, @order, root_url, root_url)
+        render json: session, status: :ok
       end
 
       private

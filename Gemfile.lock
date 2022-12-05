@@ -315,6 +315,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.1.0)
       railties (>= 6.0.0)
+    stripe (8.0.0)
     swagger-blocks (3.0.0)
     thor (1.2.1)
     timeout (0.3.0)
@@ -378,6 +379,7 @@ DEPENDENCIES
   simplecov
   sprockets-rails
   stimulus-rails
+  stripe
   swagger-blocks
   turbo-rails
   tzinfo-data
