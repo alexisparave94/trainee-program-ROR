@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Class to representar a product in json
+# Class to representer a transaction in json
 class TransactionRepresenter < Representable::Decorator
   include Representable::JSON
 

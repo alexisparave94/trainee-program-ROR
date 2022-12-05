@@ -18,7 +18,7 @@
   </div>
 </p>
 <p>
-  $ <%= @comment_product_form.commentable.price %>
+  <%= format('$ %0.02f', @comment_product_form.commentable.price/100) %>
 </p>
 <p>
   Stock: <%= @comment_product_form.commentable.stock %>

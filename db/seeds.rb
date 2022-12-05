@@ -1,4 +1,5 @@
 require 'faker'
+require 'stripe'
 
 # puts 'Start Seeding'
 
@@ -50,15 +51,24 @@ user2 = User.create(email: 'alexis@mail.com', password: '123456', first_name: 'A
 user3 = User.create(email: 'alex@mail.com', password: '123456', first_name: 'Alex', last_name: 'Vargas')
 user4 = User.create(email: 'support@mail.com', password: '123456', role: 'support', first_name: 'Support')
 
+# Stripe customers
+# customer1 = Stripe::Customer.create(email: user2.email)
+# user2.update(stripe_customer_id: customer1.id)
+# customer2 = Stripe::Customer.create(email: user3.email)
+# user3.update(stripe_customer_id: customer2.id)
+
 puts 'Seedding Products'
 20.times do
   product = Product.new
   product.sku = "SKU-#{Faker::Number.unique.number(digits: 8)}"
   product.name = Faker::Commerce.unique.product_name
   product.description = Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 10)
-  product.price = Faker::Number.within(range: 10..100)
+  product.price = Faker::Number.within(range: 10..300)*100
   product.stock = Faker::Number.within(range: 1..25)
   product.save
+  stripe_product = Stripe::Product.create(name: product.name)
+  price = Stripe::Price.create(product: stripe_product, unit_amount: product.price, currency: 'usd')
+  product.update(stripe_product_id: stripe_product.id)
 end
 
 puts 'Seedding Tags'

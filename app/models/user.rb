@@ -41,6 +41,8 @@ class User < ApplicationRecord
   end
 
   def create_stripe_customer
+    return unless role == 'customer'
+
     customer = Stripe::Customer.create(email:)
     update(stripe_customer_id: customer.id)
   end

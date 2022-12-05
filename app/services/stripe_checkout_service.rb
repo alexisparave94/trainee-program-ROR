@@ -31,7 +31,7 @@ class StripeCheckoutService < ApplicationService
       {
         price_data: {
           product: line.product.stripe_product_id,
-          unit_amount: 2000,
+          unit_amount: line.price.to_i,
           currency: 'usd'
         },
         quantity: line.quantity

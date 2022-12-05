@@ -15,15 +15,15 @@
         <td style='vertical-align: middle'><%= i+1 %></td>
         <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
         <td style='text-align: center; vertical-align: middle'><%= order_line.quantity %></td>
-        <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price) %></td>
-        <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total) %></td>
+        <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price/100) %></td>
+        <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total/100) %></td>
       </tr>
     <% end %>
   </tbody>
   <tfoot>
     <tr>
       <td colspan="7">
-        <h5 class='mb-0'>Total: <%= format('$ %0.02f', @comment_order_form.commentable.total) %></h5>
+        <h5 class='mb-0'>Total: <%= format('$ %0.02f', @comment_order_form.commentable.total/100) %></h5>
       </td>
     </tr>
   </tfoot>
