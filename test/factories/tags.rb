@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :tag do
-    name { 'Cotton' }
+    name { 'XXX' }
   end
 end

@@ -1,0 +1,2 @@
+CREATE USER alexis;
+ALTER USER alexis WITH SUPERUSER;
