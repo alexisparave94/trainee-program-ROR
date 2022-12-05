@@ -11,7 +11,7 @@ class WebhooksController < ApplicationController
   end
 
   def payment_failed
-    status = PaymentFailedService.call(request,  ENV['PAYMENT_INTENT_FAILED_KEY'])
+    status = PaymentFailedService.call(request, ENV['PAYMENT_INTENT_FAILED_KEY'])
     render json: { message: 'payment failed' }, status:
   end
 
