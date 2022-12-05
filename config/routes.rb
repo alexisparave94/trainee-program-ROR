@@ -58,14 +58,14 @@ Rails.application.routes.draw do
           patch 'discard', on: :member
           patch 'restore', on: :member
         end
-        resources :comments, only: %i[destroy]
-        patch 'comments/approve/:id' => 'comments#approve'
-        resources :users, only: %i[create]
-        patch 'users/soft_delete/:id' => 'users#discard', as: :user_soft_delete
-        patch 'users/restore/:id' => 'users#restore', as: :user_restore
+        resources :comments, only: %i[destroy] do
+          patch 'approve', on: :member
+        end 
+        resources :users, only: %i[create] do 
+          patch 'discard', on: :member
+          patch 'restore', on: :member
+        end
         resources :transactions, only: %i[index]
-        # patch 'products/soft_delete/:id' => 'products#discard', as: :product_soft_delete
-        # patch 'products/restore/:id' => 'products#restore', as: :product_restore
       end
     end
   end
