@@ -79,6 +79,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'simplecov', require: false
   gem 'webdrivers'
 end
 
@@ -115,3 +116,6 @@ gem 'sidekiq', '~>6.0.0'
 
 # Gem discard to implement soft delete
 gem 'discard', '~> 1.2'
+
+# Gem stripe to pocess payments
+gem 'stripe'

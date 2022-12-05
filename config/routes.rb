@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :product_forms, only: %i[new create edit update]
     resources :comments, only: %i[destroy]
     patch 'comments/approve' => 'comments#approve'
+    resources :transactions, only: %i[index]
   end
 
   namespace :customer do
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
     resources :comment_orders, only: %i[create]
     get 'empty_cart' => 'shopping_cart#empty_cart'
     get 'checkout' => 'shopping_cart#checkout'
+    resources :transactions, only: %i[index]
   end
 
   get 'shopping_cart', to: 'shopping_cart#index'
@@ -49,6 +51,7 @@ Rails.application.routes.draw do
         resources :orders, only: %i[index]
         resources :comment_users, only: %i[create]
         get 'checkout' => 'orders#checkout'
+        resources :transactions, only: %i[index]
       # end
       namespace :admin do
         resources :products, only: %i[index show create update destroy] do 
@@ -60,6 +63,7 @@ Rails.application.routes.draw do
         resources :users, only: %i[create]
         patch 'users/soft_delete/:id' => 'users#discard', as: :user_soft_delete
         patch 'users/restore/:id' => 'users#restore', as: :user_restore
+        resources :transactions, only: %i[index]
         # patch 'products/soft_delete/:id' => 'products#discard', as: :product_soft_delete
         # patch 'products/restore/:id' => 'products#restore', as: :product_restore
       end
@@ -68,4 +72,9 @@ Rails.application.routes.draw do
 
   get 'forgot_password' => 'password#forgot_password'
   post 'reset_password' => 'password#reset_password'
+
+  post 'checkout_pay' => 'checkout_pay#create'
+  resources :webhooks, only: %i[create]
+  post 'webhooks/checkout_session_completed' => 'webhooks#checkout_session_completed'
+  post 'webhooks/payment_failed' => 'webhooks#payment_failed'
 end
