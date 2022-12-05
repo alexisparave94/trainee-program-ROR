@@ -99,35 +99,35 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Not enough stock', response.parsed_body['message']
   end
 
-  test 'should report an unprocessable entity if the purchase has been completed for customer user api' do
-    @product = create(:product)
-    @user = create(:user)
-    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+  # test 'should report an unprocessable entity if the purchase has been completed for customer user api' do
+  #   @product = create(:product)
+  #   @user = create(:user)
+  #   post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
 
-    token = response.parsed_body['data']['session']['token']
+  #   token = response.parsed_body['data']['session']['token']
 
-    post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
-    order_id = response.parsed_body['data']['order']['id']
+  #   post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 2, product_id: @product.id } }, headers: { Authorization: token }
+  #   order_id = response.parsed_body['data']['order']['id']
 
-    get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
-    get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
+  #   get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
+  #   get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
 
-    assert_response :unprocessable_entity
-    assert_equal 'The purchase has been completed', response.parsed_body['error']
-  end
+  #   assert_response :unprocessable_entity
+  #   assert_equal 'The purchase has been completed', response.parsed_body['error']
+  # end
 
-  test 'should enqueued notify last user liked job' do
-    @user = create(:user)
-    like = create(:like, user: @user)
-    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+  # test 'should enqueued notify last user liked job' do
+  #   @user = create(:user)
+  #   like = create(:like, user: @user)
+  #   post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
 
-    token = response.parsed_body['data']['session']['token']
+  #   token = response.parsed_body['data']['session']['token']
 
-    post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 7, product_id: like.likeable.id } }, headers: { Authorization: token }
-    order_id = response.parsed_body['data']['order']['id']
+  #   post api_v1_order_lines_url, params: { forms_order_line_form: { quantity: 7, product_id: like.likeable.id } }, headers: { Authorization: token }
+  #   order_id = response.parsed_body['data']['order']['id']
 
-    assert_enqueued_with(job: NotifyLastUserLikedJob, args: [{ email: @user.email, products: [like.likeable] }]) do
-      get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
-    end
-  end
+  #   assert_enqueued_with(job: NotifyLastUserLikedJob, args: [{ email: @user.email, products: [like.likeable] }]) do
+  #     get api_v1_checkout_url, params: { order_id: }, headers: { Authorization: token }
+  #   end
+  # end
 end

@@ -13,6 +13,6 @@ class PurchaseDetailsMailer < ApplicationMailer
   def incompleted_purchase(email, message)
     @email = email
     @message = message
-    mail(to: @email, subject: 'Incompleted Purchse')
+    mail(to: @email, subject: 'Incompleted Purchase')
   end
 end
