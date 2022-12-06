@@ -47,6 +47,24 @@ class ShoppingCartControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Shopping cart has been emptied successfully', flash[:notice]
   end
 
+  test 'should redirect to products when try to empty shopping cart with a logged in user' do
+    sign_in @user = create(:user)
+
+    post customer_order_line_forms_url, params: { forms_order_line_form: { quantity: 2, price: @product.price, product_id: @product.id } }
+
+    get customer_empty_cart_path(order_id: nil)
+
+    assert_redirected_to products_path
+  end
+
+  test 'should redirect to products when try to get an empty shopping cart with a no logged in user' do
+    sign_in @user = create(:user)
+
+    get shopping_cart_path
+
+    assert_redirected_to products_path
+  end
+
   # test 'should get checkout order lines session checkout must be empty' do
   #   sign_in @user = create(:user)
 

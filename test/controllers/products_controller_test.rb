@@ -52,10 +52,20 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Tag was successfully added', flash[:notice]
   end
 
-  # Test for Api
+  # API
 
   test 'should get index products api' do
     get api_v1_products_url
+    assert_response :success
+  end
+
+  test 'should get index products for an admin user api' do
+    @user = create(:user,role: 'admin')
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    get api_v1_admin_products_url, headers: { Authorization: token }
     assert_response :success
   end
 
@@ -70,6 +80,17 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test 'should show a product api' do
     product = create(:product)
     get api_v1_product_url(product)
+    assert_response :success
+  end
+
+  test 'should show a product for an admin user api' do
+    @user = create(:user,role: 'admin')
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    product = create(:product)
+    get api_v1_admin_product_url(product), headers: { Authorization: token }
     assert_response :success
   end
 
@@ -177,5 +198,35 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :not_found
+  end
+
+  test 'should soft delete a product api' do
+    @user = create(:user, role: 'admin')
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    product = create(:product)
+
+    patch discard_api_v1_admin_product_url(product), headers: { Authorization: token }
+
+    assert_response :success
+  end
+
+  test 'should restore a product api' do
+    @user = create(:user, role: 'admin')
+    post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
+
+    token = response.parsed_body['data']['session']['token']
+
+    product = create(:product)
+
+    patch discard_api_v1_admin_product_url(product), headers: { Authorization: token }
+
+    product.reload
+
+    patch restore_api_v1_admin_product_url(product), headers: { Authorization: token }
+
+    assert_response :success
   end
 end

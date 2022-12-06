@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
@@ -8,10 +10,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     token = response.parsed_body['data']['session']['token']
 
     assert_difference('User.count') do
-      post api_v1_admin_users_url, params: { forms_user_form: { email: 'test@mail.com', password: '123456' } }, headers: { Authorization: token }
+      post api_v1_admin_users_url, params: { forms_user_form: { email: 'test@mail.com', personal_email: 'example@mail.com' } }, headers: { Authorization: token }
     end
 
-    assert_response :success
+    assert_response :created
   end
 
   test 'should soft delete a user' do
@@ -21,7 +23,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     token = response.parsed_body['data']['session']['token']
 
-    patch api_v1_admin_user_soft_delete_url(@user2), headers: { Authorization: token }
+    patch discard_api_v1_admin_user_url(@user2), headers: { Authorization: token }
 
     assert_response :success
   end
@@ -33,9 +35,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     token = response.parsed_body['data']['session']['token']
 
-    patch api_v1_admin_user_soft_delete_url(@user2), headers: { Authorization: token }
+    patch discard_api_v1_admin_user_url(@user2), headers: { Authorization: token }
 
-    patch api_v1_admin_user_restore_url(@user2), headers: { Authorization: token }
+    patch restore_api_v1_admin_user_url(@user2), headers: { Authorization: token }
 
     assert_response :success
   end
