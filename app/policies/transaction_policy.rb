@@ -2,6 +2,7 @@
 
 # Class to manage Transaction Policy
 class TransactionPolicy < ApplicationPolicy
+  # Class to manage Transaction Policy Scope
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

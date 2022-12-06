@@ -4,9 +4,10 @@ module Customer
   # Service object to delete a comment
   class TransactionService < ApplicationService
     def initialize(user)
+      super()
       @user = user
     end
-    
+
     def call
       list_transactions
     end

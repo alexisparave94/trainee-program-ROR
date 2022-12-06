@@ -49,7 +49,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     comment = user2.received_comments.reload.first
 
-    user_admin = create(:user, role: 'admin', email: 'admin@mail.com')
+    user_admin = create(:user, role: 'admin', email: 'admin1@mail.com')
     post api_v1_sign_in_url, params: { email: user_admin.email, password: user_admin.password }
 
     token = response.parsed_body['data']['session']['token']
@@ -74,7 +74,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     comment = user2.received_comments.reload.first
 
-    user_admin = create(:user, role: 'admin', email: 'admin@mail.com')
+    user_admin = create(:user, role: 'admin', email: 'admin1@mail.com')
     post api_v1_sign_in_url, params: { email: user_admin.email, password: user_admin.password }
 
     token = response.parsed_body['data']['session']['token']

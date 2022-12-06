@@ -7,7 +7,7 @@ module Admins
       @user = user
       super()
     end
-    
+
     def call
       raise(NotAuthorizeUser) unless @user&.admin?
 

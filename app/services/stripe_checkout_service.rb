@@ -14,6 +14,7 @@ class StripeCheckoutService < ApplicationService
   private
 
   def session
+    identify_stripe_customer
     Stripe::Checkout::Session.create(
       {
         customer: @user.stripe_customer_id,
@@ -37,6 +38,13 @@ class StripeCheckoutService < ApplicationService
         quantity: line.quantity
       }
     end
+  end
+
+  def identify_stripe_customer
+    return if @user.stripe_customer_id
+
+    customer = Stripe::Customer.create(email: @user.email)
+    @user.update(stripe_customer_id: customer.id)
   end
 
   def lines_exceed_stock

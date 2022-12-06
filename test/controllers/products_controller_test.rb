@@ -60,7 +60,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index products for an admin user api' do
-    @user = create(:user,role: 'admin')
+    @user = create(:user, role: 'admin')
     post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
 
     token = response.parsed_body['data']['session']['token']
@@ -84,7 +84,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should show a product for an admin user api' do
-    @user = create(:user,role: 'admin')
+    @user = create(:user, role: 'admin')
     post api_v1_sign_in_url, params: { email: @user.email, password: @user.password }
 
     token = response.parsed_body['data']['session']['token']

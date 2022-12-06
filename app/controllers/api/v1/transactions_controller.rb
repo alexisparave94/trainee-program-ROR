@@ -8,7 +8,8 @@ module Api
 
       def index
         @transactions = Customer::TransactionApiService.call(@current_user)
-        render json: json_api_format(TransactionRepresenter.for_collection.new(@transactions), 'transactions'), status: :ok
+        render json: json_api_format(TransactionRepresenter.for_collection.new(@transactions), 'transactions'),
+               status: :ok
       end
     end
   end

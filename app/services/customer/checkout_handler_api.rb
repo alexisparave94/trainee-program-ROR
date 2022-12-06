@@ -15,8 +15,6 @@ module Customer
 
       raise(NotEnoughStock, lines_exceed_stock.compact) unless lines_exceed_stock.compact.empty?
 
-      
-
       # @order.update(status: 'completed', total: @order.calculate_total)
       # Customer::StockUpdater.call(@order)
       # Customer::LastUserNotifier.call(@order)
