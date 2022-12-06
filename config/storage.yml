@@ -17,9 +17,9 @@ local:
 # Remember not to checkin your GCS keyfile to a repository
 google:
   service: GCS
-  project: "Get that job"
-  credentials: <%= Rails.root.join("gtj-gcs.keyfile") %>
-  bucket: gtj-storage
+  project: ENV['GOOGLE_STORAGE_PROJECT']
+  credentials: <%= ENV['GOOGLE_APP_CREDENTIALS'].to_json %>
+  bucket: ENV['GOOGLE_STORAGE_BUCKET']
   public: true
 
 # Use bin/rails credentials:edit to set the Azure Storage secret (as azure_storage:storage_access_key)
