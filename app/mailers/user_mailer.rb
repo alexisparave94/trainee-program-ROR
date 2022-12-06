@@ -13,6 +13,14 @@ class UserMailer < Devise::Mailer
     mail(to: @user.email, subject: 'Reset password instructions')
   end
 
+  def new_support_user(user, password, personal_email)
+    @user = user
+    @password = password
+    @personal_email = personal_email
+    create_reset_password_token(@user)
+    mail(to: personal_email, from: 'admin@mail.com', subject: 'New Support User')
+  end
+
   private
 
   def create_reset_password_token(user)
