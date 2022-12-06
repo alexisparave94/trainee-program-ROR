@@ -4,7 +4,7 @@
 class StripeWebhookService < ApplicationService
   def initialize(request, webhook_key)
     @request = request
-    @webhook_key =  webhook_key.to_s
+    @webhook_key = webhook_key.to_s
     super()
   end
 
@@ -34,12 +34,12 @@ class StripeWebhookService < ApplicationService
       )
     rescue JSON::ParserError => e
       p e
-      return 400
+      400
     rescue Stripe::SignatureVerificationError => e
       # Invalid signature
       puts 'Signature error'
       p e
-      return 400
+      400
     end
   end
 

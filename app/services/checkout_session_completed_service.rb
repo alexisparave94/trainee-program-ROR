@@ -16,14 +16,14 @@ class CheckoutSessionCompletedService < StripeWebhookService
       end
       Customer::LastUserNotifier.call(@order)
       @user.transactions.create(status: 'success', description: 'checkout completed', amount: @event_object.amount_total)
-      return 200
+      200
     end
   end
 
   def get_session
     @session = Stripe::Checkout::Session.retrieve({ id: @event_object.id, expand: ['line_items', 'customer_details'] })
   end
-  
+
   def line_items
     @session.line_items
   end
