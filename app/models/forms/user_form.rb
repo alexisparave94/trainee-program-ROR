@@ -7,13 +7,14 @@ module Forms
 
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-    attr_accessor :first_name, :last_name, :email, :password
+    attr_accessor :first_name, :last_name, :email, :personal_email
 
     # Validations
     validates :email, presence: { message: 'Must enter an email' }
     validates :email, format: { with: VALID_EMAIL_REGEX, message: 'Must enter a valid e-mail format' }
+    validates :personal_email, presence: { message: 'Must enter an email' }
+    validates :personal_email, format: { with: VALID_EMAIL_REGEX, message: 'Must enter a valid e-mail format' }
     validate :uniq_email
-    validates :password, presence: { message: 'Must enter a password' }
 
     def uniq_email
       return unless User.find_by(email:)

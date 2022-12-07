@@ -18,8 +18,8 @@
             <td style='vertical-align: middle'><%= i+1 %></td>
             <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
             <td style='text-align: center; vertical-align: middle'><%= order_line.quantity %></td>
-            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price) %></td>
-            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total) %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price/100) %></td>
+            <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total/100) %></td>
           </tr>
         <% end %>
       </tbody>
@@ -30,7 +30,7 @@
               <%= link_to [:customer, order], class:'btn btn-primary' do %>
               <i class="bi bi-card-text"></i>
               <% end %>
-              <h5 class='mb-0'>Total: <%= format('$ %0.02f', order.total) %></h5>
+              <h5 class='mb-0'>Total: <%= format('$ %0.02f', order.total/100) %></h5>
             </div>
           </td>
         </tr>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Welcome to supports</title>
+  </head>
+  <body>
+    <div>
+      <p>Hi,</p>
+      <p>Welcome to supports team</p>
+      <p>This is your password: <%= @password %></p>
+      <p>This is a provisional password, we advise you to change it in this link: <%=link_to "Reset your password here", edit_user_password_url(reset_password_token: @token), html_options = { style: "font-weight: bold" } %>.</p>
+      <p>You have two weeks to reset your password. If you run into any issues, please email them to <a href="mailto:support@example.com">support@example.com</a>. Our Support Team will be happy to help you.</p>
+      <p>Thank you!</p>
+    </div>
+  </body>
+</html>

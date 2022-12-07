@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Preview all emails at http://localhost:3000/rails/mailers/purchase_details_mailer
 class PurchaseDetailsMailerPreview < ActionMailer::Preview
   def purchase_details

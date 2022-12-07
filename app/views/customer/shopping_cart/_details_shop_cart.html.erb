@@ -4,8 +4,8 @@
       <td style='vertical-align: middle'><%= i+1 %></td>
       <td style='text-align: center; vertical-align: middle'><%= order_line.product.name %></td>
       <td style='text-align: center; vertical-align: middle'><%= order_line.quantity %></td>
-      <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price) %></td>
-      <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total) %></td>
+      <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.price/100) %></td>
+      <td style='vertical-align: middle'><%= format('$ %0.02f', order_line.total/100) %></td>
       <td style='text-align: center'>
         <%= link_to edit_customer_order_line_form_path(order_line, product_id: order_line.product.id), class:'btn btn-primary' do %>
           <i class="bi bi-pencil"></i>
@@ -21,6 +21,6 @@
 </tbody>
 <tfoot>
   <tr>
-    <td colspan="7"><h5 class='mb-0'>Total: <%= format('$ %0.02f', order.calculate_total) %></h5></td>
+    <td colspan="7"><h5 class='mb-0'>Total: <%= format('$ %0.02f', order.calculate_total/100) %></h5></td>
   </tr>
 </tfoot>

@@ -31,6 +31,7 @@
       <% if current_user&.admin? %>
         <div class="field mb-3">
           <%= form.label :price, class:'form-label' %>
+          <em> ( in cents )</em>
           <%= form.text_field :price, value: @product_form.product.price, class: 'form-control' %>
         </div>
       <% end %>

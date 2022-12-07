@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Mailer to notify purchase details 
+# Mailer to notify purchase details
 class PurchaseDetailsMailer < ApplicationMailer
   default from: 'support@mail.com'
 

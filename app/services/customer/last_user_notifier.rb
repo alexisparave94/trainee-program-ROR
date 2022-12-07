@@ -12,7 +12,6 @@ module Customer
     def call
       @order_lines = order_lines_which_products_reaches_3_of_stock
       define_products_per_user
-      # pp @products_user_liked
       @products_user_liked.each do |email, products|
         NotifyLastUserLikedJob.perform_later({ email:, products: })
       end
@@ -28,10 +27,11 @@ module Customer
 
     def define_products_per_user
       @order_lines.includes(product: { likes: :user }).each do |line|
-        next if line.product.likes.empty?
+        likes = LastUserLikedProductQuery.new({}, line).likes_of_product_in_order_line
+        next if likes.empty?
 
         # Refactor query object
-        @user = line.product.likes.order(created_at: :DESC).take.user
+        @user = LastUserLikedProductQuery.new({}, likes).last_user_liked
         save_product_per_user(line)
       end
     end

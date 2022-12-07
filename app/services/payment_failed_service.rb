@@ -10,7 +10,7 @@ class PaymentFailedService < StripeWebhookService
       err = @event_object.last_payment_error
       PurchaseDetailsMailer.incompleted_purchase(@user.email, err.message).deliver
       @user.transactions.create(status: 'failed', description: err.message, amount: @event_object.amount)
-      return 400
+      400
     end
   end
 end

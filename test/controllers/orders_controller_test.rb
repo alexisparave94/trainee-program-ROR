@@ -51,11 +51,34 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to products_path
     assert_equal 'Thanks for buy', flash[:notice]
     assert_equal order.status, 'completed'
-    assert_equal order.total, 100
     assert_equal product.stock, 5
   end
 
-  # Api section
+  test 'should delete a shopping cart' do
+    sign_in @user = create(:user)
+
+    product = create(:product)
+
+    order = create(:order, user: @user, status: 'pending')
+    create(:order_line, order:, product:, price: product.price, quantity: 5)
+
+    delete customer_order_url(order)
+
+    assert_redirected_to products_path
+    assert_equal 'Shopping cart was successfully deleted', flash[:notice]
+  end
+
+  test 'should redirect to products when try to delete a shopping cart that has been bought' do
+    sign_in @user = create(:user)
+
+    order = create(:order, user: @user, status: 'completed')
+
+    delete customer_order_url(order)
+
+    assert_redirected_to products_path
+  end
+
+  # API
 
   test 'should show orders of a customer user api' do
     @user = create(:user)

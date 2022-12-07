@@ -11,11 +11,11 @@
       <% @order.order_lines.each do |line| %>
         <h3><%= line.product.name %></h3>
         <p><%= line.product.description %></p>
-        <p> Price: &nbsp;&nbsp;&nbsp;&emsp; <%= line.price %></p>
+        <p> Price: &nbsp;&nbsp;&nbsp;&emsp; <%= format('$ %0.02f', line.price/100) %></p>
         <p> Quantity: &nbsp;&nbsp;&emsp; <%= line.quantity %></p>
-        <p> Subtotal &emsp; <%= line.total %></p>
+        <p> Subtotal &emsp; <%= format('$ %0.02f', line.total/100) %></p>
       <% end %>
-      <h4> Total: <%=  @order.total %> </h4>
+      <h3> Total: &emsp;&emsp;<%= format('$ %0.02f', @order.total/100) %> </h3>
     </div>
   </body>
 </html>

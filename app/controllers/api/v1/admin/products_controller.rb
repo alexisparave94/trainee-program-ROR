@@ -48,7 +48,6 @@ module Api
         # Method to soft delete a product
         # - PATCH /api/v1/admin/products/soft_delete/:id
         def discard
-          pp 'Hereeee discard'
           @product = Admins::ProductSoftDeleter.call(@product, @current_user)
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end

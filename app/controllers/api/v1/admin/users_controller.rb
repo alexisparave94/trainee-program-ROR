@@ -33,7 +33,7 @@ module Api
 
         # Method to set strong params for user form
         def user_params
-          params.require(:forms_user_form).permit(:first_name, :last_name, :email, :password)
+          params.require(:forms_user_form).permit(:first_name, :last_name, :email, :personal_email)
         end
 
         # Method to authorize actions

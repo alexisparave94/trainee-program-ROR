@@ -4,7 +4,7 @@
 class Product < ApplicationRecord
   include Discard::Model
 
-  after_create :create_stripe_product
+  # after_create :create_stripe_product
 
   # Associations
   has_many :order_lines, dependent: :destroy
@@ -44,9 +44,9 @@ class Product < ApplicationRecord
     attachable.variant :thumb, resize_to_limit: [220, 220]
   end
 
-  def create_stripe_product
-    product = Stripe::Product.create(name:)
-    price = Stripe::Price.create(product:, unit_amount: 2000, currency: 'usd')
-    update(stripe_product_id: product.id)
-  end
+  # def create_stripe_product
+  #   product = Stripe::Product.create(name:)
+  #   price = Stripe::Price.create(product:, unit_amount: 2000, currency: 'usd')
+  #   update(stripe_product_id: product.id)
+  # end
 end

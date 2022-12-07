@@ -59,7 +59,7 @@
             <% end %>
           <% end %>
         </h6>
-        <h6 class="card-subtitle mb-2 text-muted"><%= format('$ %0.02f', product.price) %></h6>
+        <h6 class="card-subtitle mb-2 text-muted"><%= format('$ %0.02f', product.price/100) %></h6>
         <h6 class="card-subtitle mb-2 text-muted">Stock: <%= product.stock %></h6>
         <h6 class="card-subtitle mb-2 text-muted">Rate: 
           <% if product.rates.empty? %>
@@ -71,7 +71,6 @@
         <div class='d-flex justify-content-center mb-2'>
           <% if product.image.attached? %>
             <%= image_tag product.image.variant(:thumb).processed %>
-            <%# image_tag product.image %>
           <% end %>
         </div>
         <% if current_user&.admin? %>
