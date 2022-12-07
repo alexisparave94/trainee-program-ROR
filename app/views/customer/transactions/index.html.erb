@@ -10,9 +10,9 @@
     <th style='text-align: center'>Date</th>
   </thead>
   <tbody>
-    <% @transactions.each do |tran| %>
+    <% @transactions.each.with_index do |tran, index| %>
       <tr>
-        <td style='text-align: center'><%= tran.id %></td>
+        <td style='text-align: center'><%= index + 1 %></td>
         <td style='text-align: center'><%= format('$ %0.02f', tran.amount/100) %></td>
         <td style='text-align: center'><%= tran.status %></td>
         <td style='text-align: center'><%= tran.description %></td>
