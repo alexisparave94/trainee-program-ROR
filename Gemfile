@@ -119,3 +119,8 @@ gem 'discard', '~> 1.2'
 
 # Gem stripe to pocess payments
 gem 'stripe'
+
+# Trailblazer gem to manage business logic
+gem 'reform'
+gem 'reform-rails'
+gem 'trailblazer-rails'
