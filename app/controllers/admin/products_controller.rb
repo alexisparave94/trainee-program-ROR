@@ -11,7 +11,7 @@ module Admin
     # Method to delete a product
     # - DELETE /admin/products/:id
     def destroy
-      Admins::ProductDeleter.call(@product, @current_user)
+      run Operations::Admin::Products::Delete
       redirect_to products_path, notice: 'Product was successfully deleted'
     end
 

@@ -11,45 +11,55 @@ module Admin
     # Method to get the form to create a new product
     # - GET /admin/product_forms/new
     def new
-      @product_form = Admins::NewProductFormGetter.call
+      run Operations::Admin::Products::Create::Present do |ctx|
+        @product_form = ctx['contract.default']
+      end
     end
 
     # Method to create a new product
     # - POST /admin/product_forms
     def create
-      @product_form = Admins::ProductCreator.call(new_product_form_params, current_user)
-      redirect_to root_path, notice: 'Product was successfully created'
-    rescue StandardError => e
-      flash[:error] = e
-      redirect_to new_admin_product_form_path
+      ctx = run Operations::Admin::Products::Create,
+                params: { product: params[:product], current_user: } do
+        return redirect_to root_path, notice: 'Product was successfully created'
+      end
+      @product_form = ctx['contract.default']
+      flash[:error] = ctx['contract.default'].errors.messages
+      render :new
     end
 
     # Method to get the form to edit a new product
     # - GET /admin/product_forms/:id/edit
     def edit
-      @product_form = Admins::EditProductFormGetter.call(id: params[:id])
+      run Operations::Admin::Products::Update::Present do |ctx|
+        @product_form = ctx['contract.default']
+      end
     end
 
     # Method to update a product
     # - PATCH /admin/product_forms/:id
     def update
-      Admins::ProductUpdater.call(edit_product_form_params, params[:id], current_user)
-      redirect_to root_path, notice: 'Product was successfully updated'
-    rescue StandardError => e
-      flash[:error] = e
-      redirect_to edit_admin_product_form_path(id: session[:id])
+      ctx = run Operations::Admin::Products::Update,
+                params: { id: params[:id], product: params[:product], current_user: } do
+        # flash[:notice] = 'Product was successfully updated'
+        return redirect_to root_path, notice: 'Product was successfully updated'
+      end
+
+      @product_form = ctx['contract.default']
+      flash[:error] = ctx['contract.default'].errors.messages
+      render :edit
     end
 
     private
 
     # Method to set strong paramas for product form
-    def new_product_form_params
-      params.require(:forms_new_product_form).permit(policy(Product).permitted_attributes)
-    end
+    # def new_product_form_params
+    #   params.require(:forms_new_product_form).permit(policy(Product).permitted_attributes)
+    # end
 
-    def edit_product_form_params
-      params.require(:forms_edit_product_form).permit(policy(Product).permitted_attributes)
-    end
+    # def edit_product_form_params
+    #   params.require(:forms_edit_product_form).permit(policy(Product).permitted_attributes)
+    # end
 
     # Method to authorize actions
     def authorize_action

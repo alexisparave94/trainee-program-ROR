@@ -14,7 +14,12 @@ class ProductsController < ApplicationController
   # Method to get show product
   # GET /products/:id
   def show
-    @comment_product_form = ProductShower.call(params[:id], current_user)
+    result = Operations::Customer::Products::Show.call(
+      params: { id: params[:id], current_user: }
+    )
+    @comment_product_form = result['contract.default']
+    @information = result[:information]
+    # @comment_product_form = ProductShower.call(params[:id], current_user)
   end
 
   private

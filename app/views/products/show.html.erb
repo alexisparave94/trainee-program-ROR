@@ -1,47 +1,47 @@
 <p>
-  <%= @comment_product_form.commentable.sku %>
+  <%= @information.commentable.sku %>
 </p>
-<h1><%= @comment_product_form.commentable.name %></h1>
+<h1><%= @information.commentable.name %></h1>
 <p>
-  <%= @comment_product_form.commentable.description %>
+  <%= @information.commentable.description %>
 </p>
 <p>
   <div class='d-flex gap-2'>
     Tags: 
-    <% if @comment_product_form.commentable.tags.empty? %>
+    <% if @information.commentable.tags.empty? %>
       No tags assigned
     <% else %>
-      <% @comment_product_form.commentable.tags.each do |tag| %>
+      <% @information.commentable.tags.each do |tag| %>
         <div><%= tag.name %></div>
       <% end %>
     <% end %>
   </div>
 </p>
 <p>
-  <%= format('$ %0.02f', @comment_product_form.commentable.price/100) %>
+  <%= format('$ %0.02f', @information.commentable.price/100) %>
 </p>
 <p>
-  Stock: <%= @comment_product_form.commentable.stock %>
+  Stock: <%= @information.commentable.stock %>
 </p>
 <% if @current_user&.customer? %>  
   <p>
     Rate: 
-    <% if @comment_product_form.commentable.rates.empty? %>
+    <% if @information.commentable.rates.empty? %>
       No rated
     <% else %>
-      <%= decorate(@comment_product_form.commentable).average_rate(@comment_product_form.commentable.rates) %>
+      <%= decorate(@information.commentable).average_rate(@information.commentable.rates) %>
     <% end %>
   </p>
   <p>
-    Your rate: <%= @comment_product_form.rate&.value || 'No rated' %>
+    Your rate: <%= @information.rate&.value || 'No rated' %>
   </p>
 <% end %>
 <% if current_user&.admin? || current_user&.support? %>
   <div class='mb-3'>
     <h4>Add tags</h4>
     <div>
-      <%= form_with url: add_tag_admin_product_path(@comment_product_form.commentable) do |f|%>
-        <%= f.collection_select :tag_id, (Tag.all - @comment_product_form.commentable.tags), :id, :name, include_blank: "-- Select Tag" %>
+      <%= form_with url: add_tag_admin_product_path(@information.commentable) do |f|%>
+        <%= f.collection_select :tag_id, (Tag.all - @information.commentable.tags), :id, :name, include_blank: "-- Select Tag" %>
         <%= f.submit "Add Tag", class: 'btn btn-primary' %>
       <% end %>
     </div>
@@ -50,16 +50,17 @@
 <% if @current_user&.customer? %> 
 <h4>Add a comments</h4>
 <div data-turbo='false'>
-  <%= form_for @comment_product_form, url: customer_comment_products_path do |form| %>
+  <%= form_for @comment_product_form, as: :comment, url: customer_comment_products_path do |form| %>
     <div class="field mb-3">
       <% if flash[:error] %>
         <div class="alert alert-danger pb-1" role="alert">
           <ul>
-            <%= decorate(ErrorForm.new('error')).list_errors(flash[:error]) %>
+            <%# decorate(ErrorForm.new('error')).list_errors(flash[:error]) %>
+            <%= flash[:error] %>
           </ul>
         </div>
       <% end %>
-      <%= form.hidden_field :product_id, value: @comment_product_form.commentable.id %>
+      <%= form.hidden_field :product_id, value: @information.commentable.id %>
       <%= form.text_area :description, class: 'form-control' %>
       <div class='mt-3'>
         <% unless @comment_product_form.errors.messages_for(:description).empty? %>
@@ -86,9 +87,9 @@
 </div>
 <% end %>
 <% if current_user && ( current_user.admin? || current_user.support? ) %>
-  <%= render 'admin/comments/comments', commentable: @comment_product_form.commentable %>
+  <%= render 'admin/comments/comments', commentable: @information.commentable %>
 <% elsif current_user && current_user.customer? %>
-  <%= render 'customer/comments/comments', commentable: @comment_product_form.commentable %>
+  <%= render 'customer/comments/comments', commentable: @information.commentable %>
 <% else %>
-  <%= render 'comments/comments', commentable: @comment_product_form.commentable %>
+  <%= render 'comments/comments', commentable: @information.commentable %>
 <% end %>
