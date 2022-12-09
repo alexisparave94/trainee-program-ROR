@@ -8,7 +8,9 @@ class ProductsController < ApplicationController
   # Method to get index of products
   # GET /products
   def index
-    @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] }, current_user)
+    run Operations::Index, params:, current_user:, api: nil do |ctx|
+      @products = ctx[:products]
+    end
   end
 
   # Method to get show product
