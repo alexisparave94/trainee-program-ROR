@@ -8,13 +8,20 @@ class ProductsController < ApplicationController
   # Method to get index of products
   # GET /products
   def index
-    @products = ProductService.call({ search: params[:search], tags: params[:tags], sort: params[:sort] }, current_user)
+    run Operations::Index, params:, current_user:, api: nil do |ctx|
+      @products = ctx[:products]
+    end
   end
 
   # Method to get show product
   # GET /products/:id
   def show
-    @comment_product_form = ProductShower.call(params[:id], current_user)
+    result = Operations::Customer::Products::Show.call(
+      params: { id: params[:id], current_user: }
+    )
+    @comment_product_form = result['contract.default']
+    @information = result[:information]
+    # @comment_product_form = ProductShower.call(params[:id], current_user)
   end
 
   private

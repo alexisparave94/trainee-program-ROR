@@ -2,13 +2,13 @@
   <h2 class='mb-4'>Add to SHopping Cart</h2>
   <div class="card p-2" style="width: 20rem;">
     <div class="card-body">
-      <h5 class="card-title">Product: <%= @order_line_form.product.name %></h5>
-      <h6 class="card-subtitle mb-2 text-muted"><%= format('$ %0.02f', @order_line_form.product.price) %></h6>
-      <p class="card-text"><%= @order_line_form.product.description %></p>
+      <h5 class="card-title">Product: <%= @product.name %></h5>
+      <h6 class="card-subtitle mb-2 text-muted"><%= format('$ %0.02f', @product.price/100) %></h6>
+      <p class="card-text"><%= @product.description %></p>
       <%= form_for @order_line_form, url: customer_order_line_forms_path do |form| %>
-        <%= form.hidden_field :price, value: @order_line_form.product.price %>
+        <%= form.hidden_field :price, value: @product.price %>
         <%= form.hidden_field :order_id, value: session[:order_id] %>
-        <%= form.hidden_field :product_id, value: @order_line_form.product.id %>
+        <%= form.hidden_field :product_id, value: @product.id %>
         <div class="field mb-3">
           <%= form.label :quantity, class:'form-label' %>
           <%= form.text_field :quantity, value: 1 ,class: 'form-control' %>

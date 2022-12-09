@@ -12,7 +12,11 @@ module Customer
     # Method to get the form to add a new product (order line) to shopping cart
     # - GET /customer/order_line_forms/new
     def new
-      @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
+      # @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
+      run Operations::Customer::OrderLines::Create::Present do |ctx|
+        @order_line_form = ctx['contract.default']
+        @product = ctx[:product]
+      end
     end
 
     # Method to add a new product (order line) to shopping cart
