@@ -113,6 +113,11 @@ GEM
       declarative (>= 0.0.9, < 1.0.0)
       representable (>= 3.1.1, < 4)
     docile (1.4.0)
+    doorkeeper (5.4.0)
+      railties (>= 5)
+    doorkeeper-grants_assertion (0.3.1)
+      doorkeeper (>= 4.0)
+      railties (>= 5.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -397,6 +402,8 @@ DEPENDENCIES
   debug
   devise
   discard (~> 1.2)
+  doorkeeper (~> 5.4.0)
+  doorkeeper-grants_assertion
   dotenv-rails
   factory_bot_rails
   faker!
