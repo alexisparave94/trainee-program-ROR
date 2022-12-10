@@ -12,7 +12,7 @@ module Operations
           step :set_product
 
           def set_product(ctx, params:, **)
-            ctx[:product] = params[:product_id] ? Product.find(params[:product_id]) : ctx[:product] = Product.find(params[:order_line][:product_id])
+            ctx[:product] = params[:product_id] ? Product.find(params[:product_id]) : Product.find(params[:order_line][:product_id])
           end
         end
 
