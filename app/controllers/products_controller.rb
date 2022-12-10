@@ -21,7 +21,6 @@ class ProductsController < ApplicationController
     )
     @comment_product_form = result['contract.default']
     @information = result[:information]
-    # @comment_product_form = ProductShower.call(params[:id], current_user)
   end
 
   private

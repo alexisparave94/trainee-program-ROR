@@ -9,8 +9,10 @@ class OrderLinesController < ApplicationController
   # Method to delete an order line of the shopping cart
   # - DELETE /order_lines/:id
   def destroy
-    @virtual_order = OrderLineDeleter.call(params[:id], @virtual_order)
+    run Operations::VirtualOrderLines::Delete, params:, virtual_order: @virtual_order
     redirect_to shopping_cart_path, notice: 'Product was successfully deleted'
+    # @virtual_order = OrderLineDeleter.call(params[:id], @virtual_order)
+    # redirect_to shopping_cart_path, notice: 'Product was successfully deleted'
   end
 
   private
