@@ -68,6 +68,7 @@ Rails.application.routes.draw do
         end
         resources :transactions, only: %i[index]
       end
+      post 'registration' => 'registration#create'
     end
   end
 

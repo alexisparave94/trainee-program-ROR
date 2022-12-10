@@ -17,9 +17,9 @@ module Customer
       flash[:error] = ctx['contract.default'].errors.messages
       # Customer::Comments::CommentProductCreator.call(current_user, comment_product_form_params)
       # flash[:notice] = 'Comment was successfully added'
-    # rescue StandardError => e
-    #   flash[:error] = e
-    # ensure
+      # rescue StandardError => e
+      #   flash[:error] = e
+      # ensure
       redirect_to @product
     end
 

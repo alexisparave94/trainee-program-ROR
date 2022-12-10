@@ -6,12 +6,29 @@ Doorkeeper.configure do
   orm :active_record
 
   # This block will be called to check whether the resource owner is authenticated or not.
-  resource_owner_authenticator do
-    raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
-    # Put your resource owner authentication logic here.
-    # Example implementation:
-    #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
+  # resource_owner_authenticator do
+  #   raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
+  #   # Put your resource owner authentication logic here.
+  #   # Example implementation:
+  #   #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
+  # end
+
+  resource_owner_from_assertion do
+    facebook_conn = Faraday.new(url: 'https://graph.facebook.com')
+    facebook_response = facebook_conn.get('me', { access_token: params[:assertion], fields: 'id,name,email' })
+    user_data = JSON.parse(facebook_response.body, symbolize_names: true)
+    User.find_by_facebook_email(user_data[:email])
   end
+
+  # add your supported grant types and other extensions
+  grant_flows %w[password assertion]
+
+  use_refresh_token
+  # allow_blank_redirect_uri true
+
+  # skip_authorization do
+  #   true
+  # end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
