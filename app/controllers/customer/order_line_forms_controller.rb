@@ -22,11 +22,12 @@ module Customer
     # Method to add a new product (order line) to shopping cart
     # - POST /customer/order_line_forms
     def create
-      @order_line = Customer::OrderLines::OrderLineCreator.call(order_line_form_params, current_user, @order)
-      redirect_to shopping_cart_path, notice: 'Product was successfully added'
-    rescue StandardError => e
-      flash[:error] = e
-      redirect_to new_customer_order_line_form_path(product_id: session[:product_id])
+      ctx = run Operations::Customer::OrderLines::Create, params:, current_user:, order: @order do
+        return redirect_to shopping_cart_path, notice: 'Product was successfully added'
+      end
+      @product = ctx[:product]
+      @order_line_form = ctx['contract.default']
+      render :new
     end
 
     # Method to get the form to update an order line of the shopping cart

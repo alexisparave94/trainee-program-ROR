@@ -3,7 +3,7 @@
 module Operations
   # Class to manage operation of list all products
   class Index < Trailblazer::Operation
-    step :set_user
+    pass :set_user
     step :discard_products
     step :product_scope
     step :product_search
