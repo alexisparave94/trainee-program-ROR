@@ -11,12 +11,14 @@ module Customer
     # Method to delete an order line of the shopping cart
     # - DELETE /customer/order_lines/:id
     def destroy
-      Customer::OrderLineDeleter.call(@order_line)
-      redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
-    rescue StandardError => e
-      flash[:alert] = e
-      session[:order_id] = nil
-      redirect_to products_path
+      run Operations::Customer::OrderLines::Delete
+      redirect_to shopping_cart_path, notice: 'Product was successfully deleted'
+    #   Customer::OrderLineDeleter.call(@order_line)
+    #   redirect_to shopping_cart_path, notice: 'Line was successfully deleted'
+    # rescue StandardError => e
+    #   flash[:alert] = e
+    #   session[:order_id] = nil
+    #   redirect_to products_path
     end
 
     private
