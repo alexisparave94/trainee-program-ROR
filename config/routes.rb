@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   resources :apidocs, only: [:index]
   get '/api' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
 
@@ -67,6 +68,7 @@ Rails.application.routes.draw do
         end
         resources :transactions, only: %i[index]
       end
+      post 'registration' => 'registration#create'
     end
   end
 

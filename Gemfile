@@ -124,3 +124,10 @@ gem 'stripe'
 gem 'reform'
 gem 'reform-rails'
 gem 'trailblazer-rails'
+
+# Doorkeeper to use Oauth authentication
+gem 'doorkeeper', '~> 5.4.0'
+gem 'doorkeeper-grants_assertion'
+
+# Faraday gem to http requests
+gem 'faraday'

@@ -20,20 +20,20 @@ module Operations
     end
 
     def product_scope(ctx, params:, **)
-      ctx[:products] = ProductsQuery.new({ search: params[:search], tags: params[:tags],
-                                           sort: params[:sort] }, ctx[:products]).define_scope_for_products
+      ctx[:products] = Queries::ProductsQuery.new({ search: params[:search], tags: params[:tags],
+                                                    sort: params[:sort] }, ctx[:products]).define_scope_for_products
     end
 
     def product_search(ctx, params:, **)
-      ctx[:products] = ProductsQuery.new({ search: params[:search] }, ctx[:products]).search_products_by_name
+      ctx[:products] = Queries::ProductsQuery.new({ search: params[:search] }, ctx[:products]).search_products_by_name
     end
 
     def product_filter(ctx, params:, **)
-      ctx[:products] = ProductsQuery.new({ tags: params[:tags] }, ctx[:products]).filter_products
+      ctx[:products] = Queries::ProductsQuery.new({ tags: params[:tags] }, ctx[:products]).filter_products
     end
 
     def product_sort(ctx, params:, **)
-      ctx[:products] = ProductsQuery.new({ sort: params[:sort] }, ctx[:products]).sort_products
+      ctx[:products] = Queries::ProductsQuery.new({ sort: params[:sort] }, ctx[:products]).sort_products
     end
 
     def paginate(ctx, params:, api:, **)

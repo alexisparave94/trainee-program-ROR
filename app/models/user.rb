@@ -40,10 +40,7 @@ class User < ApplicationRecord
     super && !discarded?
   end
 
-  # def create_stripe_customer
-  #   return unless role == 'customer'
-
-  #   customer = Stripe::Customer.create(email:)
-  #   update(stripe_customer_id: customer.id)
-  # end
+  def self.find_by_facebook_email(email)
+    User.find_by(email:)
+  end
 end
