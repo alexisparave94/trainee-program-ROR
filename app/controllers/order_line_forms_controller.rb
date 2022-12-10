@@ -38,22 +38,33 @@ class OrderLineFormsController < ApplicationController
   # Method to get the form to update an order line of the shopping cart
   # - GET /order_line_forms/:id/edit
   def edit
-    @order_line_form = Customer::OrderLines::EditFormGetter.call(
-      { product_id: params[:id],
-        price: params[:price],
-        quantity: params[:quantity] }
-    )
+
+    # @order_line_form = Customer::OrderLines::EditFormGetter.call(
+    #   { product_id: params[:id],
+    #     price: params[:price],
+    #     quantity: params[:quantity] }
+    # )
+    run Operations::VirtualOrderLines::Update::Present, params: do |ctx|
+      @order_line_form = ctx['contract.default']
+      @product = ctx[:product]
+    end
   end
 
   # Method to update an order line of the shopping cart
   # - PATCH /order_line_forms/:id
   def update
-    VirtualOrderLineUpdater.call(order_line_form_params, @virtual_order)
-    redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
-  rescue StandardError => e
-    flash[:error] = e
-    redirect_to edit_order_line_form_path(id: session[:product_id],
-                                          price: session[:price], quantity: session[:quantity])
+    ctx = run Operations::VirtualOrderLines::Update, params:, virtual_order: @virtual_order do
+      return redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
+    end
+    @order_line_form = ctx['contract.default']
+    @product = ctx[:product]
+    render :edit
+  #   VirtualOrderLineUpdater.call(order_line_form_params, @virtual_order)
+  #   redirect_to shopping_cart_path, notice: 'Quantity was successfully updated'
+  # rescue StandardError => e
+  #   flash[:error] = e
+  #   redirect_to edit_order_line_form_path(id: session[:product_id],
+  #                                         price: session[:price], quantity: session[:quantity])
   end
 
   private
@@ -74,7 +85,7 @@ class OrderLineFormsController < ApplicationController
   # Method to update values of session
   def update_session
     session[:checkout] = nil
-    pp session[:virtual_order] = @virtual_order
+    session[:virtual_order] = @virtual_order
     session[:product_id] = nil
   end
 
