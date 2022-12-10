@@ -9,17 +9,30 @@ class OrderLineFormsController < ApplicationController
   # Method to get the form to add a new product (order line) to the shopping cart
   # - GET /order_line_forms/new
   def new
-    @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
+    run Operations::Customer::OrderLines::Create::Present, params: do |ctx|
+      @order_line_form = ctx['contract.default']
+      @product = ctx[:product]
+    end
+    # @order_line_form = Customer::OrderLines::NewFormGetter.call(product_id: params[:product_id])
   end
 
   # Method to add a new product (order line) to the shopping cart
   # - POST /order_line_forms
   def create
-    VirtualOrderLineCreator.new(order_line_form_params, @virtual_order).call
-    redirect_to shopping_cart_path, notice: 'Product was successfully added'
-  rescue StandardError => e
-    flash[:error] = e
-    redirect_to new_order_line_form_path(product_id: session[:product_id])
+  #   VirtualOrderLineCreator.new(order_line_form_params, @virtual_order).call
+  #   redirect_to shopping_cart_path, notice: 'Product was successfully added'
+  # rescue StandardError => e
+  #   flash[:error] = e
+  #   redirect_to new_order_line_form_path(product_id: session[:product_id])
+    ctx = run Operations::VirtualOrderLines::Create, params:, virtual_order: @virtual_order do
+      return redirect_to shopping_cart_path, notice: 'Product was successfully added'
+    end
+    # ctx = run Operations::Virtual::Create, params:, virtual_order: @virtual_order do
+    #   return redirect_to shopping_cart_path, notice: 'Product was successfully added'
+    # end
+    @product = ctx[:product]
+    @order_line_form = ctx['contract.default']
+    render :new
   end
 
   # Method to get the form to update an order line of the shopping cart
@@ -61,7 +74,7 @@ class OrderLineFormsController < ApplicationController
   # Method to update values of session
   def update_session
     session[:checkout] = nil
-    session[:virtual_order] = @virtual_order
+    pp session[:virtual_order] = @virtual_order
     session[:product_id] = nil
   end
 
