@@ -44,10 +44,16 @@ module Customer
     # Method to delete an order
     # DELETE /customer/orders/:id
     def destroy
-      Customer::OrderDeleter.call(@order)
-      redirect_to products_path, notice: 'Shopping cart was successfully deleted'
-    rescue StandardError => e
-      flash[:error] = e
+    #   Customer::OrderDeleter.call(@order)
+    #   redirect_to products_path, notice: 'Shopping cart was successfully deleted'
+    # rescue StandardError => e
+    #   flash[:error] = e
+    #   session[:order_id] = nil
+    #   redirect_to products_path
+      run Operations::Customer::Orders::Delete do
+        return redirect_to products_path, notice: 'Shopping cart was successfully deleted'
+      end
+      flash[:error] = 'The purchase has been completed'
       session[:order_id] = nil
       redirect_to products_path
     end
