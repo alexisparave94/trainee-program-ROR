@@ -48,6 +48,8 @@ module Operations
             line_items(ctx[:session]).data.each do |line_item|
               reduce_stock(line_item)
             end
+
+            Operations::Customer::Notifications::NotifyLastUserLike.call(order: ctx[:order])
             # Customer::LastUserNotifier.call(ctx[:order])
             user.transactions.create(status: 'success', description: 'checkout completed',
                                      amount: event_object.amount_total)
