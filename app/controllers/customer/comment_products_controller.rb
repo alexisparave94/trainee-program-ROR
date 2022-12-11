@@ -17,7 +17,7 @@ module Customer
       # flash[:notice] = 'Comment was successfully added'
       # rescue StandardError => e
       #   flash[:error] = e
-      # ensure
+      #  ensure
       redirect_to @product
     end
 
