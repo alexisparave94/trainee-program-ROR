@@ -12,13 +12,21 @@ module Customer
     # - GET customer/orders
     def index
       authorize Order
-      @orders = Customer::OrderLister.call(current_user, 'completed')
+      # @orders = Customer::OrderLister.call(current_user, 'completed')
+      run Operations::Customer::Orders::Index, current_user:, status: 'completed' do |ctx|
+        @orders = ctx[:orders]
+      end
     end
 
     # Method to get show of an order of a customer user
     # - GET customer/orders/:id
     def show
-      @comment_order_form = Customer::OrderShower.call({ order_id: params[:id] }, current_user)
+      result = Operations::Customer::Orders::Show.call(
+        params:, current_user:
+      )
+      @comment_order_form = result['contract.default']
+      @information = result[:information]
+      # @comment_order_form = Customer::OrderShower.call({ order_id: params[:id] }, current_user)
       # authorize @commentable
     end
 
