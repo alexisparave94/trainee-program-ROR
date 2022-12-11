@@ -9,12 +9,14 @@ module Admin
     before_action :set_product
 
     def destroy
-      Admins::CommentDeleter.call(@comment)
+      # Admins::CommentDeleter.call(@comment)
+      run Operations::Admin::Comments::Delete
       redirect_to @product, notice: 'Comment was successfully deleted'
     end
 
     def approve
-      Admins::CommentApprover.call(@comment)
+      # Admins::CommentApprover.call(@comment)
+      run Operations::Admin::Comments::Approve
       redirect_to @product, notice: 'Comment was successfully approved'
     end
 
