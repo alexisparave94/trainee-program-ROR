@@ -3,8 +3,8 @@
 module Admin
   # Class to manage interactions between customer users and comments for a product or an order
   class CommentsController < ApplicationController
-    before_action :authenticate_user!, only: %i[create]
-    # before_action :set_comment
+    before_action :set_comment
+    before_action :authenticate_user!, only: %i[destroy approve]
     before_action :authorize_action
     before_action :set_product
 
