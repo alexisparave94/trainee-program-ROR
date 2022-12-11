@@ -3,7 +3,7 @@
 module Operations
   module Customer
     module Orders
-      # Class to manage operation of delete a product
+      # Class to manage operation of delete a shopping cart
       class Delete < Trailblazer::Operation
         step Model(Order, :find_by)
         step :pending_order
