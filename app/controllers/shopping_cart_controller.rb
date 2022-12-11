@@ -26,7 +26,8 @@ class ShoppingCartController < ApplicationController
   # Method to delete all the lines of a shopping cart
   # - GET /empty_cart
   def empty_cart
-    session[:virtual_order] = ShoppingCartEmptier.call
+    # session[:virtual_order] = ShoppingCartEmptier.call
+    session[:virtual_order] = nil
     redirect_to shopping_cart_path, notice: 'Shopping cart has been emptied successfully'
   end
 
