@@ -5,7 +5,10 @@ module Admin
   class TransactionsController < ApplicationController
     def index
       authorize Transaction
-      @transactions = Admins::TransactionService.call
+      # @transactions = Admins::TransactionService.call
+      run Operations::Admin::Transactions::Index do |ctx|
+        @transactions = ctx[:transactions]
+      end
     end
   end
 end

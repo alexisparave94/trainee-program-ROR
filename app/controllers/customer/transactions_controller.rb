@@ -6,7 +6,10 @@ module Customer
     before_action :authenticate_user!, only: %i[index]
 
     def index
-      @transactions = Customer::TransactionService.call(current_user)
+      # @transactions = Customer::TransactionService.call(current_user)
+      run Operations::Customer::Transactions::Index, current_user: do |ctx|
+        @transactions = ctx[:transactions]
+      end
       # authorize @transactions.first
     end
   end

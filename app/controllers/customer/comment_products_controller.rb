@@ -12,14 +12,12 @@ module Customer
                 params: { comment: params[:comment], current_user: } do
         return redirect_to @product, notice: 'Product was successfully created'
       end
-      pp '===================='
-      pp ctx['contract.default']
       flash[:error] = ctx['contract.default'].errors.messages
       # Customer::Comments::CommentProductCreator.call(current_user, comment_product_form_params)
       # flash[:notice] = 'Comment was successfully added'
       # rescue StandardError => e
       #   flash[:error] = e
-      # ensure
+      #  ensure
       redirect_to @product
     end
 

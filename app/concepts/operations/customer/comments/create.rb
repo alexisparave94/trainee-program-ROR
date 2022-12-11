@@ -25,6 +25,7 @@ module Operations
           elsif !comment[:rate_value].empty?
             Rate.create(value: comment[:rate_value], user: ctx[:user], rateable: ctx[:commentable])
           end
+          true
         end
 
         def persist_comment(ctx, comment:, **)

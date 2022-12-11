@@ -3,7 +3,7 @@
 module Contracts
   module Comments
     # Class to manage the form to create a product comment
-    class CommentProduct < Reform::Form
+    class CommentOrder < Reform::Form
       property :description
       property :rate_value, virtual: true
       property :commentable_id

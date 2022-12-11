@@ -16,7 +16,8 @@ module Admin
     end
 
     def add_tag
-      Admins::TagAdder.call(params[:tag_id], @product)
+      # Admins::TagAdder.call(params[:tag_id], @product)
+      run Operations::Admin::Products::AddTag
       redirect_to @product, notice: 'Tag was successfully added'
     end
 

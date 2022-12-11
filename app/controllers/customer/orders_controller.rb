@@ -12,34 +12,48 @@ module Customer
     # - GET customer/orders
     def index
       authorize Order
-      @orders = Customer::OrderLister.call(current_user, 'completed')
+      # @orders = Customer::OrderLister.call(current_user, 'completed')
+      run Operations::Customer::Orders::Index, current_user:, status: 'completed' do |ctx|
+        @orders = ctx[:orders]
+      end
     end
 
     # Method to get show of an order of a customer user
     # - GET customer/orders/:id
     def show
-      @comment_order_form = Customer::OrderShower.call({ order_id: params[:id] }, current_user)
+      result = Operations::Customer::Orders::Show.call(
+        params:, current_user:
+      )
+      @comment_order_form = result['contract.default']
+      @information = result[:information]
+      # @comment_order_form = Customer::OrderShower.call({ order_id: params[:id] }, current_user)
       # authorize @commentable
     end
 
     # Method to update an order to status completed of a customer user
     # - PATCH customer/orders/:id
-    def update
-      @order = Customer::OrderBuyer.call(@order)
-      if @order
-        redirect_to products_path, notice: 'Thanks for buy'
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
+    # def update
+    #   @order = Customer::OrderBuyer.call(@order)
+    #   if @order
+    #     redirect_to products_path, notice: 'Thanks for buy'
+    #   else
+    #     render :new, status: :unprocessable_entity
+    #   end
+    # end
 
     # Method to delete an order
     # DELETE /customer/orders/:id
     def destroy
-      Customer::OrderDeleter.call(@order)
-      redirect_to products_path, notice: 'Shopping cart was successfully deleted'
-    rescue StandardError => e
-      flash[:error] = e
+    #   Customer::OrderDeleter.call(@order)
+    #   redirect_to products_path, notice: 'Shopping cart was successfully deleted'
+    # rescue StandardError => e
+    #   flash[:error] = e
+    #   session[:order_id] = nil
+    #   redirect_to products_path
+      run Operations::Customer::Orders::Delete do
+        return redirect_to products_path, notice: 'Shopping cart was successfully deleted'
+      end
+      flash[:error] = 'The purchase has been completed'
       session[:order_id] = nil
       redirect_to products_path
     end
