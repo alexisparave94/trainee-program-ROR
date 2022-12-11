@@ -8,14 +8,17 @@ module Customer
     # Method to like a product
     # - POST /customer/likes
     def create
-      Customer::Likes::LikeHandler.call(current_user, params[:product_id])
-      redirect_to products_path, notice: 'Product liked successfully'
+      run Operations::Customer::Likes::Create, params:, current_user: do
+        redirect_to products_path, notice: 'Product liked successfully'
+      end
+      # Customer::Likes::LikeHandler.call(current_user, params[:product_id])
     end
 
     # Method to dislike a product
     # - DELETE /customer/likes/:id
     def destroy
-      Customer::Likes::DislikeHandler.call(params[:id])
+      run Operations::Customer::Likes::Delete
+      # Customer::Likes::DislikeHandler.call(params[:id])
       redirect_to products_path, notice: 'Product disliked successfully'
     end
 
