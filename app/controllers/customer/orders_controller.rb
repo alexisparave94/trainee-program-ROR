@@ -32,14 +32,14 @@ module Customer
 
     # Method to update an order to status completed of a customer user
     # - PATCH customer/orders/:id
-    def update
-      @order = Customer::OrderBuyer.call(@order)
-      if @order
-        redirect_to products_path, notice: 'Thanks for buy'
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
+    # def update
+    #   @order = Customer::OrderBuyer.call(@order)
+    #   if @order
+    #     redirect_to products_path, notice: 'Thanks for buy'
+    #   else
+    #     render :new, status: :unprocessable_entity
+    #   end
+    # end
 
     # Method to delete an order
     # DELETE /customer/orders/:id

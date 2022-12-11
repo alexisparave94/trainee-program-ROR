@@ -3,7 +3,7 @@
 module Operations
   module Admin
     module Products
-      # Class to manage operation of delete a product
+      # Class to manage operation to add a tag to a product
       class AddTag < Trailblazer::Operation
         step Model(Product, :find_by)
         step :add_tag
