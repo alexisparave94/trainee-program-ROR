@@ -7,7 +7,10 @@ module Admin
     # - GET /admin/change_logs
     def index
       authorize ChangeLog
-      @logs = Admins::ChangeLogLister.call
+      run Operations::Admin::ChangeLogs::Index do |ctx|
+        @logs = ctx[:change_logs]
+      end
+      # @logs = Admins::ChangeLogLister.call
     end
   end
 end
