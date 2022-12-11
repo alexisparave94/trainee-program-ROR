@@ -10,10 +10,14 @@ class CheckoutPayController < ApplicationController
   # Method to show shopping cart
   # - POST /checkout_pay
   def create
-    session = StripeCheckoutFrontService.call(current_user, @order, root_url, shopping_cart_url)
-    redirect_to session.url, allow_other_host: true
-  rescue StandardError => e
-    flash[:alert] = e
+    run Operations::Customer::ShoppingCart::Checkout,
+        current_user:, order: @order, success_url: root_url, cancel_url: shopping_cart_url do |ctx|
+      return redirect_to ctx[:session].url, allow_other_host: true
+    end
+  #   session = StripeCheckoutFrontService.call(current_user, @order, root_url, shopping_cart_url)
+  #   redirect_to session.url, allow_other_host: true
+  # rescue StandardError => e
+    flash[:alert] = 'Please check the current stock of the products'
     redirect_to shopping_cart_path
   end
 
