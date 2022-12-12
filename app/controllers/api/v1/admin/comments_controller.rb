@@ -10,12 +10,16 @@ module Api
         before_action :authorize_action
 
         def destroy
-          @comment = Admins::CommentDeleter.call(@comment)
+          # @comment = Admins::CommentDeleter.call(@comment)
+          run Operations::Api::V1::Admin::Comments::Delete
           render json: @comment, status: :no_content
         end
 
         def approve
-          @comment = Admins::CommentApprover.call(@comment)
+          # @comment = Admins::CommentApprover.call(@comment)
+          run Operations::Api::V1::Admin::Comments::Approve do |ctx|
+            @comment = ctx[:model]
+          end
           render json: json_api_format(CommentRepresenter.new(@comment), 'comment'), status: :ok
         end
 
