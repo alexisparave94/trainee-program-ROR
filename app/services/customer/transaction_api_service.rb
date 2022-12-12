@@ -11,7 +11,8 @@ module Customer
 
     def call
       raise(NotAuthorizeUser) unless @user&.customer?
-      raise(NotAuthorizeUser) unless @list_transactions.first.user == @user
+
+      # raise(NotAuthorizeUser) unless @list_transactions.first.user == @user
 
       @list_transactions
     end

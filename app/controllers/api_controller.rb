@@ -33,8 +33,8 @@ class ApiController < ActionController::API
   end
 
   def authorize_jwt
-    @decoded = JwtDecoder.call(@token)
-    @current_user = User.find(@decoded[:user_id])
+    ctx = run Operations::Auth::Jwt::TokenDecode, token: @token
+    @current_user = User.find(ctx[:token_decoded][:user_id])
   end
 
   def authorize_doorkeeper
