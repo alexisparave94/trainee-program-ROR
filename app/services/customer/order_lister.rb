@@ -19,7 +19,7 @@ module Customer
     attr_reader :status, :current_user
 
     def list_orders
-      OrdersQuery.new({ status: }, current_user.orders).completed_orders
+      Queries::OrdersQuery.new({ status: }, current_user.orders).completed_orders
     end
   end
 end
