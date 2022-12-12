@@ -4,7 +4,9 @@ module Api
   module V1
     # Class to manage interactions between no logged in users and products
     class ProductsController < ApiController
-      before_action :doorkeeper_authorize!, only: %i[show]
+      # before_action :doorkeeper_authorize!, only: %i[show]
+      # before_action :doorkeeper_authorize!, only: %i[show]
+      before_action :authorize_request, only: %i[show]
       # Method to get index of products
       # GET /api/v1/products
       def index

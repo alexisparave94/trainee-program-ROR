@@ -8,10 +8,13 @@ class ApiController < ActionController::API
   include SwaggerControllers
 
   def authorize_request
-    @token = request.headers['Authorization']
-    header = @token.split.last if @token
-    @decoded = JwtDecoder.call(header)
-    @current_user = User.find(@decoded[:user_id])
+    header = request.headers['Authorization']
+    @token = header.split.last if header
+    if Doorkeeper::AccessToken.find_by(token: @token)
+      authorize_doorkeeper
+    else
+      authorize_jwt
+    end
   end
 
   def json_api_format(representer, type, pagy = nil)
@@ -27,5 +30,19 @@ class ApiController < ActionController::API
     else
       { data: { type => representer } }
     end
+  end
+
+  def authorize_jwt
+    @decoded = JwtDecoder.call(@token)
+    @current_user = User.find(@decoded[:user_id])
+  end
+
+  def authorize_doorkeeper
+    obj_token = Doorkeeper::AccessToken.find_by(token: @token)
+    raise(NotAuthorizeUser, 'Access token revoked') if obj_token.revoked?
+
+    raise(NotAuthorizeUser, 'Access token expired') if obj_token.expired?
+
+    @current_user = User.find(obj_token.resource_owner_id)
   end
 end
