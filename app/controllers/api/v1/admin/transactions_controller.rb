@@ -8,7 +8,11 @@ module Api
         before_action :authorize_request
 
         def index
-          @transactions = Admins::TransactionApiService.call(@current_user)
+          # @transactions = Admins::TransactionApiService.call(@current_user)
+          run Operations::Api::V1::Admin::Transactions::Index,
+              current_user: @current_user do |ctx|
+            @transactions = ctx[:transactions]
+          end
           render json: json_api_format(TransactionRepresenter.for_collection.new(@transactions), 'transactions'),
                  status: :ok
         end
