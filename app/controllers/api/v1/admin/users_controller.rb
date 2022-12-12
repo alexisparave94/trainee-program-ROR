@@ -11,21 +11,30 @@ module Api
         # Method to create a new user
         # - POST /api/v1/admin/users
         def create
-          @user = Admins::SupportUserCreator.call(user_params)
+          # @user = Admins::SupportUserCreator.call(user_params)
+          run Operations::Api::V1::Admin::Users::Create, params:, user_params: do |ctx|
+            @user = ctx[:user]
+          end
           render json: json_api_format(UserRepresenter.new(@user), 'user'), status: :created
         end
 
         # Method to soft delete a user
         # - PATCH /api/v1/admin/users/soft_delete/:id
         def discard
-          @user = Admins::UserSoftDeleter.call(params[:id])
+          # @user = Admins::UserSoftDeleter.call(params[:id])
+          run Operations::Api::V1::Admin::Users::SoftDelete do |ctx|
+            @user = ctx[:model]
+          end
           render json: json_api_format(UserRepresenter.new(@user), 'user'), status: :ok
         end
 
         # Method to restore a user
         # - PATCH /api/v1/admin/users/restore/:id
         def restore
-          @user = Admins::UserRestorer.call(params[:id])
+          # @user = Admins::UserRestorer.call(params[:id])
+          run Operations::Api::V1::Admin::Users::Restore do |ctx|
+            @user = ctx[:model]
+          end
           render json: json_api_format(UserRepresenter.new(@user), 'user'), status: :ok
         end
 
