@@ -20,42 +20,65 @@ module Api
         # Method to get show product
         # GET /api/v1/products/:id
         def show
-          @product = ProductGetter.call(params[:id], @current_user)
+          run Operations::Api::V1::Admin::Products::Show,
+              params:, user: @current_user do |ctx|
+            @product = ctx[:model]
+          end
+          # ctx = run Operations::Api::V1::Admin::Products::Show,
+          #           params:, user: @current_user
+          # @product = ProductGetter.call(params[:id], @current_user)
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         # Method to create a new product
         # - POST /api/v1/admin/products
         def create
-          @product = Admins::ProductCreator.call(new_product_form_params, @current_user, @token)
+          # @product = Admins::ProductCreator.call(new_product_form_params, @current_user, @token)
+          run Operations::Api::V1::Admin::Products::Create,
+              params:, user: @current_user, product_params: new_product_form_params do |ctx|
+            @product = ctx[:product]
+          end
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         # Method to update a product
         # - PATCH /api/v1/admin/products/:id
         def update
-          @product = Admins::ProductUpdater.call(edit_product_form_params, params[:id], @current_user, @token)
+          # @product = Admins::ProductUpdater.call(edit_product_form_params, params[:id], @current_user, @token)
+          run Operations::Api::V1::Admin::Products::Update,
+              params:, user: @current_user, product_params: edit_product_form_params do |ctx|
+            @product = ctx[:model]
+          end
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         # Method to delete a product
         # - DELETE /api/v1/admin/products/:id
         def destroy
-          @product = Admins::ProductDeleter.call(@product, @current_user)
+          run Operations::Admin::Products::Delete
+          # @product = Admins::ProductDeleter.call(@product, @current_user)
           render json: @product, status: :no_content
         end
 
         # Method to soft delete a product
         # - PATCH /api/v1/admin/products/soft_delete/:id
         def discard
-          @product = Admins::ProductSoftDeleter.call(@product, @current_user)
+          run Operations::Api::V1::Admin::Products::Discard,
+              params:, user: @current_user do |ctx|
+            @product = ctx[:model]
+          end
+          # @product = Admins::ProductSoftDeleter.call(@product, @current_user)
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 
         # Method to soft delete a product
         # - PATCH /api/v1/admin/products/soft_delete/:id
         def restore
-          @product = Admins::ProductRestorer.call(@product, @current_user)
+          # @product = Admins::ProductRestorer.call(@product, @current_user)
+          run Operations::Api::V1::Admin::Products::Restore,
+              params:, user: @current_user do |ctx|
+            @product = ctx[:model]
+          end
           render json: json_api_format(ProductRepresenter.new(@product), 'product'), status: :ok
         end
 

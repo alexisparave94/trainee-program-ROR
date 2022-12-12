@@ -3,7 +3,7 @@
 module Operations
   module Admin
     module Products
-      # Class to manage operation of create a product
+      # Class to manage operation of update a product
       class Update < Trailblazer::Operation
         class Present < Trailblazer::Operation
           step Model(Product, :find_by)
@@ -17,12 +17,6 @@ module Operations
         def save_change_log(ctx, params:, **)
           @log = ChangeLog.new(user: params[:current_user], product: ctx[:model].name, description: 'Create')
           @log.save
-        end
-
-        def create_stripe_product(ctx, **)
-          stripe_product = Stripe::Product.create(name: ctx[:model].name)
-          Stripe::Price.create(product: stripe_product, unit_amount: ctx[:model].price, currency: 'usd')
-          ctx[:model].update(stripe_product_id: stripe_product.id)
         end
 
         # def call

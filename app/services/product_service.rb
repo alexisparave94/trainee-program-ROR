@@ -23,24 +23,24 @@ class ProductService < ApplicationService
   attr_reader :params
 
   def discard_products
-    @products = ProductsQuery.new(nil, Product.all, @user).filter_discarded_products
+    @products = Queries::ProductsQuery.new(nil, Product.all, @user).filter_discarded_products
   end
 
   def product_scope
-    @products = ProductsQuery.new({ search: params[:search], tags: params[:tags],
+    @products = Queries::ProductsQuery.new({ search: params[:search], tags: params[:tags],
                                     sort: params[:sort] }, @products).define_scope_for_products
   end
 
   def product_search
-    @products = ProductsQuery.new({ search: params[:search] }, @products).search_products_by_name
+    @products = Queries::ProductsQuery.new({ search: params[:search] }, @products).search_products_by_name
   end
 
   def product_filter
-    @products = ProductsQuery.new({ tags: params[:tags] }, @products).filter_products
+    @products = Queries::ProductsQuery.new({ tags: params[:tags] }, @products).filter_products
   end
 
   def product_sort
-    @products = ProductsQuery.new({ sort: params[:sort] }, @products).sort_products
+    @products = Queries::ProductsQuery.new({ sort: params[:sort] }, @products).sort_products
   end
 
   def paginate
