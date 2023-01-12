@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'external_auth'
 
 Doorkeeper.configure do
   # Change the ORM that doorkeeper will use (requires ORM extensions installed).
@@ -14,10 +15,14 @@ Doorkeeper.configure do
   # end
 
   resource_owner_from_assertion do
-    facebook_conn = Faraday.new(url: 'https://graph.facebook.com')
-    facebook_response = facebook_conn.get('me', { access_token: params[:assertion], fields: 'id,name,email' })
-    user_data = JSON.parse(facebook_response.body, symbolize_names: true)
-    User.find_by_facebook_email(user_data[:email])
+    if params[:provider] == 'facebook'
+      user_data = ExternalAuth::Facebook.new(params[:assertion]).get_user
+    elsif params[:provider] == 'google'
+      user_data = ExternalAuth::Google.new(params[:assertion]).get_user
+    else
+      user_data = nil
+    end
+    user_data
   end
 
   # add your supported grant types and other extensions
