@@ -9,7 +9,7 @@ module Contracts
       property :description
       property :price
       property :stock
-      # property :image
+      property :image
 
       validates :sku, presence: { message: 'Must enter a sku' }
       # validate :uniq_sku
